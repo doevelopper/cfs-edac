@@ -69,14 +69,12 @@
 
 #define CFS_DECLARE( type )  type
 #define CFS_SUCCESS  ( 0x00000000L )    //! no error.
-#define CFE_SUCCESS  ( 0x00000000L )    //! no error.
 #define CFE_ERROR    ~( CFS_SUCCESS )   //! error.
-#define CFS_ERROR    ~( CFE_SUCCESS )   //! error.
 
 /*!
  * @brief  Macro for generating bit masks using bit index from the spec.
  */ 
-#define CFE_BIT_MASK( bit_index, field_bit_count )  ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
+#define CFS_BIT_MASK( bit_index, field_bit_count )  ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
 
 namespace cfs::edac
 {
@@ -89,7 +87,8 @@ namespace cfs::edac
     enum CfsError : std::uint32_t
     {
         LARGE_VALUE = 0x0e000000UL,
-        VALUE = 0x0e000000UL, LARGEVALUE = 0x0e000000UL,
+        VALUE = 0x0e000000UL, 
+	LARGEVALUE = 0x0e000000UL,
         LARGE = 0x0e000000UL
     };
 
@@ -138,8 +137,7 @@ namespace cfs::edac
         STATUS_CCA_FAILURE = 18,      ///< The packet was not sent due to a CCA failure.
         STATUS_ALREADY = 19,          ///< The operation is already in progress.
         STATUS_ITEM_NOT_FOUND = 20,   ///< The given item could not be found.
-        STATUS_INVALID_COMMAND_FOR_PROP
-            = 21,                     ///< The given command cannot be performed on this property.
+        STATUS_INVALID_COMMAND_FOR_PROP = 21, ///< The given command cannot be performed on this property.
     };
 
     struct ErrorDescription
@@ -284,12 +282,12 @@ namespace cfs::edac
            return ( genericErrorCode( errno ).default_error_condition());
        }
 
-       void makeErrorCode(std::uint32_t errc)
+       [[noreturn]] void makeErrorCode(std::uint32_t errc)
        {
            std::make_error_code(std::errc::timed_out);
        } 
 
-       void makeAndThrowErrorCode()
+       [[noreturn]] void makeAndThrowErrorCode()
        {
 	   throw std::system_error(std::make_error_code(std::errc::timed_out));    
        }
@@ -300,7 +298,7 @@ namespace cfs::edac
        void throw_error[[noreturn]]( int code, const char * origin, const char * format = nullptr, ... );
        void throw_error[[noreturn]]( int code, const char * origin, const char * format, va_list args );
 
-   protected:
+    protected:
 
        /*!
        * @brief Returns the default Error handler.
@@ -332,7 +330,7 @@ namespace cfs::edac
           return it != errorsList.end() ? it->second : errorsList.find( 2500 )->second;
       }
 
-       private:
+    private:
 
        std::string m_message;  ///< Error message
        std::string m_location; ///< Location of the error (file, line and function)

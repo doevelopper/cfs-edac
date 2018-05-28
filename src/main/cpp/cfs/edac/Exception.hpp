@@ -1,12 +1,12 @@
 
-#ifndef CFS_OSGI_EDAC_EXCEPTION_HPP
-#define CFS_OSGI_EDAC_EXCEPTION_HPP
+#ifndef CFS_EDAC_EXCEPTION_HPP
+#define CFS_EDAC_EXCEPTION_HPP
 
 #include <exception>
 #include <string>
 #include <iostream>
 
-#define ERROR_LOCATION  std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + toString( __LINE__ ) + std::string ( ")" )
+#define ERROR_LOCATION  std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( __LINE__ ) + std::string ( ")" )
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
 
 namespace cfs::edac
@@ -39,8 +39,9 @@ namespace cfs::edac
        * @brief  Constructor. Register @a handler as the current terminate handler.
        */
       explicit TerminateHandler( std::terminate_handler handler )
+      : m_oldHandler(std::set_terminate( handler ))
       {
-        oldHandler = std::set_terminate( handler );
+        //oldHandler = std::set_terminate( handler );
       }
       /*!
        * @brief Destructor. Unregister the current terminate handler; reset to
@@ -48,14 +49,14 @@ namespace cfs::edac
        */
       virtual ~TerminateHandler()
       {
-        std::set_terminate( oldHandler );
+        std::set_terminate( m_oldHandler );
       }
     private:
 
       /*!
        * @brief  This is the old terminate handler. We need it in the destructor.
        */
-      std::terminate_handler oldHandler;
+      std::terminate_handler m_oldHandler;
     };
 
     public:

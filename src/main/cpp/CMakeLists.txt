@@ -1,6 +1,33 @@
+
 add_library(edac.main
     cfs/edac/private/ErrorCodePrivate
+    #cfs/edac/private/ErrorCodeTable
     cfs/edac/IsErrorActive
+    cfs/edac/Exception
+    cfs/edac/private/LoggerPrivate
+    cfs/edac/Logger
+)
+
+target_link_libraries(edac.main
+
+    LOG4CXX::LOG4CXX
+)
+
+option(EXCLUDE_DEPRECATED "Exclude deprecated parts of the library" TRUE)
+if (EXCLUDE_DEPRECATED)
+    set(NO_BUILD_DEPRECATED DEFINE_NO_DEPRECATED)
+endif()
+
+include(GenerateExportHeader)
+generate_export_header(edac.main
+    EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Export.hpp"
+    INCLUDE_GUARD_NAME CFS_EDAC_EXPORT_HPP
+    # EXPORT_MACRO_NAME API_DECLS
+    #BASE_NAME EDAC 
+    #PREFIX_NAME EDAC_
+    #STATIC_DEFINE BUILT_AS_STATIC
+    DEPRECATED_MACRO_NAME CFS_EDAC_DEPRECATED
+    ${NO_BUILD_DEPRECATED}
 )
 
 target_compile_options(edac.main 
@@ -9,9 +36,11 @@ target_compile_options(edac.main
         $<$<CONFIG:Debug>:-g3 -O0 -fstack-protector>
         $<$<CONFIG:Release>:-g0 -O2>
     PUBLIC 
-        $<$<COMPILE_LANGUAGE:CXX>:-std=c++17 -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=shadow>
-	$<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2>
-	$<$<CONFIG:Release>:-g0 -O2>
+        $<$<COMPILE_LANGUAGE:CXX>: -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=shadow -fdiagnostics-parseable-fixits>
+  $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
+  $<$<CONFIG:Release>:-g0 -O2>
+  $<$<CONFIG:Coverage>:-O0  -fprofile-arcs -ftest-coverage --coverage>
+  $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
        
 )
 

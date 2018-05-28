@@ -10,8 +10,9 @@ cfs::edac::IsErrorActive< ParamType >::IsErrorActive()
 }
 
 template< class ParamType >
-void cfs::edac::IsErrorActive< ParamType >::set (const ParamType & value)
+void cfs::edac::IsErrorActive< ParamType >::set (const ParamType & value, std::mutex & mutex)
 {
+    std::lock_guard<std::mutex> lock(mutex);
     m_value = value;
     m_isValid = true;
 }
@@ -23,8 +24,9 @@ ParamType cfs::edac::IsErrorActive< ParamType >::get () const
 }
 
 template< class ParamType >
-void cfs::edac::IsErrorActive< ParamType >::clear (const ParamType & value)
+void cfs::edac::IsErrorActive< ParamType >::clear (const ParamType & value, std::mutex & mutex)
 {
+    std::lock_guard<std::mutex> lock(mutex);
     m_value = nullptr/*value*/;
     m_isValid = false;
 }

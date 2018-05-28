@@ -1,24 +1,26 @@
 
 #include <cfs/edac/Exception.hpp>
 
-using namespace cfs::edac;
 
-Exception::Exception( int code )
-    : m_code( code )
+cfs::edac::Exception::Exception( int code )
+  : m_stackTrace(std::string("Stack Trace"))
+  , m_message(std::string("StackTrace"))
+  , m_location(ERROR_LOCATION)
+  , m_code( code )
 {
 }
 
-const char * Exception::what () const throw ( )
+const char * cfs::edac::Exception::what () const throw ( )
 {
     return ( m_message.c_str());
 }
 
-const char * Exception::where () const throw ( )
+const char * cfs::edac::Exception::where () const throw ( )
 {
     return ( m_location.c_str());
 }
 
-std::string Exception::stackTrace () const
+std::string cfs::edac::Exception::stackTrace () const
 {
-
+   return (std::string("Stack Trace"));
 }

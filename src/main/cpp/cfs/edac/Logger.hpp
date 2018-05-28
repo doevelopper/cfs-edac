@@ -2,7 +2,8 @@
 #define CPPBDD101_EDAC_LOGGER_LOGGER_HPP
 
 #include <memory>
-#include <cppbdd101/edac/private/LoggerPrivate.hpp>
+#include <string>
+#include <cfs/edac/private/LoggerPrivate.hpp>
 
 // #define LOG_EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
 // #define LOG_ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.  */
@@ -23,13 +24,15 @@
     private: \
         static const log4cxx::LoggerPtr LOGGER; 
 
-class LoggerPrivate;
-
-class Logger
+namespace cfs::edac
 {
+    class LoggerPrivate;
+
+    class Logger
+    {
     public:
 
-        explicit Logger ();
+        explicit Logger (unsigned long delay);
         virtual ~Logger ( );
 
         void configure ( );
@@ -37,7 +40,7 @@ class Logger
         [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]] 
 	void trace ( const std::string & s );
         [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
-	void debug ( const std::stirng & s );
+	void debug ( const std::string & s );
         [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
 	void info ( const std::string & s );
         [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
@@ -49,13 +52,12 @@ class Logger
 
     protected:
 
-        std::share_ptr<LoggerPrivate> d_ptr;
+	std::shared_ptr<LoggerPrivate> d_ptr;
 
     private:
-	    static const unsigned long LOGGER_WATCH_DELAY;
 
         // DECLARE_PRIVATE( Logger )
         // DISABLE_COPY( Logger )
-};
-
+    };
+}
 #endif

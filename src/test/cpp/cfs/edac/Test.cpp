@@ -8,7 +8,7 @@ const unsigned long cfs::edac::test::Test::LOGGER_WATCH_DELAY = 5000UL;
 cfs::edac::test::Test::Test()
     : m_testSuites(std::string() )
     , m_numberOfTestIteration(1)
-    , m_loggerService(new LoggingService(LOGGER_WATCH_DELAY))
+    , m_loggerService(new Logger(LOGGER_WATCH_DELAY))
 {
     LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
 }
@@ -16,7 +16,7 @@ cfs::edac::test::Test::Test()
 cfs::edac::test::Test::Test(std::string & suite, unsigned int iteration)
     : m_testSuites(suite)
     , m_numberOfTestIteration(iteration)
-    , m_loggerService(new LoggingService(LOGGER_WATCH_DELAY))
+    , m_loggerService(new Logger(LOGGER_WATCH_DELAY))
 {
     LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
 }

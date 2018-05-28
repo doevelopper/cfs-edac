@@ -3,6 +3,9 @@
 #define CPPBDD101_EDAC_ISERRORACTIVE_HPP
 
 // IsErrorActive<insigned int> vUint;
+#include <thread>
+#include <mutex>
+#include <functional>
 
 namespace cfs::edac
 {
@@ -20,8 +23,8 @@ namespace cfs::edac
 
         ParamType get () const;
         bool isActive () const;
-        [[noreturn]] void set(const ParamType & value);
-	[[noreturn]] void clear ( const ParamType & value);
+        [[noreturn]] void set(const ParamType & value, std::mutex & mutex);
+	[[noreturn]] void clear ( const ParamType & value, std::mutex & mutex);
 	[[noreturn]] void isActive (bool value);
 
     private:

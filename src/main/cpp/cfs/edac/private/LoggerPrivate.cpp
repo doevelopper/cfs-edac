@@ -5,10 +5,12 @@
 
 #include <cfs/edac/private/LoggerPrivate.hpp>
 
+using cfs::edac::LoggerPrivate;
+
 std::string LoggerPrivate::m_loggerConfigLocation = "LOG4CXX_CONFIGURATION_PATH =/etc/cfg/log4cxx.xml";
 
 LoggerPrivate::LoggerPrivate( unsigned long delay )
-    :   m_watchPeriod( delay )
+  : m_watchPeriod( delay )
 {
     std::string configurationPath( "" );
 
@@ -18,10 +20,9 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
     }
     else
     {
-        char * filePath;
         try
         {
-            if( (filePath = getenv( "LOG4CXX_CONFIGURATION" ) ) == NULL )
+            if( const char * filePath = std::getenv( "LOG4CXX_CONFIGURATION" ) )
             {
                 std::cerr << "Failed to get loggger configuratin file" << std::endl;
             }
@@ -74,6 +75,7 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
         log4cxx::LogManager::getLoggerRepository( )->setConfigured( true );
 
         // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Internal log configured");
+		// log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Starting the logging system - BASIC");
     }
     else
     {
@@ -179,11 +181,11 @@ LoggerPrivate::loadConfigAndWatch( const std::string & configFilename )
         {
             if( configFilename.find( ".xml" ) != std::string::npos )
             {
-                log4cxx::xml::DOMConfigurator::configureAndWatch( configFilename, this->periodicalCheck( ) );
+                log4cxx::xml::DOMConfigurator::configureAndWatch( configFilename, static_cast< long >(this->periodicalCheck( ) ));
             }
             else
             {
-                log4cxx::PropertyConfigurator::configureAndWatch( configFilename, this->periodicalCheck( ) );
+                log4cxx::PropertyConfigurator::configureAndWatch( configFilename, static_cast< long >(this->periodicalCheck( ) ));
             }
         }
     }

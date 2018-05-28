@@ -84,7 +84,14 @@
  |                  |                                      Error codes                                         |
  |:----------------:|:----------------------------------------------------------------------------------------:|
  | 0000000000000000 | Used to classify error codes   related  to mission specific library function calls, etc. |
- 
+
+* @attention 
+*    0xyyyy1bbb Normal failure (plausibly these should not even be "errors", but they are failures of the way operations are currently defined)
+*    0xyyyy15bb 15xx Platform errors
+*    2xxx user Attempt to do something illegal.
+*    2200 - errors from bindings and official APIs
+*    2300 - backup and restore errors
+*    4xxx Internal errors (those that should be generated only by bugs) are decimal 4xxx
 */ 
 #include <clocale>
 #include <cstdint>
@@ -94,8 +101,10 @@
 namespace cfs::edac//::private
 {
     using HRESULT = std::uint32_t;
-    HRESULT EDAC_SUCCESS = (std::uint32_t)( 0ULL );
+    using status_t = std::uint32_t;
+    HRESULT EDAC_SUCCESS = static_cast<std::uint32_t>( 0ULL );
     HRESULT EDAC_ERROR = ( !EDAC_SUCCESS );
+    HRESULT EDAC_INVALIDE_ERROR = (0XFFFFFFFF);
     /*!
     * @defgroup CFS_Status_Codes CFS Error Space
     * @{
@@ -128,14 +137,15 @@ namespace cfs::edac//::private
     {
         CFS_SEVERITY_BITMASK = ( 0xC0000000L ),
         CFS_SEVERITY_SUCCESS = ( 0x00000000L ),
-        CFS_SEVERITY_NOTICE = ( 0x40000000L ),   /*! An unusual event has occured, though not an error condition. This should be investigated for the root cause. | */
-        CFS_SEVERITY_DEBUG = ( 0x40000000L ),   /*! Useful non-operational messages that can assist in debugging. These should not occur during normal operation. | */
-        CFS_SEVERITY_INFO = ( 0x40000000L ),    /*! Normal operational messages. Useful for logging. No action is required for these messages. | */
-        CFS_SEVERITY_ERROR = ( 0x80000000L ),  /*! Indicates an error in secondary/redundant systems. | */
-        CFS_SEVERITY_WARNING ,                 /*! Indicates about a possible future error if this is not resolved within a given timeframe. Example would be a low battery warning. | */
-        CFS_SEVERITY_ALERT ,                   /*! Action should be taken immediately. Indicates error in non-critical systems. | */
-        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ),  /*! Action must be taken immediately. Indicates failure in a primary system. | */
-        CFS_SEVERITY_EMERGENCY /*! System is unusable. This is a "panic" condition. | */
+        CFS_SEVERITY_NOTICE = ( 0x40000000L ),   /*!< An unusual event has occured, though not an error condition. This should be investigated for the root cause. | */
+        CFS_SEVERITY_DEBUG = ( 0x40000000L ),    /*!< Useful non-operational messages that can assist in debugging. These should not occur during normal operation. | */
+        CFS_SEVERITY_INFO = ( 0x40000000L ),     /*!< Normal operational messages. Useful for logging. No action is required for these messages. | */
+        CFS_SEVERITY_ERROR = ( 0x80000000L ),    /*!< Indicates an error in secondary/redundant systems. | */
+        CFS_SEVERITY_WARNING ,                   /*!< Indicates about a possible future error if this is not resolved within a given timeframe. Example would be a low battery warning. | */
+        CFS_SEVERITY_ALERT ,                     /*!< Action should be taken immediately. Indicates error in non-critical systems. | */
+        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ), /*!< Action must be taken immediately. Indicates failure in a primary system. | */
+        CFS_SEVERITY_EMERGENCY,                  /*!< System is unusable. This is a "panic" condition. | */
+		CFS_SEVERITY_NONE                        /**< No logging will occur */
     };
     /*!
     * @}
@@ -169,7 +179,7 @@ namespace cfs::edac//::private
         ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
         ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
         ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
-        virtual ~ErrorCodePrivate() = default;
+        virtual ~ErrorCodePrivate();
 
         // const error_category & edac_category();
     private:

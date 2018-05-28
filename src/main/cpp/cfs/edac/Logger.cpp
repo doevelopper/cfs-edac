@@ -1,10 +1,11 @@
 
+#include <string>
 #include <cfs/edac/Logger.hpp>
 
-const unsigned long Logger::LOGGER_WATCH_DELAY = 5000UL;
+using cfs::edac::Logger;
 
-Logger::Logger( )
-    : d_ptr( new LoggerPrivate(Logger::LOGGER_WATCH_DELAY))
+Logger::Logger(unsigned long loggerWatchDelay )
+    : d_ptr( new LoggerPrivate(loggerWatchDelay))
 {
     //Q_D( Logger );
 

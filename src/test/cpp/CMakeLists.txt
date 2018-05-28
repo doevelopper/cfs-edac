@@ -2,6 +2,7 @@
 add_library(edac.test
    #edac/GoogleTestCustomEventListener
    cfs/edac/Test
+   cfs/edac/ErrorCodePrivateTest
 )
 
 target_include_directories(edac.test
@@ -10,8 +11,13 @@ target_include_directories(edac.test
         $<INSTALL_INTERFACE:${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/edac>
 )
 
+target_link_libraries(edac.test 
+	PUBLIC ${GTEST_LIBRARY} 
+	       edac.main
+)
 add_executable(edac.test.bin
-    cfs/edac/ErrorCodePrivateTest
+    #cfs/edac/ErrorCodePrivateTest
+    cfs/edac/unitTest
 )
 
 target_link_libraries (edac.test.bin
