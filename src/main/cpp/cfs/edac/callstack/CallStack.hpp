@@ -7,7 +7,7 @@
 #include <sstream>
 #include <inttypes.h>
 
-namespace cfs::edac
+namespace cfs::edac::callstack
 
     class CallStackDataStructure;
 

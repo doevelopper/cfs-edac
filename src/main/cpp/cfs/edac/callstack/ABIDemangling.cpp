@@ -1,17 +1,18 @@
 
+#include <typeindex>
 #include <cfs/edac/callstack/ABIDemangling.hpp>
 
-cfs::edac::ABIDemangling::ABIDemangling()
+cfs::edac::callstack::ABIDemangling::ABIDemangling()
 {
 
 }
 
-cfs::edac::ABIDemangling::~ABIDemangling()
+cfs::edac::callstack::ABIDemangling::~ABIDemangling()
 {
 }
 
 template < typename T >
-std::string cfs::edac::ABIDemangling::gccDemangle ( T & e )
+std::string cfs::edac::callstack::ABIDemangling::gccDemangle ( T & e )
 {
     int status;
     std::unique_ptr < char > realname;
@@ -21,7 +22,7 @@ std::string cfs::edac::ABIDemangling::gccDemangle ( T & e )
     return ( std::string( realname.get()));
 }
 
-const char*  cfs::edac::ABIDemangling::cxaDemangle(const std::type_info &typeInfo)
+const char*  cfs::edac::callstack::ABIDemangling::cxaDemangle(const std::type_info &typeInfo)
 {
     //LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     static std::map<std::type_index, std::unique_ptr<char, void (*)(void *)>> cache;
@@ -52,12 +53,12 @@ const char*  cfs::edac::ABIDemangling::cxaDemangle(const std::type_info &typeInf
 }
 
 template < class T >
-std::string cfs::edac::ABIDemangling::type ( const T & t )
+std::string cfs::edac::callstack::ABIDemangling::type ( const T & t )
 {
     return ( demangle( typeid( t ).name()));
 }
 
-std::string cfs::edac::ABIDemangling::demangle ( const char * name /*, std::string& retVal*/ )
+std::string cfs::edac::callstack::ABIDemangling::demangle ( const char * name /*, std::string& retVal*/ )
 {
     int status;
     std::string retVal;
@@ -86,19 +87,21 @@ std::string cfs::edac::ABIDemangling::demangle ( const char * name /*, std::stri
 }
 
 std::string
-cfs::edac::ABIDemangling::demangle ( const std::type_info & type )
+cfs::edac::callstack::ABIDemangling::demangle ( const std::type_info & typeInfo )
 {
-    return ( demangle( type.name()));
+    return ( demangle( typeInfo.name()));
 }
 
 size_t
-cfs::edac::ABIDemangling::demangle ( const std::type_info & type, char * buf, size_t bufSize)
+cfs::edac::callstack::ABIDemangling::demangle ( const std::type_info & typeInfo, char * buf, size_t bufSize)
 {
-    // return (demangle(type.name(), buf, bufSize));
+    // return (demangle(typeInfo.name(), buf, bufSize));
+    return 42; // ;)
 }
 
 void
-cfs::edac::ABIDemangling::printExceptionStack ( const std::exception & e, std::ostream & output)
+cfs::edac::callstack::ABIDemangling::printExceptionStack ( const std::exception & e, std::ostream & output)
 {
     output << "Issue on " << abi::__cxa_demangle( typeid( e ).name(), nullptr, nullptr, nullptr ) << ": " << e.what() << std::endl;
 }
+

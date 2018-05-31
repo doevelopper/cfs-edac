@@ -3,7 +3,7 @@
 #define CFS_EDAC_ERRORHANDLER_HPP
 
 namespace cfs::edac
-
+{
   class ErrorHandler
   {
     public:

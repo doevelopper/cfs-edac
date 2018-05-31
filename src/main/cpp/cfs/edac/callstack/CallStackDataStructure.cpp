@@ -3,13 +3,15 @@
 #include <cstddef>
 #include <sstream>
 
-cfs::edac::CallStackDataStructure::CallStackDataStructure()
+
+cfs::edac::callstack::CallStackDataStructure::CallStackDataStructure()
   : m_line( 0 )
   , m_address( nullptr )
 {
 }
 
-std::string cfs::edac::CallStackDataStructure::data () const
+std::string 
+cfs::edac::callstack::CallStackDataStructure::data () const
 {
     std::ostringstream os;
     os << this->m_file;

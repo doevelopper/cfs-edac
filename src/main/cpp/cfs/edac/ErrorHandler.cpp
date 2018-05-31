@@ -1,5 +1,8 @@
 
-#include <cfs/osgi/edac/ErrorHandler.hpp>
+#include <stdexcept>
+#include <cfs/edac/ErrorHandler.hpp>
+
+using cfs::edac::ErrorHandler;
 
 ErrorHandler::ErrorHandler()
 {

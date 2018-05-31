@@ -3,6 +3,7 @@ add_library(edac.test
    #edac/GoogleTestCustomEventListener
    cfs/edac/Test
    cfs/edac/ErrorCodePrivateTest
+   cfs/edac/callstack/ABIDemanglingTest
 )
 
 target_include_directories(edac.test
@@ -12,8 +13,8 @@ target_include_directories(edac.test
 )
 
 target_link_libraries(edac.test 
-	PUBLIC ${GTEST_LIBRARY} 
-	       edac.main
+	PUBLIC #EDAC-MAIN::EDAC-MAIN 
+	edac.main
 )
 add_executable(edac.test.bin
     #cfs/edac/ErrorCodePrivateTest
@@ -23,6 +24,13 @@ add_executable(edac.test.bin
 target_link_libraries (edac.test.bin
     PUBLIC
         edac.test
+	LOG4CXX::LOG4CXX
+	#${APR_LIBRARY}
+	#${EXPAT_LIBRARY}
+	#	${APRUTIL_LIBRARY}
+	GTest::Main
+	GMock::GMock
+	#LOG4CXX::LOG4CXX
 )
 
 #gtest_discover_tests(cppbdd101.edac.test.bin

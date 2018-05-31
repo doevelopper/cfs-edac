@@ -116,7 +116,7 @@ namespace cfs::edac
 
     enum class CfeOperationStatus : std::uint32_t
     {
-        STATUS_OK = 0,                ///< Operation has completed successfully.
+        STATUS_OK = CFS_SUCCESS,      ///< Operation has completed successfully.
         STATUS_FAILURE = 1,           ///< Operation has failed for some undefined reason.
         STATUS_UNIMPLEMENTED = 2,     ///< Given operation has not been implemented.
         STATUS_INVALID_ARGUMENT = 3,  ///< An argument to the operation is invalid.

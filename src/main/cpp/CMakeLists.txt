@@ -1,7 +1,10 @@
 
 add_library(edac.main
+    cfs/edac/callstack/ABIDemangling
     cfs/edac/private/ErrorCodePrivate
-    #cfs/edac/private/ErrorCodeTable
+    cfs/edac/ErrorHandler
+    cfs/edac/ErrorOr
+    cfs/edac/private/ErrorCodeTable
     cfs/edac/IsErrorActive
     cfs/edac/Exception
     cfs/edac/private/LoggerPrivate
@@ -9,8 +12,8 @@ add_library(edac.main
 )
 
 target_link_libraries(edac.main
-
-    LOG4CXX::LOG4CXX
+    PUBLIC
+        LOG4CXX::LOG4CXX
 )
 
 option(EXCLUDE_DEPRECATED "Exclude deprecated parts of the library" TRUE)
@@ -37,10 +40,10 @@ target_compile_options(edac.main
         $<$<CONFIG:Release>:-g0 -O2>
     PUBLIC 
         $<$<COMPILE_LANGUAGE:CXX>: -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=shadow -fdiagnostics-parseable-fixits>
-  $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
-  $<$<CONFIG:Release>:-g0 -O2>
-  $<$<CONFIG:Coverage>:-O0  -fprofile-arcs -ftest-coverage --coverage>
-  $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
+        $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
+        $<$<CONFIG:Release>:-g0 -O2>
+        $<$<CONFIG:Coverage>:-O0  -fprofile-arcs -ftest-coverage --coverage>
+        $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
        
 )
 

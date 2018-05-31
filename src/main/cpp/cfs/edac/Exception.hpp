@@ -11,6 +11,36 @@
 
 namespace cfs::edac
 {
+
+    class BadDependency : public ::std::logic_error 
+    {
+       public:
+             BadDependency(const ::std::string &arg)
+             : std::logic_error(arg)
+             {
+             }
+    };
+
+    class InvalidResult : public ::std::runtime_error 
+    {
+       public:
+            InvalidResult(const ::std::string &arg)
+            : std::runtime_error(arg)
+            {
+           }
+    };
+    /*!
+     * @brief Base class for every exception thrown in <>.
+     *        C - Computational problem
+     *        H - Hardware problem
+     *        I - I/O and file problem
+     *        L - Library function problem
+     *        D - Data input problem
+     *        R - Return value problem: function or procedure call
+     *        E - External user/client problem  (in embedded systems this may include control network exceptions)
+     *        N - Null pointer or memory problems
+     */
+
    class Exception : public std::exception
    {
     /*!
@@ -64,7 +94,7 @@ namespace cfs::edac
       Exception( int code = 0 );
       Exception( const Exception & orig );
       Exception & operator = ( const Exception & exc );
-      virtual ~Exception() = default;
+      virtual ~Exception();
       /*!
        * @brief Constructs an exeption with message and error code.
        */
@@ -120,12 +150,24 @@ namespace cfs::edac
       virtual std::string summary () const;
       virtual std::string stackTrace () const;
 
+    protected:
+
+      //explicit Exception(const std::string & message);
+      explicit Exception(std::terminate_handler handler);
+ 
     private:
 
+      void create( std::size_t nSize);
+
+      //std::shared_ptr< std::string > m_message; ///< Error message
+      const std::string m_who;             ///< name of function throwing exception
+      const std::string m_where;           ///< source:line info
+      const std::string m_reason;          ///< optional, provides context-specific reason
+      std::terminate_handler m_oldHandler; ///< old terminate handler. We need it in the destructor.
       std::string m_stackTrace;
       std::string m_message;        ///< Error message.
       std::string m_location;       ///< Location of the error : file, line and procedure)
-      int m_code;                   ///< Error code
+      std::int32_t m_code;                   ///< Error code
     };
 
     std::ostream & operator << ( std::ostream & out, const Exception & ex)

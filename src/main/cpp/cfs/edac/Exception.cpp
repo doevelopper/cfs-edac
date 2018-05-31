@@ -10,6 +10,17 @@ cfs::edac::Exception::Exception( int code )
 {
 }
 
+cfs::edac::Exception::Exception(std::terminate_handler handler)
+{
+    m_oldHandler = std::set_terminate(handler);
+}
+
+cfs::edac::Exception::~Exception()
+{
+    std::set_terminate(m_oldHandler);
+
+}
+
 const char * cfs::edac::Exception::what () const throw ( )
 {
     return ( m_message.c_str());

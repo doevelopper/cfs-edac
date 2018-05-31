@@ -3,7 +3,8 @@
 #define CFS_EDAC_CALLSTACK_CALLSTACKDATASTRUCTURE_HPP
 
 #include <string>
-namespace cfs::edac
+
+namespace cfs::edac::callstack
 {
     class CallStackDataStructure
     {
