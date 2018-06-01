@@ -1,5 +1,9 @@
 
 add_library(edac.main
+    cfs/edac/namedType/Crtp
+    cfs/edac/namedType/internal/NamedTypeInternal
+    cfs/edac/namedType/UnderlyingFunctionalities
+    cfs/edac/namedType/StrongType
     cfs/edac/callstack/ABIDemangling
     cfs/edac/private/ErrorCodePrivate
     cfs/edac/ErrorHandler
