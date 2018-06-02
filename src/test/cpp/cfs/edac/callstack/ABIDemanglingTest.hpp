@@ -2,10 +2,12 @@
 #ifndef CFS_EDAC_CALLSTACK_ABIDEMANGLINGTEST_HPP
 #define CFS_EDAC_CALLSTACK_ABIDEMANGLINGTEST_HPP
 
+#include <gtest/gtest.h>
+
 namespace cfs::edac::callstack
 
 {
-    class ABIDemanglingTest
+    class ABIDemanglingTest : public ::testing::Test
     {
 
     public:
@@ -15,8 +17,8 @@ namespace cfs::edac::callstack
 
     protected:
 
-        void Setup() override ;
-        void TearDOwn() override;
+        void SetUp() override ;
+        void TearDown() override;
 
     private:
     };

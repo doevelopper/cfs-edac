@@ -1,18 +1,18 @@
 
 #include <cfs/edac/callstack/ABIDemanglingTest.hpp>
 
-using cfs::edac::callstack::ABIDemanglingTest
+using cfs::edac::callstack::ABIDemanglingTest;
 
-ABIDemanglingTest::ABIDemanglingTEST_F()
+ABIDemanglingTest::ABIDemanglingTest()
 {
 }
 
-ABIDemanglingTest::~ABIDemanglingTEST_F()
+ABIDemanglingTest::~ABIDemanglingTest()
 {
 
 }
 
-void ABIDemanglingTest::Setup()
+void ABIDemanglingTest::SetUp()
 {
 
 }

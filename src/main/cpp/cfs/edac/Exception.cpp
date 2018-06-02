@@ -3,7 +3,11 @@
 
 
 cfs::edac::Exception::Exception( int code )
-  : m_stackTrace(std::string("Stack Trace"))
+  : m_who(std::string())
+  , m_where(std::string())
+  , m_reason(std::string())
+  , m_oldHandler(nullptr)
+  , m_stackTrace(std::string("Stack Trace"))
   , m_message(std::string("StackTrace"))
   , m_location(ERROR_LOCATION)
   , m_code( code )
@@ -11,6 +15,14 @@ cfs::edac::Exception::Exception( int code )
 }
 
 cfs::edac::Exception::Exception(std::terminate_handler handler)
+  : m_who(std::string())
+  , m_where(std::string())
+  , m_reason(std::string())
+  , m_oldHandler(std::set_terminate(handler))
+  , m_stackTrace(std::string("Stack Trace"))
+  , m_message(std::string("StackTrace"))
+  , m_location(ERROR_LOCATION)
+  , m_code(0)
 {
     m_oldHandler = std::set_terminate(handler);
 }

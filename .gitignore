@@ -179,5 +179,5 @@ uncrustifyDoc.cfg
 Report.xml
 
 
-src/main/resources/cmakeModule/
-src/main/resources/macros/
+#src/main/resources/cmakeModule/
+#src/main/resources/macros/

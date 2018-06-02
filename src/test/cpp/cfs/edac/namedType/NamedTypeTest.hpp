@@ -55,7 +55,7 @@ namespace cfs::edac::namedtype::test
 	    Meter height_;
     };
 
-    class NamedTypeTest
+    class NamedTypeTest : public ::testing::Test
     {
 
     public:
