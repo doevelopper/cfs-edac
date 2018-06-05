@@ -1,0 +1,131 @@
+# Travis build integration.
+# https://docs.travis-ci.com/
+#src/main/resources/ci/travis.yml
+language: cpp
+sudo: required
+dist: trusty
+#group: wtf
+
+# Travis CI VM OSs -> 2 OSs
+os:
+    - linux
+
+# Travis CI build matrix components -> 2 compilers
+compiler:
+    - gcc
+    - clang
+
+# Travis CI environmental variables 
+env:
+    global:
+        - CCACHE_MAXSIZE=250M
+        - CCACHE_MAXFILES=2000
+        - CCACHE_COMPRESS=1
+        - CMAKE_OPTIONS="-DOPTION_BUILD_EXAMPLES=On -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE=TRUE -D CMAKE_INSTALL_PREFIX:PATH=$PWD/../local-artifacts"
+        - TRAVIS_BUILD_TYPE=Debug
+        - TRAVIS_BUILD_TYPE=Release
+        - TEST_SUITE=integration_tests
+        - TEST_SUITE=unit_tests
+        # Coverity
+        # COVERITY_SCAN_TOKEN
+        # ** specific to your project **
+        - secure: "...."
+        - COVERITY_SCAN_BUILD_COMMAND="make -j2"
+        - COVERITY_SCAN_PROJECT_NAME="doevelopper/cfs-edac"
+        - COVERITY_SCAN_NOTIFICATION_EMAIL="happyman@hotmail.fr"
+        - COVERITY_SCAN_BRANCH_PATTERN="master"
+        - COVERITY_SCAN_BUILD_URL="https://scan.coverity.com/scripts/travisci_build_coverity_scan.sh"
+        - COVERITY_SCAN_BUILD="curl -s $COVERITY_SCAN_BUILD_URL | bash"
+
+matrix:
+    - BUILD_MODE="shared"
+    - BUILD_MODE="static"
+    - BUILD_MODE="mini-shared"
+    - BUILD_MODE="coverage"
+    - BUILD_MODE="cross-arm64"
+    - BUILD_MODE="cross-win64"
+    - BUILD_MODE="valgrind"
+    - BUILD_MODE="sonar"
+    - BUILD_MODE="docs"
+    - BUILD_MODE="lint"
+
+git:
+    depth: 1
+# blocklist
+branches:
+    except:
+        - legacy
+        - experimental
+ # safelist
+branches:
+    only:
+        - master
+        - develop
+        - coverity_scan
+    except:
+        - gh-page
+cache:
+    ccache: true
+    directories:
+    - $HOME/.sonar/cache
+
+addons:
+    sonarcloud:
+        organization: "doevelopper-github"
+        token:
+        secure: ""
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+        packages:
+            - gcc-7
+            - g++-7
+
+matrix:
+    include:
+        - compiler: gcc
+              env: COMPILER=g++-7
+        - compiler: clang
+              env: COMPILER=clang++-3.9
+
+before_install:
+    - if [ "$TRAVIS_OS_NAME" = "linux"  ]; then sudo apt-get -qq update;    fi
+
+before_script:
+    - if [ "$COMPILER" = "g++-7"        ]; then export CXX="g++-7" CC="gcc-7";              fi
+    - if [ "$COMPILER" = "clang++-3.9"  ]; then export CXX="clang++-3.9" CC="clang-3.9";    fi
+
+script:
+    - cmake -E make_directory $BUILD_DIR
+    - cmake -E chdir $BUILD_DIR
+    - cmake -E time cmake .. -G"Unix Makefiles" 
+    - cmake -E time cmake --build $BUILD_DIR --target all --config Debug  --clean-first
+    - cmake --build $BUILD_DIR --target test
+    - cmake --build $BUILD_DIR --config Debug
+    - cmake -E chdir $BUILD_DIR ctest --output-on-failure
+    - cmake --build $BUILD_DIR --config Release
+    - cmake -E chdir $BUILD_DIR ctest --output-on-failure
+    - sonar-scanner
+#Sonar when running on linux
+    - build-wrapper-linux-x86-64 --out-dir bw-output make clean all
+    - sonar-scanner \
+        -Dsonar.projectKey=LinuxSonarCloud \
+        -Dsonar.organization=doevelopper-github \
+        -Dsonar.sources=. \
+        -Dsonar.cfamily.build-wrapper-output=bw-output \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=35a07cefead08596f94b4a3b74b351445db2c488
+#Sonar when running Windows msys2
+    - build-wrapper-win-x86-64.exe --out-dir bw-output make clean all
+    - sonar-scanner.bat -Dsonar.projectKey=LinuxSonarCloud -Dsonar.organization=doevelopper-github \
+        -Dsonar.sources=. -Dsonar.cfamily.build-wrapper-output=bw-output -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=35a07cefead08596f94b4a3b74b351445db2c488
+    - sonar-scanner
+notifications:
+    email:
+        recipients:
+            - happyman@hotmail.fr
+            - rolland.doe@gmail.com
+        on_success: always  # options: [always|never|change] default: always
+        on_failure: always  # options: [always|never|change] default: always
+        on_start: always    # default: false
