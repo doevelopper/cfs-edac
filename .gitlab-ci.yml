@@ -1,0 +1,60 @@
+image: ubuntu:17.04
+sudo: required
+dist: trusty
+language: cpp
+compiler:
+    - clang
+    - gcc
+git:
+    depth: 3
+before_script:
+  - apt-get update
+  - apt-get install -y gcc g++
+stages:
+ - build
+ 
+Ubuntu:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export BUILD_GENERATOR="Unix Makefiles"
+  - bash .gitlabci.sh
+ tags:
+  - ubuntu
+
+OSX:
+ stage: build
+ script:
+  - date
+  - hostname
+  - uname -a
+  - export CMAKE_EXTRA_TARGETS="test"
+  - export BUILD_GENERATOR="Unix Makefiles"
+  - bash .gitlabci.sh
+ tags:
+  - osx
+
+Win7:
+ stage: build
+ script:
+  - call %ENVFILESDIR%\Boost-1.56-vs12-x64.bat
+  - set CMAKE_EXTRA_TARGETS=RUN_TESTS
+  - set RUN_TESTS=1
+  - set BUILD_GENERATOR=Visual Studio 12 Win64
+  - set PATH=%PATH%;"c:\\Program Files (x86)\\Git\\bin"
+  - bash.exe --login .gitlabci.sh
+ tags:
+  - win7
+  
+script:
+#    - if [ "$CXX" == "clang++" ];then cmake -G "Unix Makefiles" -DENABLE_TESTING=TRUE -Wno-dev " ;fi
+#    - if [ "$CXX" == "g++" ];then cmake -G "Unix Makefiles" -Wno-dev .. ;fi
+#    - if [ "$CXX" == "g++" ];then cmake -GNinja -DENABLE_TESTING=TRUE ;fi
+    - cmake -E chdir build cmake -DENABLE_EXAMPLES=on -DCMAKE_INSTALL_PREFIX=/usr/ ..
+    - cmake --build build
+    - cmake --build build --target test
+    - cmake --build build --target integration-test
+    - cmake --build build --target install
