@@ -74,7 +74,7 @@
 /*!
  * @brief  Macro for generating bit masks using bit index from the spec.
  */ 
-#define CFS_BIT_MASK( bit_index, field_bit_count )  ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
+#define CFS_BIT_MASK( bit_index, field_bit_count ) ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
 
 namespace cfs::edac
 {

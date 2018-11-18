@@ -52,11 +52,4 @@ macro(ADD_NEW_CUCUMBER_TEST TEST_SOURCE FOLDER_NAME FEATURE_FOLDER)
     )
 endmacro()
 
-macro(info msg)
-    message(STATUS "Info: ${msg}")
-endmacro()
-
-macro(infoValue variableName)
-    info("${variableName}=\${${variableName}}")
-endmacro()
 

@@ -35,45 +35,70 @@ set(${PROJECT_NAME}_VERSION "${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_
 set("BUILD_SHARED_LIBS" OFF CACHE INTERNAL "If enabled, shared libs will be built by default, otherwise static libs")
 
 add_definitions(-DRELEASE_LEVEL="SNAPSHOOT") # SNAPSHOOT ,ALPHA , BETA , CANDIDATE , FINAL.
+set(RELEASE_LEVEL "SNAPSHOOT")
 
-if(NOT COMMON_MODULE_TOOLS)
+list(APPEND CMAKE_MODULE_PATH
+    "${CMAKE_SOURCE_DIR}/src/main/resources/cmake"
+    "${CMAKE_SOURCE_DIR}/src/main/resources/cmake/modules"
+    "${CMAKE_SOURCE_DIR}/src/main/resources/cmake/toolChains"
+    "${CMAKE_SOURCE_DIR}/src/main/resources/cmake/macros"
+    "${CMAKE_SOURCE_DIR}/src/test/resources/cmake"
+)
 
-    list(APPEND CMAKE_MODULE_PATH
-        "${CMAKE_SOURCE_DIR}/src/main/resources/macros"
-        "${CMAKE_SOURCE_DIR}/src/main/resources/cmakeModule"
-    )
+include(CompilerOption)
+include(DefinePlatformSpecfic)
+include(macros)
+include(goals)
+include(CodingStyle)
+include(CPPCheck)
+include(CpplintWrapper)
+include(lizard)
+include(GccCoverage)
 
-  if (NOT TARGET  LOG4CXX::LOG4CXX)
-        find_package(Log4cxx REQUIRED)
-  endif()
-
-  if (NOT TARGET GTest::GTest AND NOT TARGET GMock::GMock)
-        find_package(GoogleTestFwk REQUIRED)
-  endif()
-
-  
-else(NOT COMMON_MODULE_TOOLS)
-   massage(STATUS "${PROJECT_NAME} will use modules defined in main parent dir")
-endif(NOT COMMON_MODULE_TOOLS)
-
-#Work arorund. should be build as 3rd party dependencies
-#include_directories(/home/happyman/cppbdd101/build/x86_64-Linux-GNU_GCC_7.2.0-DEBUG/include)
-#link_directories(/home/happyman/cppbdd101/build/x86_64-Linux-GNU_GCC_7.2.0-DEBUG/lib)
+getGitInfo()
+TODAY(APP_BUILD_DATE)
+set(COPYRIGHT_YEAR ${APP_BUILD_DATE})
 
 include(TestBigEndian)
 TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
-
 if(IS_BIG_ENDIAN)
      message(FATAL_ERROR "Big endian isn't supported !!!")
 endif(IS_BIG_ENDIAN)
 
 include(ProcessorCount)
-ProcessorCount(N)
+ProcessorCount(Ncpu)
 
-include(Rules)
-include(CompilerOption)
+find_package(Log4cxx)
+find_package(GoogleTestFwk)
+find_package(Cucumber-cpp)
+find_package(Doxygen  
+   REQUIRED  dot
+   OPTIONAL_COMPONENTS mscgen dia
+)
 
-add_subdirectory (src/main/cpp)
-add_subdirectory (src/test/cpp)
+include(GoogleTest) #gtest_discover_tests
+include(CTest)
+set (CMAKE_TEST_COMMAND ctest -V) # Work aroound do console output
+
+get_property(cxx_known_features GLOBAL PROPERTY CMAKE_CXX_KNOWN_FEATURES)
+get_property(c_known_features GLOBAL PROPERTY CMAKE_C_KNOWN_FEATURES)
+
+include(WriteCompilerDetectionHeader)
+write_compiler_detection_header(
+    FILE ${CMAKE_INSTALL_INCLUDEDIR}/cfs/algo/CompilerDetection.hpp
+    PREFIX CFS_ALGO
+#   OUTPUT_FILES_VAR <output_files_var> OUTPUT_DIR <output_dir>
+    COMPILERS GNU Clang 
+    FEATURES ${cxx_known_features}
+    VERSION "${CMAKE_VERSION}"
+    PROLOG "//<This is a custom prolog>"
+    EPILOG "//<This is a custom epilog>"
+#   ALLOW_UNKNOWN_COMPILERS
+#   ALLOW_UNKNOWN_COMPILER_VERSIONS
+)
+
+
+#add_subdirectory (src/main/cpp)
+#add_subdirectory (src/test/cpp)
 #add_subdirectory (src/it)
 

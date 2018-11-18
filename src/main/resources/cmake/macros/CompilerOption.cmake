@@ -1,6 +1,6 @@
-#       CMakeLists.txt
+#       levitics-arkhe-gcs/src/main/resources/config/macros/CompilerOption.cmake
 #
-#               Copyright (c) 2014-2017 Nicolas J. FURY
+#               Copyright (c) 2014-2018  A.H.L
 #
 #        Permission is hereby granted, free of charge, to any person obtaining
 #        a copy of this software and associated documentation files (the
@@ -24,8 +24,12 @@
 include(CMakeParseArguments)
 include(CheckCXXCompilerFlag)
 
+#set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_EXTENSIONS OFF)
+
 set (COMMON_CXX_FLAGS "-W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=return-type -Werror=format-security -Wformat")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_CXX_FLAGS} -Werror=shadow -Werror=switch-default -Werror=unused-result -Werror=non-virtual-dtor")
+#set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_CXX_FLAGS} -Werror=shadow -Werror=switch-default -Werror=unused-result -Werror=non-virtual-dtor")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wcast-align")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wcast-qual")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfloat-equal")
@@ -56,44 +60,44 @@ set (WERROR_LEVEL_2_FLAGS "${WERROR_LEVEL_2_FLAGS}")
 #"Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage" "Profiling"
 
 set ( CMAKE_CXX_FLAGS_PROFILE "-pg -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C++ compiler during profile builds."
-    FORCE )
+    "Flags used by the C++ compiler during profile builds." FORCE 
+)
 
 set ( CMAKE_C_FLAGS_PROFILE "-pg -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C compiler during profile builds."
-    FORCE )
+    "Flags used by the C compiler during profile builds." FORCE 
+)
 
 set ( CMAKE_EXE_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used for linking binaries during profile builds."
-    FORCE )
+    "Flags used for linking binaries during profile builds." FORCE 
+)
 
 set ( CMAKE_MODULE_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used for linking binaries during profile builds."
-    FORCE )
+    "Flags used for linking binaries during profile builds." FORCE 
+)
 
 set ( CMAKE_SHARED_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used by the shared libraries linker during profile builds."
-    FORCE )
+    "Flags used by the shared libraries linker during profile builds." FORCE 
+)
 
   set ( CMAKE_CXX_FLAGS_COVERAGE "--coverage -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C++ compiler during coverage builds."
-    FORCE )
+    "Flags used by the C++ compiler during coverage builds." FORCE 
+)
 
 set ( CMAKE_C_FLAGS_COVERAGE "--coverage -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C compiler during coverage builds."
-    FORCE )
+    "Flags used by the C compiler during coverage builds." FORCE 
+)
 
 set ( CMAKE_EXE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
-    "Flags used for linking binaries during coverage builds."
-    FORCE )
+    "Flags used for linking binaries during coverage builds." FORCE 
+)
 
-set ( CMAKE_MODULE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
-    "Flags used for linking binaries during coverage builds."
-    FORCE )
+set ( CMAKE_MODULE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING 
+   "Flags used for linking binaries during coverage builds."  FORCE 
+)
 
 set ( CMAKE_SHARED_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
-    "Flags used by the shared libraries linker during coverage builds."
-    FORCE )
+    "Flags used by the shared libraries linker during coverage builds." FORCE 
+)
 
 MARK_AS_ADVANCED(
     CMAKE_CXX_FLAGS_PROFILE
@@ -107,5 +111,3 @@ MARK_AS_ADVANCED(
     CMAKE_MODULE_LINKER_FLAGS_COVERAGE
     CMAKE_SHARED_LINKER_FLAGS_COVERAGE 
 )
-
-

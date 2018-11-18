@@ -21,7 +21,7 @@ Ubuntu:
   - uname -a
   - export CMAKE_EXTRA_TARGETS="test"
   - export BUILD_GENERATOR="Unix Makefiles"
-  - bash .gitlabci.sh
+#  - bash .gitlabci.sh
  tags:
   - ubuntu
 
