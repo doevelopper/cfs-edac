@@ -44,9 +44,13 @@ function(apply_style_targets_command TARGET_NAME BASE_DIRECTORY)
             file(GLOB_RECURSE SRC ${BASE_DIRECTORY} *.cpp *.hpp)
 
             add_custom_command( TARGET ${TARGET_NAME} PRE_BUILD
-                COMMAND "${UNCRUSTIFY}"  ${UNCRUSTIFY_FLAGS} ${SRC}
-                WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                COMMENT "[Code Beautifying] : ${TARGET_NAME} in  ${BASE_DIRECTORY}"
+
+                COMMAND 
+                    "${UNCRUSTIFY}"  ${UNCRUSTIFY_FLAGS} ${SRC}
+                WORKING_DIRECTORY 
+                    "${CMAKE_CURRENT_SOURCE_DIR}"
+                COMMENT 
+                    "[Code Beautifying] : ${TARGET_NAME} in  ${BASE_DIRECTORY}"
             )
 
         endif()

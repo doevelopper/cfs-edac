@@ -1,5 +1,5 @@
 
-add_library(edac.main
+add_library(cfs.edac.main
     cfs/edac/namedType/Crtp
     cfs/edac/namedType/internal/NamedTypeInternal
     cfs/edac/namedType/UnderlyingFunctionalities
@@ -15,7 +15,9 @@ add_library(edac.main
 #    cfs/edac/Logger
 )
 
-target_link_libraries(edac.main
+apply_style_targets_command (cfs.edac.main ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(cfs.edac.main
     PUBLIC
         LOG4CXX::LOG4CXX
 )
@@ -26,7 +28,7 @@ if (EXCLUDE_DEPRECATED)
 endif()
 
 include(GenerateExportHeader)
-generate_export_header(edac.main
+generate_export_header(cfs.edac.main
     EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Export.hpp"
     INCLUDE_GUARD_NAME CFS_EDAC_EXPORT_HPP
     # EXPORT_MACRO_NAME API_DECLS
@@ -37,21 +39,20 @@ generate_export_header(edac.main
     ${NO_BUILD_DEPRECATED}
 )
 
-target_compile_options(edac.main 
+target_compile_options(cfs.edac.main
     INTERFACE
-        #-std=c++17
         $<$<CONFIG:Debug>:-g3 -O0 -fstack-protector>
         $<$<CONFIG:Release>:-g0 -O2>
     PUBLIC 
-        $<$<COMPILE_LANGUAGE:CXX>: -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=shadow -fdiagnostics-parseable-fixits>
+        $<$<COMPILE_LANGUAGE:CXX>: -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=reorder -Werror=shadow -fdiagnostics-parseable-fixits>
         $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
         $<$<CONFIG:Release>:-g0 -O2>
-        $<$<CONFIG:Coverage>:-O0  -fprofile-arcs -ftest-coverage --coverage>
+        $<$<CONFIG:Coverage>:-O0 -fprofile-arcs -ftest-coverage --coverage>
         $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
        
 )
 
-target_compile_features(edac.main
+target_compile_features(cfs.edac.main
     PUBLIC
         cxx_std_17
         cxx_strong_enums
@@ -75,7 +76,7 @@ target_compile_features(edac.main
         $<$<CXX_COMPILER_ID:GNU>:cxx_attributes>
 )
 
-target_include_directories(edac.main
+target_include_directories(cfs.edac.main
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/edac>
         $<INSTALL_INTERFACE:${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/edac>

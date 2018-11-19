@@ -1,3 +1,5 @@
+
+
 #ifndef CPPBDD101_EDAC_LOGGER_LOGGER_HPP
 #define CPPBDD101_EDAC_LOGGER_LOGGER_HPP
 
@@ -6,7 +8,8 @@
 #include <cfs/edac/private/LoggerPrivate.hpp>
 
 // #define LOG_EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
-// #define LOG_ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.  */
+// #define LOG_ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
+//  */
 // #define LOG_CRIT     2       /* critical conditions */
 // #define LOG_ERR      3       /* error conditions */
 // #define LOG_WARNING  4       /* warning conditions */
@@ -22,7 +25,7 @@
 #define LOG_ASSERT(cond, message)   LOG4CXX_ASSERT(logger, condition, message)
 #define LOG_GLOBAL_CATEGORY(category) \
     private: \
-        static const log4cxx::LoggerPtr LOGGER; 
+        static const log4cxx::LoggerPtr LOGGER;
 
 namespace cfs::edac
 {
@@ -30,34 +33,35 @@ namespace cfs::edac
 
     class Logger
     {
-    public:
+        public:
 
-        explicit Logger (unsigned long delay);
-        virtual ~Logger ( );
+            explicit Logger (unsigned long delay);
+            virtual ~Logger ( );
 
-        void configure ( );
+            void configure ( );
 
-        [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]] 
-	void trace ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
-	void debug ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
-	void info ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
-	void warn ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
-	void error ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
-	void fatal ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]]
+            void trace ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
+            void debug ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
+            void info ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
+            void warn ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
+            void error ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
+            void fatal ( const std::string & s );
 
-    protected:
+        protected:
 
-	std::shared_ptr<LoggerPrivate> d_ptr;
+            std::shared_ptr<LoggerPrivate> d_ptr;
 
-    private:
+        private:
 
-        // DECLARE_PRIVATE( Logger )
-        // DISABLE_COPY( Logger )
+            // DECLARE_PRIVATE( Logger )
+            // DISABLE_COPY( Logger )
     };
 }
 #endif
+

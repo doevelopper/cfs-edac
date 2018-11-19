@@ -1,12 +1,12 @@
 
+
 #include <cfs/edac/IsErrorActive.hpp>
 
 template< class ParamType >
 cfs::edac::IsErrorActive< ParamType >::IsErrorActive()
-  : m_value(ParamType() )
-  , m_isValid(false)
+    : m_value(ParamType() )
+    , m_isValid(false)
 {
-
 }
 
 template< class ParamType >
@@ -27,7 +27,7 @@ template< class ParamType >
 void cfs::edac::IsErrorActive< ParamType >::clear (const ParamType & value, std::mutex & mutex)
 {
     std::lock_guard<std::mutex> lock(mutex);
-    m_value = nullptr/*value*/;
+    m_value = nullptr /*value*/;
     m_isValid = false;
 }
 
@@ -42,5 +42,4 @@ void cfs::edac::IsErrorActive< ParamType >::isActive (bool value)
 {
     m_isValid = value;
 }
-
 

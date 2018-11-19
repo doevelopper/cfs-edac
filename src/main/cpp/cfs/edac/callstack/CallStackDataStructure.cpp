@@ -1,16 +1,17 @@
 
+
 #include <cfs/edac/callstack/CallStackDataStructure.hpp>
 #include <cstddef>
 #include <sstream>
 
 
 cfs::edac::callstack::CallStackDataStructure::CallStackDataStructure()
-  : m_line( 0 )
-  , m_address( nullptr )
+    : m_line( 0 )
+    , m_address( nullptr )
 {
 }
 
-std::string 
+std::string
 cfs::edac::callstack::CallStackDataStructure::data () const
 {
     std::ostringstream os;
@@ -32,3 +33,4 @@ cfs::edac::callstack::CallStackDataStructure::data () const
 
     return os.str();
 }
+

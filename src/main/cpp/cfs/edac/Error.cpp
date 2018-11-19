@@ -1,4 +1,5 @@
 
+
 #include <map>
 #include <array>   /* for std::array */
 #include <cassert> /* for assert() */
@@ -16,11 +17,11 @@ Error::Error()
     , m_ErrorCode( ~0 )
     , m_ErrorFacility( ~0 )
 {
-// this->m_codeMask >>= 16;
-// this->m_facilityMask >>= 21;
-// this->m_facilityMask <<= 16;
-// this->m_ErrorCode = (/*hresult*/ & this->m_codeMask);;
-// this->m_ErrorFacility = (/*hresult*/ & this->m_facilityMask) >> 16;
+    // this->m_codeMask >>= 16;
+    // this->m_facilityMask >>= 21;
+    // this->m_facilityMask <<= 16;
+    // this->m_ErrorCode = (/*hresult*/ & this->m_codeMask);;
+    // this->m_ErrorFacility = (/*hresult*/ & this->m_facilityMask) >> 16;
 }
 
 const char *
@@ -66,20 +67,20 @@ Error::throw_error (
 {
     static thread_local std::array < char, 4096 > buffer;
 
-// switch (auto res = severity(); res.second)
+    // switch (auto res = severity(); res.second)
     auto res = severity();
 
 
     switch ( /*res.second*/ code )
     {
-// case cfs::STATUS_OK:
-// break;
-// case cfs::STATUS_FAILURE:
-// break;
-// case cfs::STATUS_BUSY:
-// break;
-// default:
-// break;
+        // case cfs::STATUS_OK:
+        // break;
+        // case cfs::STATUS_FAILURE:
+        // break;
+        // case cfs::STATUS_BUSY:
+        // break;
+        // default:
+        // break;
     }
 
     switch ( code )
@@ -103,3 +104,4 @@ Error::throw_error (
 // {
 //
 // }
+

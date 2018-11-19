@@ -1,4 +1,5 @@
 
+
 #include <string>
 #include <cfs/edac/Logger.hpp>
 
@@ -64,3 +65,4 @@ Logger::fatal( const std::string & s )
     // Q_D( Logger );
     // d->loggerSvce->fatal( s.toStdString( ) );
 }
+

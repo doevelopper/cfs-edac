@@ -1,4 +1,5 @@
 
+
 #include <unistd.h>
 #include <iostream>
 #include <typeinfo>
@@ -10,7 +11,7 @@ using cfs::edac::LoggerPrivate;
 std::string LoggerPrivate::m_loggerConfigLocation = "LOG4CXX_CONFIGURATION_PATH =/etc/cfg/log4cxx.xml";
 
 LoggerPrivate::LoggerPrivate( unsigned long delay )
-  : m_watchPeriod( delay )
+    : m_watchPeriod( delay )
 {
     std::string configurationPath( "" );
 
@@ -51,10 +52,11 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
         // "%d{yyyy-MM-dd HH:mm:ss.SSS} (%-6c) [%-6p] [%-5t] [%r] (%-10.20l:%L) -- %m%n"));
         // "[%-6.6p] %d{HH:mm:ss.SSS} [%15.15t] [%7.7r] (%20.20c)  (%-10.20l) - %-20.20M - %m%n"
         log4cxx::PatternLayoutPtr layout( new log4cxx::PatternLayout(
-                "[%-6.6p] %d{HH:mm:ss.SSS} [%15.15t] (%20.20c)  (%-10.20l) - %-20.20M - %m%n"
-                ) );
+                                              "[%-6.6p] %d{HH:mm:ss.SSS} [%15.15t] (%20.20c)  (%-10.20l) - %-20.20M - %m%n"
+                                              ) );
 
-        // log4cxx::rolling::RollingFileAppender * rollingFileAppender (new log4cxx::rolling::RollingFileAppender(layout ,
+        // log4cxx::rolling::RollingFileAppender * rollingFileAppender (new log4cxx::rolling::RollingFileAppender(layout
+        // ,
         // "arkhe-gcs.log" ,
         // true));
         // rollingFileAppender->setMaxFileSize("10MB");
@@ -70,12 +72,13 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
         log4cxx::BasicConfigurator::configure( consoleAppender );
 
         // log4cxx::BasicConfigurator::configure(log4cxx::AppenderPtr(rollingFileAppender));
-        log4cxx::Logger::getRootLogger( )->setLevel( /*LOG-ALL*/true ? log4cxx::Level::getTrace( ) : log4cxx::Level::getInfo() );
+        log4cxx::Logger::getRootLogger( )->setLevel( /*LOG-ALL*/ true ? log4cxx::Level::getTrace( ) :
+                                                                 log4cxx::Level::getInfo() );
 
         log4cxx::LogManager::getLoggerRepository( )->setConfigured( true );
 
         // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Internal log configured");
-		// log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Starting the logging system - BASIC");
+        // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Starting the logging system - BASIC");
     }
     else
     {
@@ -91,8 +94,10 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
         log4cxx::Logger::getRootLogger( )->setLevel( log4cxx::Level::getAll( ) );
         log4cxx::LogManager::getLoggerRepository( )->setConfigured( true );
 
-        // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->trace("Starting the logging system" + configurationPath );
-        // LOG4CXX_TRACE(log4cxx::Logger::getRootLogger(),"Logger initialized. Appenders sise:" << log4cxx::Logger::getRootLogger()->getAllAppenders().size() );
+        // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->trace("Starting the logging system" +
+        // configurationPath );
+        // LOG4CXX_TRACE(log4cxx::Logger::getRootLogger(),"Logger initialized. Appenders sise:" <<
+        // log4cxx::Logger::getRootLogger()->getAllAppenders().size() );
     }
 
     LOG4CXX_INFO( log4cxx::Logger::getRootLogger( ), "----START LOGGING-----" );
@@ -181,11 +186,13 @@ LoggerPrivate::loadConfigAndWatch( const std::string & configFilename )
         {
             if( configFilename.find( ".xml" ) != std::string::npos )
             {
-                log4cxx::xml::DOMConfigurator::configureAndWatch( configFilename, static_cast< long >(this->periodicalCheck( ) ));
+                log4cxx::xml::DOMConfigurator::configureAndWatch( configFilename,
+                                                                  static_cast< long >(this->periodicalCheck( ) ));
             }
             else
             {
-                log4cxx::PropertyConfigurator::configureAndWatch( configFilename, static_cast< long >(this->periodicalCheck( ) ));
+                log4cxx::PropertyConfigurator::configureAndWatch( configFilename,
+                                                                  static_cast< long >(this->periodicalCheck( ) ));
             }
         }
     }
@@ -205,7 +212,8 @@ LoggerPrivate::loggerNames( std::vector<std::string> & names )
     for(; logger != list.end( ); logger++ )
     {
         LOG4CXX_TRACE( log4cxx::Logger::getRootLogger( ), "Logger "
-            << std::distance(list.begin(), logger) << (*logger)->getName( ) );
+                       << std::distance(list.begin(), logger) << (*logger)->getName( ) );
         names.push_back( (*logger)->getName( ) );
     }
 }
+
