@@ -3,7 +3,8 @@
 #include <string>
 #include <cfs/edac/Logger.hpp>
 
-using cfs::edac::Logger;
+using namespace cfs::edac;
+using namespace cfs::edac::internal;
 
 Logger::Logger(unsigned long loggerWatchDelay )
     : d_ptr( new LoggerPrivate(loggerWatchDelay))

@@ -79,7 +79,7 @@
    _______________________________________________________________________________________
  |     |        ServiceID        |     |    |    Severity   |      |    |    Reserved   |
  |:---:|:-----------------------:|     |----|:-------------:|      |----|:-------------:|
- | 000 |    Not a cFE Service    |     | 00 |    Success    |      | 00 |    -------    |
+ | 000 |    Not a CFE Service    |     | 00 |    Success    |      | 00 |    -------    |
  | 001 |    Events Services      |     | 01 | Informational |      | 01 |    -------    |
  | 010 |    Executive Services   |     | 10 |     Error     |      | 10 |    -------    |
  | 011 |    File Services        |     | 11 |    Critical   |      | 11 |    -------    |
@@ -101,7 +101,7 @@
 
  * @attention
  *    0xyyyy1bbb Normal failure (plausibly these should not even be "errors", but they are failures of the way
- * operations are currently defined)
+ *               operations are currently defined)
  *    0xyyyy15bb 15xx Platform errors
  *    2xxx user Attempt to do something illegal.
  *    2200 - errors from bindings and official APIs
@@ -115,7 +115,7 @@
 #include <type_traits>
 #include <cfs/edac/Export.hpp>
 
-namespace cfs::edac//::private
+namespace cfs::edac::internal
 {
     using HRESULT = std::uint32_t;
     using status_t = std::uint32_t;

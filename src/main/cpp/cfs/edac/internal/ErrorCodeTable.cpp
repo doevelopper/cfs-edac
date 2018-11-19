@@ -1,12 +1,14 @@
 
 
-#include <cfs/edac/private/ErrorCodeTable.hpp>
+#include <cfs/edac/internal/ErrorCodeTable.hpp>
 
-cfs::edac::ErrorCodeTable::ErrorCodeTable()
+using namespace cfs::edac::internal;
+
+ErrorCodeTable::ErrorCodeTable()
 {
 }
 
-cfs::edac::ErrorCodeTable::~ErrorCodeTable()
+ErrorCodeTable::~ErrorCodeTable()
 {
 }
 

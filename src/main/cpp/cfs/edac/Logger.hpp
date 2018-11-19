@@ -1,35 +1,36 @@
 
 
-#ifndef CPPBDD101_EDAC_LOGGER_LOGGER_HPP
-#define CPPBDD101_EDAC_LOGGER_LOGGER_HPP
+#ifndef CFS_EDAC_LOGGER_LOGGER_HPP
+#define CFS_EDAC_LOGGER_LOGGER_HPP
 
 #include <memory>
 #include <string>
-#include <cfs/edac/private/LoggerPrivate.hpp>
+#include <cfs/edac/internal/LoggerPrivate.hpp>
 
 // #define LOG_EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
 // #define LOG_ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
-//  */
 // #define LOG_CRIT     2       /* critical conditions */
 // #define LOG_ERR      3       /* error conditions */
 // #define LOG_WARNING  4       /* warning conditions */
 // #define LOG_NOTICE   5       /* normal but significant condition. A condition requiring special handling.  */
 // #define LOG_INFO     6       /* informational */
 // #define LOG_DEBUG    7       /* debug-level messages. A message useful for debugging programs.  */
-#define LOG_TRACE(message)          LOG4CXX_TRACE(logger, message)
-#define LOG_DEBUG(message)          LOG4CXX_DEBUG(logger, message)
-#define LOG_INFO(message)           LOG4CXX_INFO(logger, message)
-#define LOG_WARNING(message)        LOG4CXX_WARN(logger, message)
-#define LOG_ERROR(message)          LOG4CXX_ERROR(logger, message)
-#define LOG_FATAL(message)          LOG4CXX_FATAL(logger, message)
-#define LOG_ASSERT(cond, message)   LOG4CXX_ASSERT(logger, condition, message)
-#define LOG_GLOBAL_CATEGORY(category) \
+/*
+ #define LOG_TRACE(message)          LOG4CXX_TRACE(logger, message)
+ #define LOG_DEBUG(message)          LOG4CXX_DEBUG(logger, message)
+ #define LOG_INFO(message)           LOG4CXX_INFO(logger, message)
+ #define LOG_WARNING(message)        LOG4CXX_WARN(logger, message)
+ #define LOG_ERROR(message)          LOG4CXX_ERROR(logger, message)
+ #define LOG_FATAL(message)          LOG4CXX_FATAL(logger, message)
+ #define LOG_ASSERT(cond, message)   LOG4CXX_ASSERT(logger, condition, message)
+ #define LOG_GLOBAL_CATEGORY(category) \
     private: \
         static const log4cxx::LoggerPtr LOGGER;
+ */
 
 namespace cfs::edac
 {
-    class LoggerPrivate;
+    class cfs::edac::internal::LoggerPrivate;
 
     class Logger
     {
@@ -55,7 +56,7 @@ namespace cfs::edac
 
         protected:
 
-            std::shared_ptr<LoggerPrivate> d_ptr;
+            std::shared_ptr<cfs::edac::internal::LoggerPrivate> d_ptr;
 
         private:
 

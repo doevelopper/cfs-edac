@@ -7,7 +7,7 @@
 #include <system_error>
 #include <map>
 
-namespace cfs::edac
+namespace cfs::edac::internal
 {
     class ErrorCodeTable //: public std::map<int, std::pair<const char*, const char*> >
     {

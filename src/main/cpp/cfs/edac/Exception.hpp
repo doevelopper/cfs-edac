@@ -9,6 +9,7 @@
 
 #define ERROR_LOCATION  std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
         __LINE__ ) + std::string ( ")" )
+
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
 
 namespace cfs::edac
@@ -32,6 +33,7 @@ namespace cfs::edac
             {
             }
     };
+
     /*!
      * @brief Base class for every exception thrown in <>.
      *        C - Computational problem

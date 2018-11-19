@@ -4,9 +4,9 @@
 #include <iostream>
 #include <typeinfo>
 
-#include <cfs/edac/private/LoggerPrivate.hpp>
+#include <cfs/edac/internal/LoggerPrivate.hpp>
 
-using cfs::edac::LoggerPrivate;
+using namespace cfs::edac::internal;
 
 std::string LoggerPrivate::m_loggerConfigLocation = "LOG4CXX_CONFIGURATION_PATH =/etc/cfg/log4cxx.xml";
 

@@ -1,7 +1,7 @@
 
 
-#ifndef CFS_EDAC_PRIVATE_LOGGERPRIVATE_HPP
-#define CFS_EDAC_PRIVATE_LOGGERPRIVATE_HPP
+#ifndef CFS_EDAC_INTERNAL_LOGGERPRIVATE_HPP
+#define CFS_EDAC_INTENRAL_LOGGERPRIVATE_HPP
 
 #include <string>
 #include <stdexcept>
@@ -38,7 +38,7 @@
 // #define LOG_WARN(x)  LOG4CXX_WARN(logger , x)
 // #define LOG_ERROR(x) LOG4CXX_ERROR(logger , x)
 
-namespace cfs::edac
+namespace cfs::edac::internal
 {
     class LoggerPrivate
     {

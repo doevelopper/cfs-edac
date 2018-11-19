@@ -1,7 +1,6 @@
 
 
 // class error_code;
-
 // class error_condition;
 // class error_category;
 // class system_error;
@@ -13,6 +12,7 @@
 // std::error_condition e_cond = e_cat.default_error_condition(static_cast<int>(std::errc::not_a_directory));
 // assert(e_cond.category() == e_cat);
 // assert(e_cond.value() == static_cast<int>(std::errc::not_a_directory));
+
 #ifndef CFS_OSGI_EDAC_ERROR_HPP
 #define CFS_OSGI_EDAC_ERROR_HPP
 
@@ -73,14 +73,14 @@
  *
  */
 
-#define CFS_DECLARE( type )  type
-#define CFS_SUCCESS  ( 0x00000000L )    //! no error.
-#define CFE_ERROR    ~( CFS_SUCCESS )   //! error.
+//#define CFS_DECLARE( type )  type
+//#define CFS_SUCCESS  ( 0x00000000L )    //! no error.
+//#define CFE_ERROR    ~( CFS_SUCCESS )   //! error.
 
 /*!
  * @brief  Macro for generating bit masks using bit index from the spec.
  */
-#define CFS_BIT_MASK( bit_index, field_bit_count ) ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
+//#define CFS_BIT_MASK( bit_index, field_bit_count ) ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
 
 namespace cfs::edac
 {

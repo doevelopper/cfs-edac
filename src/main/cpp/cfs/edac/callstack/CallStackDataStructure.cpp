@@ -1,9 +1,9 @@
 
 
-#include <cfs/edac/callstack/CallStackDataStructure.hpp>
 #include <cstddef>
 #include <sstream>
 
+#include <cfs/edac/callstack/CallStackDataStructure.hpp>
 
 cfs::edac::callstack::CallStackDataStructure::CallStackDataStructure()
     : m_line( 0 )

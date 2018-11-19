@@ -4,15 +4,15 @@ add_library(cfs.edac.main
     cfs/edac/namedType/internal/NamedTypeInternal
     cfs/edac/namedType/UnderlyingFunctionalities
     cfs/edac/namedType/StrongType
-#    cfs/edac/callstack/ABIDemangling
+    cfs/edac/callstack/ABIDemangling
 #    cfs/edac/private/ErrorCodePrivate
 #    cfs/edac/ErrorHandler
 #    cfs/edac/ErrorOr
 #    cfs/edac/private/ErrorCodeTable
-#    cfs/edac/IsErrorActive
-#    cfs/edac/Exception
-#    cfs/edac/private/LoggerPrivate
-#    cfs/edac/Logger
+    cfs/edac/IsErrorActive
+    cfs/edac/Exception
+    cfs/edac/internal/LoggerPrivate
+    cfs/edac/Logger
 )
 
 apply_style_targets_command (cfs.edac.main ${CMAKE_CURRENT_SOURCE_DIR})
