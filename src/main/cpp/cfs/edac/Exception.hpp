@@ -14,6 +14,46 @@
 
 namespace cfs::edac
 {
+    class NotImplemented : public std::logic_error
+    {
+        public:
+
+            explicit NotImplemented(const std::string &message)
+                : std::logic_error(message)
+            {
+            }
+    };
+
+    class NumericalProblem : public std::runtime_error
+    {
+        public:
+
+            explicit NumericalProblem(const std::string &message)
+                : std::runtime_error(message)
+            {
+            }
+    };
+
+    class MaterialLawProblem : public NumericalProblem
+    {
+        public:
+
+            explicit MaterialLawProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
+    class LinearSolverProblem : public NumericalProblem
+    {
+        public:
+
+            explicit LinearSolverProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
     class BadDependency : public ::std::logic_error
     {
         public:
@@ -32,6 +72,53 @@ namespace cfs::edac
                 : std::runtime_error(arg)
             {
             }
+    };
+
+    class TooManyIterations : public NumericalProblem
+    {
+        public:
+
+            explicit TooManyIterations(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
+    class notImplementedException : public std::exception
+    {
+        public:
+
+            notImplementedException(const char * message)
+                : m_message(message)
+            {
+            }
+
+            notImplementedException()
+                : m_message("not implemented")
+            {
+            }
+
+            virtual const char* what() const noexcept override
+            {
+                return m_message;
+            }
+
+            virtual ~notImplementedException()  noexcept
+            {
+            }
+
+        private:
+
+            const char * m_message;
+    };
+
+    class IOError : public std::runtime_error
+    {
+        /// Error can be specified more precisely in constructor if desired
+        explicit IOError(const char *s = "I/O error")
+            : std::runtime_error(s)
+        {
+        }
     };
 
     /*!

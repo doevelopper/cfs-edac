@@ -33,6 +33,7 @@
  * @ref https://docs.python.org/3/c-api/apiabiversion.html
  * @ref https://docs.python.org/3.7/c-api/apiabiversion.html
  * @ref https://hg.python.org/cpython/file/3.6/Include/patchlevel.h
+ * @ref https://www.python.org/dev/peps/pep-0440/ 
  */
 enum ReleaseLevel
 {

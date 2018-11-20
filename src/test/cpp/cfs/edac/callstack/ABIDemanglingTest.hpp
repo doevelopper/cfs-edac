@@ -1,4 +1,5 @@
 
+
 #ifndef CFS_EDAC_CALLSTACK_ABIDEMANGLINGTEST_HPP
 #define CFS_EDAC_CALLSTACK_ABIDEMANGLINGTEST_HPP
 
@@ -9,18 +10,18 @@ namespace cfs::edac::callstack
 {
     class ABIDemanglingTest : public ::testing::Test
     {
+        public:
 
-    public:
+            ABIDemanglingTest();
+            ~ABIDemanglingTest();
 
-        ABIDemanglingTest();
-        ~ABIDemanglingTest();
+        protected:
 
-    protected:
+            void SetUp() override;
+            void TearDown() override;
 
-        void SetUp() override ;
-        void TearDown() override;
-
-    private:
+        private:
     };
 }
 #endif
+

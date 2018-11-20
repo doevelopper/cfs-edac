@@ -1,4 +1,5 @@
 
+
 #ifndef CFS_EDAC_NAMEDTYPE_NAMEDTYPETEST_HPP
 #define CFS_EDAC_NAMEDTYPE_NAMEDTYPETEST_HPP
 
@@ -20,54 +21,58 @@ namespace cfs::edac::namedtype::test
     decltype(auto) tee(T&& value)
     {
         std::cout << value << '\n';
-		    return std::forward<T>(value);
+
+        return std::forward<T>(value);
     }
-    
+
     using Meter = fluent::NamedType<double, struct MeterParameter, fluent::Addable, fluent::Comparable>;
-    Meter operator"" _meter(unsigned long long value) 
-    { 
-        return Meter(value); 
+    Meter operator"" _meter(unsigned long long value)
+    {
+        return Meter(value);
     }
+
     //Meter operator"" _meter(long double value) { return Meter(value); }
     using Width = fluent::NamedType<Meter, struct WidthParameter>;
     using Height = fluent::NamedType<Meter, struct HeightParameter>;
 
     class Rectangle
     {
-	public:
-	    Rectangle(Width width, Height height) 
-		    : width_(width.get()), height_(height.get()) 
-	    {
-	    }
-            
-	    Meter getWidth() const 
-	    { 
-		return width_; 
-	    }
-	    
-	    Meter getHeight() const 
-	    { 
-		return height_; 
-	    }
+        public:
 
-	private:
+            Rectangle(Width width, Height height)
+                : width_(width.get())
+                , height_(height.get())
+            {
+            }
+
+            Meter getWidth() const
+            {
+                return width_;
+            }
+
+            Meter getHeight() const
+            {
+                return height_;
+            }
+
+        private:
+
             Meter width_;
-	    Meter height_;
+            Meter height_;
     };
 
     class NamedTypeTest : public ::testing::Test
     {
+        public:
 
-    public:
+            NamedTypeTest();
+            ~NamedTypeTest();
 
-	NamedTypeTest();
-	~NamedTypeTest();
+        protected:
 
-    protected:
-       
-      void Setup() override;
-      void TearDown override;
-
+            void Setup() override;
+            void TearDown override;
     };
 }
 #endif
+

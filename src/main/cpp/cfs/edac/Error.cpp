@@ -7,7 +7,7 @@
 #include <cstdarg> /* for va_*() */
 #include <cstdio>  /* for std::snprintf() */
 #include <cstring> /* for stpncpy() */
-#include <cfs/osgi/edac/Error.hpp>
+#include <cfs/edac/Error.hpp>
 
 using namespace cfs::osgi::edac;
 

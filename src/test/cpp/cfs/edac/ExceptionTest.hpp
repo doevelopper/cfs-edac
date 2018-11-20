@@ -1,28 +1,30 @@
 
+
 #ifndef CFS_EDAC_EXCEPTIONTEST_HPP
 #define CFS_EDAC_EXCEPTIONTEST_HPP
 
 #include <gmock/gmock.h>
-#include <gtest/gtest.h>
+
 #include <cfs/edac/Exception.hpp>
 
-namespace cfs::edac::test
+namespace cfs::edac::test: public ::testing::Test
 {
-   class ExceptionTest
-   {
+    class ExceptionTest
+    {
+        public:
 
-   public:
+            ExceptionTest();
+            ~ExceptionTest();
 
-      ExceptionTest();
-      ~ExceptionTest();
+            void Setup() override;
+            void TearDown() override;
 
-      void Setup() override;
-      void TearDown() override;
+        protected:
 
-   protected:
-
-      Exception * exception;
-
-   }; 
+            //   Exception * ObjectUnderTest;
+            static log4cxx::LoggerPtr logger;
+            Exception * exception;
+    };
 }
 #endif
+
