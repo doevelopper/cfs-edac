@@ -7,10 +7,10 @@
 #include <string>
 #include <iostream>
 
-#define ERROR_LOCATION  std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
-        __LINE__ ) + std::string ( ")" )
-
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
+#define LOG std::clog << __DATE__ << " " <<__TIME__ << __FUNCTION__ << std::endl;
+#define ERROR_LOCATION std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
+        __LINE__ ) + std::string ( ")" )
 
 namespace cfs::edac
 {
@@ -185,14 +185,22 @@ namespace cfs::edac
 
         public:
 
+            /*!
+             * @brief Construct a new Exception object
+             *
+             * @param code
+             */
             Exception( int code = 0 );
+
             Exception( const Exception & orig );
             Exception & operator = ( const Exception & exc );
             virtual ~Exception();
+
             /*!
              * @brief Constructs an exeption with message and error code.
              */
             Exception( const std::string & msg, int code = 0 );
+
             /*!
              * @brief Constructor.
              * @param _method Mothodd s name raising the exception.
@@ -201,6 +209,7 @@ namespace cfs::edac
              * @throw std::runtime_error When socket could not be created.
              */
             Exception( const std::string & msg, const std::string & arg, int code = 0 );
+
             /*!
              * @brief Constructor.
              * @param _method Mothodd s name raising the exception.
@@ -209,39 +218,52 @@ namespace cfs::edac
              * @throw std::runtime_error When socket could not be created.
              */
             Exception( const std::string & msg, const Exception & nested, int code = 0 );
+
             /*!
              * @brief methodName Method raising the exception.
              */
             const std::string & methodName ();
+
             /*!
              * @brief message Message explaining the reason of exception.
              */
             const std::string & errorDescription ();
+
             /*!
              * @brief errorCode Error code corresponding to errno.h values.
              * @return
              */
             int errorCode () const;
+
             /*!
              * @brief Gets the nested exception which caused this exception.
              * @return The nested exception, or <code>NULL</code> if there is none.
              */
             const Exception * cause () const throw ( );
+
             /*!
              * @brief Return a description of the error
              * @return Pointer to a string containing the error message
              */
             const char * what () const throw ( );
+
             /*!
              * @brief Return the error location (file + line + function)
              * @return String containing the error location
              */
             virtual const char * where () const throw ( );
+
             /*!
              * @brief Return the error summary description
              * @return String containing the error location
              */
             virtual std::string summary () const;
+
+            /*!
+             * @brief Retrieve the stack trace trace of process
+             *
+             * @return String containing the procces
+             */
             virtual std::string stackTrace () const;
 
         protected:

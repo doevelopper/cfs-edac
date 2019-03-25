@@ -3,6 +3,10 @@
 #ifndef CFS_EDAC_PRIVATE_ERRORCODETABLE_HPP
 #define CFS_EDAC_PRIVATE_ERRORCODETABLE_HPP
 
+#include <fstream>
+#include <streambuf>
+#include <string>
+#include <cerrno>
 #include <exception>
 #include <system_error>
 #include <map>
@@ -30,6 +34,16 @@ namespace cfs::edac::internal
             void addCode(std::uint32_t ode, std::string & name, std::string & description);
 
         private:
+
+            std::string readErrorFileContents(const char *filename)
+            {
+                std::ifstream in(filename, std::ios::in | std::ios::binary);
+                if (in)
+                {
+                    return(std::string((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>()));
+                }
+                //throw(errno);
+            }
     };
 }
 #endif

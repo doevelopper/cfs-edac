@@ -1,4 +1,4 @@
 
 
-#include <cfs/edac/namedType/underlyingFunctionalities.hpp>
+#include <cfs/edac/namedType/UnderlyingFunctionalities.hpp>
 

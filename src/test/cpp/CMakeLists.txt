@@ -25,6 +25,7 @@ target_link_libraries(cfs.edac.test
 
 add_executable(cfs.edac.test.bin
     cfs/edac/unitTest
+    cfs/edac/ExceptionTest
 #    cfs/edac/ErrorCodePrivateTest
 #    cfs/edac/ErrorCodePrivateTest
 #    cfs/edac/namedType/NamedTypeTest

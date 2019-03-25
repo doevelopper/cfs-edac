@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <gmock/gmock.h>
-#include <cfs/edac/Logger.hpp>
+//#include <cfs/edar/Logger.hpp>
 
 namespace cfs::edac::test
 {
@@ -25,12 +25,6 @@ namespace cfs::edac::test
 
             std::string m_testSuites;
             unsigned int m_numberOfTestIteration;
-            static const unsigned long LOGGER_WATCH_DELAY;
-            //            cfs::edac::Logger * m_loggerService;
-            /*!
-             * @brief Class logger.
-             */
-            //            static log4cxx::LoggerPtr logger;
     };
 }
 

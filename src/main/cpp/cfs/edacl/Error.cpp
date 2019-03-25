@@ -1,15 +1,17 @@
 
 
 #include <map>
-#include <array>   /* for std::array */
-#include <cassert> /* for assert() */
-#include <cerrno>  /* for E*, errno */
-#include <cstdarg> /* for va_*() */
-#include <cstdio>  /* for std::snprintf() */
-#include <cstring> /* for stpncpy() */
-#include <cfs/edac/Error.hpp>
+#include <array>
+#include <cassert>
+#include <cerrno>
+#include <cstdarg>
+#include <cstdio>
+#include <cstring>
 
-using namespace cfs::osgi::edac;
+
+#include <cfs/edacl/Error.hpp>
+
+using namespace cfs::edacl;
 
 Error::Error()
     : m_codeMask( ~0 )

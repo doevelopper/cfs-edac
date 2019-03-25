@@ -181,3 +181,9 @@ Report.xml
 
 #src/main/resources/cmakeModule/
 #src/main/resources/macros/
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

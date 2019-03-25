@@ -25,7 +25,7 @@ cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 
 project (cfs.edac
     VERSION 0.0.0.0 
-    DESCRIPTION "Hardware Abstraction Layer!" 
+    DESCRIPTION "Error Detection and Correction-Classification-Reporting" 
     HOMEPAGE_URL "https://exemple.com"
     LANGUAGES CXX
 )
@@ -82,8 +82,8 @@ get_property(c_known_features GLOBAL PROPERTY CMAKE_C_KNOWN_FEATURES)
 
 include(WriteCompilerDetectionHeader)
 write_compiler_detection_header(
-    FILE ${CMAKE_INSTALL_INCLUDEDIR}/cfs/algo/CompilerDetection.hpp
-    PREFIX CFS_ALGO
+    FILE ${CMAKE_INSTALL_INCLUDEDIR}/cfs/edac/CompilerDetection.hpp
+    PREFIX CFS_EDAC
 #   OUTPUT_FILES_VAR <output_files_var> OUTPUT_DIR <output_dir>
     COMPILERS GNU Clang 
     FEATURES ${cxx_known_features}
@@ -94,8 +94,26 @@ write_compiler_detection_header(
 #   ALLOW_UNKNOWN_COMPILER_VERSIONS
 )
 
+configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/GitRevision.hpp.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/GitRevision.hpp"
+               @ONLY)
+
+configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/AppInfo.hpp.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/AppInfo.hpp"
+                @ONLY)
+
+configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/Version.hpp.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Version.hpp"
+                @ONLY)
+
+configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/Version.cpp.in"
+                "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Version.cpp"
+                @ONLY)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(${CMAKE_INSTALL_PREFIX}/cmake/cfs-edac-config-version.cmake COMPATIBILITY ExactVersion)
 
 add_subdirectory (src/main/cpp)
-add_subdirectory (src/test/cpp)
+#add_subdirectory (src/test/cpp)
 #add_subdirectory (src/it)
 

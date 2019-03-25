@@ -7,9 +7,9 @@
 
 #include <cfs/edac/Exception.hpp>
 
-namespace cfs::edac::test: public ::testing::Test
+namespace cfs::edac::test
 {
-    class ExceptionTest
+    class ExceptionTest : public ::testing::Test
     {
         public:
 
@@ -22,7 +22,6 @@ namespace cfs::edac::test: public ::testing::Test
         protected:
 
             //   Exception * ObjectUnderTest;
-            static log4cxx::LoggerPtr logger;
             Exception * exception;
     };
 }

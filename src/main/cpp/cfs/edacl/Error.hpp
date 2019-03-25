@@ -19,9 +19,13 @@
 #include <cerrno>
 #include <cstdint>
 #include <string>
-#include <exception>
+
+#include <memory>
 #include <system_error>
+#include <type_traits>
 #include <vector>
+
+#include <cfs/edac/Exception.hpp>
 
 #define ERRMSG  std::cerr << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << "(): "
 
@@ -73,8 +77,9 @@
  *
  */
 
-//#define CFS_DECLARE( type )  type
-//#define CFS_SUCCESS  ( 0x00000000L )    //! no error.
+
+#define CFS_DECLARE( type )  type
+#define CFS_SUCCESS  ( 0x00000000L )    //! no error.
 //#define CFE_ERROR    ~( CFS_SUCCESS )   //! error.
 
 /*!
@@ -82,7 +87,7 @@
  */
 //#define CFS_BIT_MASK( bit_index, field_bit_count ) ( ( 1 << (( field_bit_count ) - 1 )) >> ( bit_index ) )
 
-namespace cfs::edac
+namespace cfs::edacl
 {
     /*!
      * @brief Type for specifying an error or status code.
@@ -146,6 +151,42 @@ namespace cfs::edac
         STATUS_INVALID_COMMAND_FOR_PROP = 21, ///< The given command cannot be performed on this property.
     };
 
+    /*!
+     * @brief Error Code type enum class used to throw a exception with std::make_error_code in case of generic user
+     * error .
+     *
+     */
+    enum class CfeUserError : std::uint32_t
+    {
+        STATUS_ERR_NULL_POINTER,        ///<  Indicates that a null pointer is detected.
+        STATUS_ERR_BAD_PARAMETER,       ///<  Indicates that a wrong parameter has been used in a function call.
+        STATUS_ERR_INVALID_INDEX,       ///<  Indicates that an invalid index is detected.
+        STATUS_ERR_MEM_ALLOC_FAILED,    ///<  Indicates that a memory allocation failed.
+        STATUS_ERR_INVALID_HANDLE,      ///<  Indicates that an invalid handle is detected.
+        STATUS_ERR_INVALID_THREAD,      ///<  Indicates that an invalid thread is detected.
+        STATUS_ERR_INVALID_SEM,         ///<  Indicates that an invalid semaphore is detected.
+        STATUS_ERR_INVALID_MSGQ,        ///<  Indicates that an invalid message queue is detected.
+        STATUS_ERR_UNKNOWN,             ///<  Indicates that an unknown error is detected.
+    };
+
+    enum class CfeBoardDiagStatus : std::uint32_t
+    {
+        STATUS_NOT_DETECTED,        ///<  The board is not detected.
+        STATUS_BAD_CONF,            ///<  There is an error in the configuration.
+        STATUS_NOT_CONFIGURED,      ///<  The board is not configured.
+        STATUS_BAD_VOLTAGE,         ///<  Voltage issue on the board.
+        STATUS_FAILURE_DETECTED     ///<  General error on the board.
+    };
+
+    enum class Severity : std::uint32_t
+    {
+        Heisenbug,    //!< Bug that seems to disappear or alter its behavior when one attempts to study it.
+        Hindenbug,    //!< Bug with catastrophic behavior.
+        Schroedinbug, //!< Bug that manifests itself in running software.
+        Bohrbug,      //!< Bug that do not change its behavior and are relatively easily detected.
+        Mandelbug     //!< Bug whose causes are so complex.
+    };
+
     struct ErrorDescription
     {
         std::uint32_t errorCode;
@@ -167,14 +208,22 @@ namespace cfs::edac
              * @brief Constructs a new error with null as its detail message.
              */
             Error() noexcept( false );
+
             /*!
-             * @brief Constructs a new error with null as its detail message.
+             * @brief Construct a new Error object with a detail message.
+             *
+             * @param message
              */
             Error( std::string & message );
+
             /*!
-             * @brief Constructs a new error with the specified detail message and cause.
+             * @brief Construct a new Error object with the specified detail message and cause.
+             *
+             * @param message
+             * @param code
              */
             Error( std::string & message, int code )  noexcept( false );
+
             /*!
              * @brief Constructs a new error with the specified detail message, cause,
              *        suppression enabled or disabled, and writable stack trace enabled or disabled.
@@ -183,11 +232,46 @@ namespace cfs::edac
              * @param[in] writableStackTrace   - Whether or not the stack trace should be writable.
              */
             Error( std::string & message, bool enableSuppression,  bool writableStackTrace ) noexcept( false );
+
+            /**
+             * @brief Construct a new Error object
+             *
+             * @param code
+             */
             Error( const std::error_code code ) noexcept;
+
+            /*!
+             * @brief Construct a new Error object
+             *
+             * @param code
+             * @param what
+             */
             Error( const std::error_code code, const char * const what ) noexcept;
+
+            /*!
+             * @brief Construct a new Error object
+             *
+             * @param code
+             * @param category
+             */
             Error( const int code, const std::error_category & category ) noexcept;
+
+            /*!
+             * @brief Construct a new Error object
+             *
+             * @param code
+             */
             Error( const int code ) noexcept;
+
+            /*!
+             * @brief Construct a new Error object
+             *
+             * @param code
+             * @param category
+             * @param what
+             */
             Error( const int code, const std::error_category & category, const char * const what) noexcept;
+
             /*!
              * @brief Destructor.
              */
@@ -204,27 +288,51 @@ namespace cfs::edac
              * @return String containing the error location
              */
             virtual const char * where () const throw ( );
+
             /*!
              * @brief Registers the given handler as the current error handler.
              * @return The previously registered handler.
              */
             static Error * set ( Error * handler );
+
             /*!
              * @brief Returns a pointer to the currently registered.
              */
             static Error * get ();
-            static int lastErrno ();
-            static const char * lastErrmsg ();
+
             /*!
+             * @brief
              *
+             * @return int
              */
+            static int lastErrno ();
+
+            /*!
+             * @brief
+             *
+             * @return const char*
+             */
+            static const char * lastErrmsg ();
+
+            /*!
+             * @brief
+             *
+             * @param e
+             * @param msg
+             * @return std::system_error
+             */
+
             std::system_error systemError ( int e, const char * msg )
             {
                 return std::system_error( std::error_code( e, std::system_category()), msg );
             }
 
             /*!
+             * @brief
              *
+             * @param e
+             * @param msg
+             * @return std::system_error
              */
             std::system_error systemError ( int e, const std::string & msg)
             {
@@ -232,7 +340,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param msg
+             * @return std::system_error
              */
             std::system_error systemError ( const std::string & msg )
             {
@@ -240,7 +351,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param msg
+             * @return std::system_error
              */
             std::system_error systemError ( const char * msg )
             {
@@ -248,7 +362,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param code
+             * @return std::error_code
              */
             std::error_code systemErrorCode ( int code )
             {
@@ -256,7 +373,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param code
+             * @return std::error_code
              */
             std::error_code genericErrorCode ( int code )
             {
@@ -264,7 +384,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param code
+             * @return std::error_condition
              */
             std::error_condition systemErrorConditionCode ( int code )
             {
@@ -272,7 +395,10 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @param code
+             * @return std::error_condition
              */
             std::error_condition genericErrorConditionCode ( int code )
             {
@@ -288,18 +414,29 @@ namespace cfs::edac
             }
 
             /*!
+             * @brief
              *
+             * @return auto
              */
             auto genericErrorCode ()
             {
                 return ( genericErrorCode( errno ).default_error_condition());
             }
 
+            /**
+             * @brief
+             *
+             * @param errc
+             */
             [[noreturn]] void makeErrorCode(std::uint32_t errc)
             {
                 std::make_error_code(std::errc::timed_out);
             }
 
+            /*!
+             * @brief
+             *
+             */
             [[noreturn]] void makeAndThrowErrorCode()
             {
                 throw std::system_error(std::make_error_code(std::errc::timed_out));
@@ -321,6 +458,8 @@ namespace cfs::edac
              * @brief Utility function translating numeric error code to string.
              */
             static std::string getErrorDescription ( int errorCode );
+
+
             std::pair < std::size_t /* bytes */, CfsErrorSeverity >  severity ();
             std::pair < std::size_t /* bytes */, CfeServiceIdentifiers > serviceId ();
             std::pair < std::size_t /* bytes */, CfeOperationStatus > operationStatus ();
@@ -336,6 +475,12 @@ namespace cfs::edac
                 { 75000, "Unknown" },
             };
 
+            /*!
+             * @brief Get the Error String object
+             *
+             * @param errorId
+             * @return std::string const&
+             */
             std::string const & getErrorString ( int errorId )
             {
                 auto it = errorsList.find( errorId );
