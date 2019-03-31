@@ -73,6 +73,12 @@ find_package(Doxygen
    OPTIONAL_COMPONENTS mscgen dia
 )
 
+option(EXCLUDE_DEPRECATED "Exclude deprecated parts of the library" TRUE)
+
+if (EXCLUDE_DEPRECATED)
+    set(NO_BUILD_DEPRECATED DEFINE_NO_DEPRECATED)
+endif()
+
 include(GoogleTest) #gtest_discover_tests
 include(CTest)
 set (CMAKE_TEST_COMMAND ctest -V) # Work aroound do console output

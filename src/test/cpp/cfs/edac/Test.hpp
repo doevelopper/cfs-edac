@@ -20,6 +20,7 @@ namespace cfs::edac::test
 
             int run (int argc = 0, char * argv[] = NULL);
             static void showUsage(std::string name);
+            void notYetImplemented();
 
         private:
 

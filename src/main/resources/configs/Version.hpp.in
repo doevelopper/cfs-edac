@@ -25,7 +25,7 @@
 
 #include <sstream>
 #include <string>
-#include <cppbdd101/GitRevision.hpp>
+#include <cfs/edac/GitRevision.hpp>
 
 /*!
  * @brief ReleaseLevel indicates the release level of this API

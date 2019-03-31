@@ -1,5 +1,7 @@
 
 add_library(cfs.edac.main
+
+# ${CMAKE_BINARY_DIR}/cfs/edac/Version
 #    cfs/edac/namedType/Crtp
 #    cfs/edac/namedType/internal/NamedTypeInternal
 #    cfs/edac/namedType/UnderlyingFunctionalities
@@ -11,7 +13,8 @@ add_library(cfs.edac.main
 #    cfs/edac/private/ErrorCodeTable
 #    cfs/edac/IsErrorActive
     cfs/edac/Exception
-#    cfs/edacl/Error
+    cfs/edacl/Error
+    cfs/utils/PimplPtr
 #    cfs/edac/internal/LoggerPrivate
 #    cfs/edac/Logger
 )
@@ -63,35 +66,34 @@ target_compile_options(cfs.edac.main
         $<$<CONFIG:Debug>:-g3 -O0 -fstack-protector>
         $<$<CONFIG:Release>:-g0 -O2>
         $<$<CXX_COMPILER_ID:GNU>:$<BUILD_INTERFACE:-Wall;-Wextra;-Wpedantic>>
+
     PUBLIC 
-#        $<$<COMPILE_LANGUAGE:CXX>: -W -Wall -Wextra -Weffc++ -Wpedantic -fmax-errors=5 -Werror=reorder -Werror=shadow -fdiagnostics-parseable-fixits>
-#        $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
-#        $<$<CONFIG:Release>:-g0 -O2>
-#        $<$<CONFIG:Coverage>:-O0 -fprofile-arcs -ftest-coverage --coverage>
-#        $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
-
-#        -m64
-#        $<$<CXX_COMPILER_ID:GNU>: ${GNU_CXX_FLAGS} -U_FORTIFY_SOURCE -fsanitize-address-use-after-scope>
-#        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: ${COMMON_CXX_FLAGS}>
-#        $<IF:$<COMPILE_LANGUAGE:CXX>,-Wold-style-cast,>
-
-#        $<$<CONFIG:Release>:${MY_RELEASE_OPTIONS}>
-#        $<$<CONFIG:Release>:-ffunction-sections>
-#        $<$<CONFIG:Release>:-fdata-sections>
-#        $<$<CONFIG:Release>:-Wl,--gc-sections>
-
-#        $<$<CONFIG:Debug>: ${MY_DEBUG_OPTIONS}>
-#        $<$<CONFIG:Debug>: -O0>
-#        $<$<CONFIG:Debug>: -ggdb3>
-#        $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
-
-#        $<IF:$<CONFIG:Debug>: helper_debug.cpp,helper_release.cpp>
-
-#        $<$<OR:$<CONFIG:Release>,$<CONFIG:Profile>>: DISABLE_VAR>
-#        $<$<CONFIG:Coverage>: -O0  -fprofile-arcs -ftest-coverage --coverage>
+        -m64
+        
+        $<IF:$<COMPILE_LANGUAGE:CXX>,-Wold-style-cast,>
+        $<$<COMPILE_LANGUAGE:CXX>: -Weffc++ -fdiagnostics-parseable-fixits>
+        $<$<CXX_COMPILER_ID:GNU>: ${GNU_CXX_FLAGS} -U_FORTIFY_SOURCE -fsanitize-address-use-after-scope>
+        $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: ${COMMON_CXX_FLAGS}>
+        
+        $<$<CONFIG:Release>:-g0 -O2>
+        $<$<CONFIG:Release>:${MY_RELEASE_OPTIONS}>
+        $<$<CONFIG:Release>:-ffunction-sections>
+        $<$<CONFIG:Release>:-fdata-sections>
+        $<$<CONFIG:Release>:-Wl,--gc-sections>
+        
+        $<$<OR:$<CONFIG:Release>,$<CONFIG:Profile>>: DISABLE_VAR>
+        
+        $<$<CONFIG:Debug>: ${MY_DEBUG_OPTIONS}>
+        $<$<CONFIG:Debug>: -O0>
+        $<$<CONFIG:Debug>: -ggdb3>
+        $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
+        
+        #$<IF:$<CONFIG:Debug>: helper_debug.cpp,helper_release.cpp>
+        
+        $<$<CONFIG:Coverage>: -O0  -fprofile-arcs -ftest-coverage --coverage>
 
         $<$<CONFIG:Profile>: ${CHECK_MEMORY_FLAGS}>
-       
+        $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>       
 )
 
 target_compile_features(cfs.edac.main

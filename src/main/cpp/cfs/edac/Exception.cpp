@@ -2,7 +2,6 @@
 
 #include <cfs/edac/Exception.hpp>
 
-
 cfs::edac::Exception::Exception( int code )
     : m_who(std::string())
     , m_where(std::string())

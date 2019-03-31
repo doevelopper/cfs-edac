@@ -82,6 +82,13 @@ LoggerPrivate::LoggerPrivate( unsigned long delay )
     }
     else
     {
+    /*    
+            if (const char* env = getenv(log4cxxConfigEnvVar)) {
+         if (env[0] and access(env, R_OK) == 0) {
+             ::setenv("LOG4CXX_CONFIGURATION", env, 1);
+         }
+    }
+    */
         if( ::access( configurationPath.c_str( ), R_OK ) == 0 )
         {
 #if APR_HAS_THREADS
@@ -160,6 +167,7 @@ LoggerPrivate::loadConfig( const std::string & configFilename )
     {
         if( !configFilename.empty( ) )
         {
+           // if(logFileProperties.substr(logFileProperties.find_last_of(".") + 1).compare("xml"))
             if( configFilename.find( ".xml" ) != std::string::npos )
             {
                 log4cxx::xml::DOMConfigurator::configure( configFilename );

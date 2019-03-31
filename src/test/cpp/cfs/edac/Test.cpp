@@ -5,23 +5,28 @@
 using namespace cfs::edac;
 using namespace cfs::edac::test;
 
-cfs::edac::test::Test::Test()
+Test::Test()
     : m_testSuites(std::string() )
     , m_numberOfTestIteration(1)
 {
 }
 
-cfs::edac::test::Test::Test(std::string & suite, unsigned int iteration)
+Test::Test(std::string & suite, unsigned int iteration)
     : m_testSuites(suite)
     , m_numberOfTestIteration(iteration)
 {
 }
 
-cfs::edac::test::Test::~Test()
+Test::~Test()
 {
 }
 
-int cfs::edac::test::Test::run (int argc, char * argv[])
+void Test::notYetImplemented()
+{
+    //GTEST_NONFATAL_FAILURE_("Not YET implemented!!!!!!");
+}
+
+int Test::run (int argc, char * argv[])
 {
     ::testing::GTEST_FLAG(repeat) = m_numberOfTestIteration;
     ::testing::GTEST_FLAG(output) = "xml:Report.xml"; // GTEST_FLAG(output) = "xml:" + path;
@@ -46,7 +51,7 @@ int cfs::edac::test::Test::run (int argc, char * argv[])
     return RUN_ALL_TESTS();
 }
 
-void cfs::edac::test::Test::showUsage(std::string name)
+void Test::showUsage(std::string name)
 {
     std::cerr << "Usage: " << name << " <option(s)> SOURCES \n"
               << "Options:\n"

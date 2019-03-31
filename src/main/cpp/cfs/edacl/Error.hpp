@@ -28,7 +28,7 @@
 #include <cfs/edac/Exception.hpp>
 
 #define ERRMSG  std::cerr << __FILE__ << ":" << __LINE__ << ":" << __FUNCTION__ << "(): "
-
+#define ERROR_CODE(error_code)  ( static_cast<std::uint32_t>(error_code) )
 /*
  *
     https://docs.microsoft.com/en-us/windows-hardware/drivers/kernel/defining-new-ntstatus-values
@@ -89,118 +89,9 @@
 
 namespace cfs::edacl
 {
-    /*!
-     * @brief Type for specifying an error or status code.
-     */
-    using cfs_status_t = std::int8_t;
-    using HRESULT = std::uint32_t;
+    //class Exception;
 
-    enum CfsError : std::uint32_t
-    {
-        LARGE_VALUE = 0x0e000000UL,
-        VALUE = 0x0e000000UL,
-        LARGEVALUE = 0x0e000000UL,
-        LARGE = 0x0e000000UL
-    };
-
-    // https://stackoverflow.com/questions/18335861/why-is-enum-class-preferred-over-plain-enum
-    enum class CfsErrorSeverity : std::uint32_t
-    {
-        CFE_SEVERITY_BITMASK = ( 0xC0000000L ),
-        CFE_SEVERITY_SUCCESS = ( 0x00000000L ),
-        CFE_SEVERITY_INFO = ( 0x40000000L ),
-        CFE_SEVERITY_ERROR = ( 0x80000000L ),
-        CFE_SEVERITY_CRITICAL = ( 0xC0000000L )
-    };
-
-    enum class CfeServiceIdentifiers : std::uint32_t
-    {
-        CFE_SERVICE_BITMASK = ( 0x0C000000L ),
-        CFE_EVENTS_SERVICE = ( 0x02000000L ),
-        CFE_EXECUTIVE_SERVICE = ( 0x04000000L ),
-        CFE_FILE_SERVICE = ( 0x06000000L ),
-        CFE_OSAPI_SERVICE = ( 0x08000000L ),
-        CFE_SOFTWARE_BUS_SERVICE = ( 0x0A000000L ),
-        CFE_TABLE_SERVICE = ( 0x0C000000L ),
-        CFE_TIME_SERVICE = ( 0x0E000000L )
-    };
-
-    enum class CfeOperationStatus : std::uint32_t
-    {
-        STATUS_OK = CFS_SUCCESS,              ///< Operation has completed successfully.
-        STATUS_FAILURE = 1,                   ///< Operation has failed for some undefined reason.
-        STATUS_UNIMPLEMENTED = 2,             ///< Given operation has not been implemented.
-        STATUS_INVALID_ARGUMENT = 3,          ///< An argument to the operation is invalid.
-        STATUS_INVALID_STATE = 4,             ///< This operation is invalid for the current device state.
-        STATUS_INVALID_COMMAND = 5,           ///< This command is not recognized.
-        STATUS_INVALID_INTERFACE = 6,         ///< This interface is not supported.
-        STATUS_INTERNAL_ERROR = 7,            ///< An internal runtime error has occured.
-        STATUS_SECURITY_ERROR = 8,            ///< A security/authentication error has occured.
-        STATUS_PARSE_ERROR = 9,               ///< A error has occured while parsing the command.
-        STATUS_IN_PROGRESS = 10,              ///< This operation is in progress.
-        STATUS_NOMEM = 11,                    ///< Operation prevented due to memory pressure.
-        STATUS_BUSY = 12,                     ///< The device is currently performing a mutually exclusive operation
-        STATUS_PROP_NOT_FOUND = 13,           ///< The given property is not recognized.
-        STATUS_DROPPED = 14,                  ///< A/The packet was dropped.
-        STATUS_EMPTY = 15,                    ///< The result of the operation is empty.
-        STATUS_CMD_TOO_BIG = 16,              ///< The command was too large to fit in the internal buffer.
-        STATUS_NO_ACK = 17,                   ///< The packet was not acknowledged.
-        STATUS_CCA_FAILURE = 18,              ///< The packet was not sent due to a CCA failure.
-        STATUS_ALREADY = 19,                  ///< The operation is already in progress.
-        STATUS_ITEM_NOT_FOUND = 20,           ///< The given item could not be found.
-        STATUS_INVALID_COMMAND_FOR_PROP = 21, ///< The given command cannot be performed on this property.
-    };
-
-    /*!
-     * @brief Error Code type enum class used to throw a exception with std::make_error_code in case of generic user
-     * error .
-     *
-     */
-    enum class CfeUserError : std::uint32_t
-    {
-        STATUS_ERR_NULL_POINTER,        ///<  Indicates that a null pointer is detected.
-        STATUS_ERR_BAD_PARAMETER,       ///<  Indicates that a wrong parameter has been used in a function call.
-        STATUS_ERR_INVALID_INDEX,       ///<  Indicates that an invalid index is detected.
-        STATUS_ERR_MEM_ALLOC_FAILED,    ///<  Indicates that a memory allocation failed.
-        STATUS_ERR_INVALID_HANDLE,      ///<  Indicates that an invalid handle is detected.
-        STATUS_ERR_INVALID_THREAD,      ///<  Indicates that an invalid thread is detected.
-        STATUS_ERR_INVALID_SEM,         ///<  Indicates that an invalid semaphore is detected.
-        STATUS_ERR_INVALID_MSGQ,        ///<  Indicates that an invalid message queue is detected.
-        STATUS_ERR_UNKNOWN,             ///<  Indicates that an unknown error is detected.
-    };
-
-    enum class CfeBoardDiagStatus : std::uint32_t
-    {
-        STATUS_NOT_DETECTED,        ///<  The board is not detected.
-        STATUS_BAD_CONF,            ///<  There is an error in the configuration.
-        STATUS_NOT_CONFIGURED,      ///<  The board is not configured.
-        STATUS_BAD_VOLTAGE,         ///<  Voltage issue on the board.
-        STATUS_FAILURE_DETECTED     ///<  General error on the board.
-    };
-
-    enum class Severity : std::uint32_t
-    {
-        Heisenbug,    //!< Bug that seems to disappear or alter its behavior when one attempts to study it.
-        Hindenbug,    //!< Bug with catastrophic behavior.
-        Schroedinbug, //!< Bug that manifests itself in running software.
-        Bohrbug,      //!< Bug that do not change its behavior and are relatively easily detected.
-        Mandelbug     //!< Bug whose causes are so complex.
-    };
-
-    struct ErrorDescription
-    {
-        std::uint32_t errorCode;
-        std::string errorText;
-        std::string severity;
-        std::string recommendedAction;
-        std::string rootCause;
-        std::string service;
-        std::string component;
-    };
-
-    class Exception;
-
-    class Error : public std::exception
+    class CFS_EDAC_MAIN_EXPORT Error : public cfs::edac::Exception // std::exception
     {
         public:
 
@@ -450,6 +341,11 @@ namespace cfs::edacl
 
         protected:
 
+            //const char* name() const noexcept override;
+            //std::string message(int ev) const override;
+            //std::error_condition default_error_condition(int ev) const noexcept override;
+            //bool equivalent(const std::error_code& code, int condition) const noexcept override;
+
             /*!
              * @brief Returns the default Error handler.
              */
@@ -460,11 +356,11 @@ namespace cfs::edacl
             static std::string getErrorDescription ( int errorCode );
 
 
-            std::pair < std::size_t /* bytes */, CfsErrorSeverity >  severity ();
-            std::pair < std::size_t /* bytes */, CfeServiceIdentifiers > serviceId ();
-            std::pair < std::size_t /* bytes */, CfeOperationStatus > operationStatus ();
+            //std::pair < std::size_t /* bytes */, CfsErrorSeverity >  severity ();
+            //std::pair < std::size_t /* bytes */, CfeServiceIdentifiers > serviceId ();
+            //std::pair < std::size_t /* bytes */, CfeOperationStatus > operationStatus ();
 
-            using ErrorMessageMap = std::map < std::string, CfsErrorSeverity >;
+            //using ErrorMessageMap = std::map < std::string, CfsErrorSeverity >;
 
             std::map < std::uint32_t, std::string > const errorsList
             {
@@ -489,6 +385,11 @@ namespace cfs::edacl
             }
 
         private:
+
+            // handler type, should take the same parameters as the constructor
+            // in order to allow the same information
+            using handler = void (*)( ... );
+            handler set_handler(handler h);
 
             std::string m_message;  ///< Error message
             std::string m_location; ///< Location of the error (file, line and function)

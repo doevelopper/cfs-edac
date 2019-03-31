@@ -195,16 +195,15 @@ namespace cfs::edac
             }
 
             template <class OtherT>
-            ErrorOr( const ErrorOr<OtherT> &Other,      typename std::enable_if<std::is_convertible<OtherT,
-                                                                                                    T>::value>::type * =
-                         nullptr)
+            ErrorOr( const ErrorOr<OtherT> &Other,
+                     typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
             {
                 copyConstruct(Other);
             }
 
             template <class OtherT>
-            explicit ErrorOr(const ErrorOr<OtherT> &Other,typename std::enable_if<
-                                 !std::is_convertible<OtherT, const T &>::value>::type * = nullptr)
+            explicit ErrorOr(const ErrorOr<OtherT> &Other,
+                             typename std::enable_if< !std::is_convertible<OtherT, const T &>::value>::type * = nullptr)
             {
                 copyConstruct(Other);
             }

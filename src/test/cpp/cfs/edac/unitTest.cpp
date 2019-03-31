@@ -10,8 +10,14 @@ int main(int argc, char**argv)
     cfs::edac::test::Test edacTest;
 
     //LOG4CXX_TRACE(log4cxx::Logger::getRootLogger(),"TEST EDAC unit test");
+    // log4cxx::LogManager::getLoggerRepository()->getRootLogger()->info("Running UnitTest");
 
-    edacTest.run(argc,argv);
+    int status = edacTest.run(argc,argv);
+
+    if (status != EXIT_SUCCESS)
+    {
+        std::cerr << "Unit Test failed" << std::endl;
+    }
 
     return (EXIT_SUCCESS);
 }

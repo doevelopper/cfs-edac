@@ -37,6 +37,8 @@ set(CUCUMBER_BOOST_LIBBRARIES
 
 find_package(Boost COMPONENTS ${CUCUMBER_BOOST_LIBBRARIES} REQUIRED QUIET
 #    HINTS
+#        /usr/include
+#        /usr/lib
 )
 
 if(Boost_FOUND)

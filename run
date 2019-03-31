@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# start docker and emacs
+#docker run -d \
+#    --volume $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) \
+#    -p 5000:5000 \
+#    --memory="500m" \
+#    --memory-swap="1g" \
+#    --env DISPLAY=${DISPLAY} \
+#    --net="host" \
+#    --volume $XAUTHORITY:/developer/.Xauthority \
+#    -e DISPLAY \
+#    --env XAUTHORITY=/developer/.Xauthority \
+#    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
+#    --device /dev/snd \
+#    --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
+#    --user $(id -u ${USER}):$(id -g ${USER}) \
+
+docker run  --rm -ti \
+    --volume ${PWD}/project:/project \
+    --volume ${HOME}/.conan:/home/developer/.conan:rw \
+    --volume ${HOME}/.ssh:/home/developer/.ssh:rw \
+    --volume ${PWD}/src/main/resources/dotfiles/.vim:/home/developer/.vim:rw \
+    --volume ${HOME}/.m2:/home/developer/.m2:rw \
+    --volume ${PWD}/dotfiles/.vimrc:/home/developer/.vimrc \
+    --volume ${PWD}/dotfiles/.bashrc:/home/developer/.bashrc  \
+    --volume "$PWD:/home/developer/workspace" \
+    --name cfs-edac-vscode \
+    --privileged doevelopper/foss-dds-dev
+
+#      --entrypoint "urxvt" \
+# alternatively, you can map your settings into the container
+# docker run -it \
+#        -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
+#        -v $XAUTHORITY:/developer/.Xauthority \
+#        -v ${HOME}/.config/Code:/developer/.config/Code \
+#        -v ${HOME}/.vscode:/developer/.vscode \
+#        -v ${HOME}/.ssh:/developer/.ssh \
+#        -v ${HOME}/.gitconfig:/developer/.gitconfig \
+#        -v ${PWD}/project:/project \
+#        -v ${SSH_AUTH_SOCK}:/ssh_auth_sock \
+#        -e SSH_AUTH_SOCK=/ssh_auth_sock \
+#        -e DISPLAY=unix${DISPLAY} \
+#        -e XAUTHORITY=/developer/.Xauthority \
+#        -p 5000:5000 \
+#        --device /dev/snd \
+#        --name docker-vscode \
+#        --entrypoint "xterm" \
+#        registry.gear.ge.com/100034251/ide:latest
+
+#docker exec docker-vscode /developer/bin/start-vscode
+#docker exec docker-vscode /developer/bin/start-emacs
+
+

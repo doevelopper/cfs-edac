@@ -23,29 +23,41 @@
 
 
 find_path(GMOCK_INCLUDE_DIR gmock/gmock.h
-    HINTS ${CMAKE_INSTALL_INCLUDEDIR}
+    HINTS 
+        ${CMAKE_INSTALL_INCLUDEDIR}
+        /usr/local/include
 )
 
 find_path(GTEST_INCLUDE_DIR gtest/gtest.h
-    HINTS ${CMAKE_INSTALL_INCLUDEDIR}
+    HINTS 
+        ${CMAKE_INSTALL_INCLUDEDIR}
+        /usr/local/include
 )
 
 mark_as_advanced(GMOCK_INCLUDE_DIR  GTEST_INCLUDE_DIR)
 
-find_library(GMOCK_LIBRARY NAMES gmock gmockd
-    HINTS ${CMAKE_INSTALL_LIBDIR}
+find_library(GMOCK_LIBRARY NAMES gmock libgmock gmockd
+    HINTS 
+        ${CMAKE_INSTALL_LIBDIR}
+        /usr/local/lib
 )
 
-find_library(GMOCK_MAIN_LIBRARY NAMES gmock_main gmock_maind
-    HINTS ${CMAKE_INSTALL_LIBDIR}
+find_library(GMOCK_MAIN_LIBRARY NAMES gmock_main libgmock_main gmock_maind
+    HINTS 
+        ${CMAKE_INSTALL_LIBDIR}
+        /usr/local/lib
 )
 
-find_library(GTEST_LIBRARY NAMES gtest gtestd
-    HINTS ${CMAKE_INSTALL_LIBDIR}
+find_library(GTEST_LIBRARY NAMES gtest libgtest gtestd
+    HINTS 
+        ${CMAKE_INSTALL_LIBDIR}
+        /usr/local/lib
 )
  
-find_library(GTEST_MAIN_LIBRARY NAMES gtest_main gtest_maind
-    HINTS ${CMAKE_INSTALL_LIBDIR}
+find_library(GTEST_MAIN_LIBRARY NAMES gtest_main libgtest_main gtest_maind
+    HINTS 
+        ${CMAKE_INSTALL_LIBDIR}
+        /usr/local/lib
 )
 
 include(FindPackageHandleStandardArgs)

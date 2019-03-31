@@ -40,4 +40,14 @@
 
     #define D_UNUSED(variable) void(variable)
 
+	template <typename RESULT, typename... A>
+	std::function<RESULT(A...)> noOp()
+	{
+  		// && avoids unnecessary copying.
+  		return [](A&&...) { return RESULT(); }; 
+	}
+    void nothingToDO ()
+   {
+       []{}
+   } 
 #endif

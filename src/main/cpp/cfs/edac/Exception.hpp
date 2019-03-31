@@ -7,6 +7,9 @@
 #include <string>
 #include <iostream>
 
+#include <cfs/edac/Export.hpp>
+
+
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
 #define LOG std::clog << __DATE__ << " " <<__TIME__ << __FUNCTION__ << std::endl;
 #define ERROR_LOCATION std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
@@ -14,7 +17,7 @@
 
 namespace cfs::edac
 {
-    class NotImplemented : public std::logic_error
+    class CFS_EDAC_MAIN_EXPORT NotImplemented : public std::logic_error
     {
         public:
 
@@ -24,7 +27,7 @@ namespace cfs::edac
             }
     };
 
-    class NumericalProblem : public std::runtime_error
+    class CFS_EDAC_MAIN_EXPORT NumericalProblem : public std::runtime_error
     {
         public:
 
@@ -34,7 +37,7 @@ namespace cfs::edac
             }
     };
 
-    class MaterialLawProblem : public NumericalProblem
+    class CFS_EDAC_MAIN_EXPORT MaterialLawProblem : public NumericalProblem
     {
         public:
 
@@ -44,7 +47,7 @@ namespace cfs::edac
             }
     };
 
-    class LinearSolverProblem : public NumericalProblem
+    class CFS_EDAC_MAIN_EXPORT LinearSolverProblem : public NumericalProblem
     {
         public:
 
@@ -54,7 +57,7 @@ namespace cfs::edac
             }
     };
 
-    class BadDependency : public ::std::logic_error
+    class CFS_EDAC_MAIN_EXPORT BadDependency : public ::std::logic_error
     {
         public:
 
@@ -64,7 +67,7 @@ namespace cfs::edac
             }
     };
 
-    class InvalidResult : public ::std::runtime_error
+    class CFS_EDAC_MAIN_EXPORT InvalidResult : public ::std::runtime_error
     {
         public:
 
@@ -74,7 +77,7 @@ namespace cfs::edac
             }
     };
 
-    class TooManyIterations : public NumericalProblem
+    class CFS_EDAC_MAIN_EXPORT TooManyIterations : public NumericalProblem
     {
         public:
 
@@ -84,7 +87,7 @@ namespace cfs::edac
             }
     };
 
-    class notImplementedException : public std::exception
+    class CFS_EDAC_MAIN_EXPORT notImplementedException : public std::exception
     {
         public:
 
@@ -112,7 +115,7 @@ namespace cfs::edac
             const char * m_message;
     };
 
-    class IOError : public std::runtime_error
+    class CFS_EDAC_MAIN_EXPORT IOError : public std::runtime_error
     {
         /// Error can be specified more precisely in constructor if desired
         explicit IOError(const char *s = "I/O error")
@@ -133,8 +136,19 @@ namespace cfs::edac
      *        N - Null pointer or memory problems
      */
 
-    class Exception : public std::exception
+    class CFS_EDAC_MAIN_EXPORT Exception : public std::exception
     {
+
+        struct Mode 
+        { 
+            enum _v 
+            { 
+                Ignore,
+                Throw,
+                Trace 
+            }; 
+        };
+
         /*!
          *  @brief  Wrapper class to define a different terminate handler. The terminate
          *          handler is the function that will be called by the runtime system when
@@ -258,7 +272,11 @@ namespace cfs::edac
              * @return String containing the error location
              */
             virtual std::string summary () const;
-
+            /*!
+             * @brief
+             * @return String descrybint type of error or exceptin
+             */
+            virtual std::string name () const;
             /*!
              * @brief Retrieve the stack trace trace of process
              *

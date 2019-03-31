@@ -38,6 +38,13 @@ Error::where () const throw ( )
     return ( m_location.c_str());
 }
 
+/*
+   const char*
+   Error::name() const noexcept
+   {
+    return "Error: ";
+   }
+ */
 void
 Error::throw_error ()
 {
@@ -70,23 +77,19 @@ Error::throw_error (
     static thread_local std::array < char, 4096 > buffer;
 
     // switch (auto res = severity(); res.second)
-    auto res = severity();
+    //    auto res = severity();
 
 
     switch ( /*res.second*/ code )
     {
-        // case cfs::STATUS_OK:
-        // break;
-        // case cfs::STATUS_FAILURE:
-        // break;
-        // case cfs::STATUS_BUSY:
-        // break;
-        // default:
-        // break;
-    }
-
-    switch ( code )
-    {
+    // case cfs::STATUS_OK:
+    // break;
+    // case cfs::STATUS_FAILURE:
+    // break;
+    // case cfs::STATUS_BUSY:
+    // break;
+    default:
+        break;
     }
 }
 
