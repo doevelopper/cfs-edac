@@ -24,8 +24,8 @@
 cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
 
 project (cfs.edac
-    VERSION 0.0.0.0 
-    DESCRIPTION "Error Detection and Correction-Classification-Reporting" 
+    VERSION 0.0.0.0
+    DESCRIPTION "Error Detection and Correction Classification Reporting"
     HOMEPAGE_URL "https://exemple.com"
     LANGUAGES CXX
 )
@@ -68,7 +68,7 @@ ProcessorCount(Ncpu)
 find_package(Log4cxx)
 find_package(GoogleTestFwk)
 find_package(Cucumber-cpp)
-find_package(Doxygen  
+find_package(Doxygen
    REQUIRED  dot
    OPTIONAL_COMPONENTS mscgen dia
 )
@@ -91,7 +91,7 @@ write_compiler_detection_header(
     FILE ${CMAKE_INSTALL_INCLUDEDIR}/cfs/edac/CompilerDetection.hpp
     PREFIX CFS_EDAC
 #   OUTPUT_FILES_VAR <output_files_var> OUTPUT_DIR <output_dir>
-    COMPILERS GNU Clang 
+    COMPILERS GNU Clang
     FEATURES ${cxx_known_features}
     VERSION "${CMAKE_VERSION}"
     PROLOG "//<This is a custom prolog>"

@@ -7,14 +7,15 @@
 #include <string>
 #include <cfs/edac/internal/LoggerPrivate.hpp>
 
-// #define LOG_EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
-// #define LOG_ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
-// #define LOG_CRIT     2       /* critical conditions */
-// #define LOG_ERR      3       /* error conditions */
-// #define LOG_WARNING  4       /* warning conditions */
-// #define LOG_NOTICE   5       /* normal but significant condition. A condition requiring special handling.  */
-// #define LOG_INFO     6       /* informational */
-// #define LOG_DEBUG    7       /* debug-level messages. A message useful for debugging programs.  */
+// EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
+// ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
+// CRIT     2       /* critical conditions */
+// ERR      3       /* error conditions */
+// WARNING  4       /* warning conditions */
+// NOTICE   5       /* normal but significant condition. A condition requiring special handling.  */
+// INFO     6       /* informational */
+// DEBUG    7       /* debug-level messages. A message useful for debugging programs.  */
+
 /*
  #define LOG_TRACE(message)          LOG4CXX_TRACE(logger, message)
  #define LOG_DEBUG(message)          LOG4CXX_DEBUG(logger, message)
@@ -26,7 +27,7 @@
  #define LOG_GLOBAL_CATEGORY(category) \
     private: \
         static const log4cxx::LoggerPtr LOGGER;
- */
+*/
 
 namespace cfs::edac
 {

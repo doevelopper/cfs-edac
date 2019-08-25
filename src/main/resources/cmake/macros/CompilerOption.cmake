@@ -46,7 +46,7 @@ set (COMMON_CXX_FLAGS ${COMMON_CXX_FLAGS} -Werror=aggressive-loop-optimizations 
 set (COMMON_CXX_FLAGS ${COMMON_CXX_FLAGS} -Werror=missing-field-initializers ) #-Werror=conversion )
 set (COMMON_CXX_FLAGS ${COMMON_CXX_FLAGS} -Werror=format-security -Werror=shadow -Werror=address -Werror=sequence-point)
 
-set (CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS} -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer") 
+set (CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS} -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer")
 set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} O4 -DNDEBUG")
 set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS} -O2 -g")
 set (CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS} -Os -DNDEBUG")
@@ -56,48 +56,56 @@ set (CHECK_MEMORY_FLAGS  ${CHECK_MEMORY_FLAGS} -fsanitize=null -fsanitize=unreac
 set (CHECK_ADDRESS_FLAGS "-fsanitize=address -fno-omit-frame-pointer")
 set (CHECK_THREAD_FLAGS  "-fsanitize=thread")
 set (CHECK_UNDEFINED_FLAGS "-fsanitize=undefined-trap -fsanitize-undefined-trap-on-error -fno-sanitize-recover")
-set (CHECK_DATAFLOW_FLAGS "-fsanitize=dataflow") 
+set (CHECK_DATAFLOW_FLAGS "-fsanitize=dataflow")
 
 #"Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage" "Profiling"
 
 set ( CMAKE_CXX_FLAGS_PROFILE "-pg -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C++ compiler during profile builds." FORCE 
+    "Flags used by the C++ compiler during profile builds." FORCE
 )
 
 set ( CMAKE_C_FLAGS_PROFILE "-pg -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C compiler during profile builds." FORCE 
+    "Flags used by the C compiler during profile builds." FORCE
 )
 
 set ( CMAKE_EXE_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used for linking binaries during profile builds." FORCE 
+    "Flags used for linking binaries during profile builds." FORCE
 )
 
 set ( CMAKE_MODULE_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used for linking binaries during profile builds." FORCE 
+    "Flags used for linking binaries during profile builds." FORCE
 )
 
 set ( CMAKE_SHARED_LINKER_FLAGS_PROFILE "-pg" CACHE STRING
-    "Flags used by the shared libraries linker during profile builds." FORCE 
+    "Flags used by the shared libraries linker during profile builds." FORCE
 )
 
-  set ( CMAKE_CXX_FLAGS_COVERAGE "--coverage -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C++ compiler during coverage builds." FORCE 
+# CMake has per build type compiler and linker flags. If 'Coverage' is
+# chosen, the flags below are automatically inserted into CMAKE_C_FLAGS.
+#
+# Any optimizations are disabled to ensure coverage results are correct.
+# See https://gcc.gnu.org/onlinedocs/gcc/Gcov-and-Optimization.html.
+
+set(COVERAGE_FLAGS  "-DNDEBUG -g -O0 --coverage -fprofile-arcs -ftest-coverage")
+
+set ( CMAKE_CXX_FLAGS_COVERAGE "--coverage -O3 -DNDEBUG" CACHE STRING
+    "Flags used by the C++ compiler during coverage builds." FORCE
 )
 
 set ( CMAKE_C_FLAGS_COVERAGE "--coverage -O3 -DNDEBUG" CACHE STRING
-    "Flags used by the C compiler during coverage builds." FORCE 
+    "Flags used by the C compiler during coverage builds." FORCE
 )
 
 set ( CMAKE_EXE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
-    "Flags used for linking binaries during coverage builds." FORCE 
+    "Flags used for linking binaries during coverage builds." FORCE
 )
 
-set ( CMAKE_MODULE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING 
-   "Flags used for linking binaries during coverage builds."  FORCE 
+set ( CMAKE_MODULE_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
+   "Flags used for linking binaries during coverage builds."  FORCE
 )
 
 set ( CMAKE_SHARED_LINKER_FLAGS_COVERAGE "--coverage" CACHE STRING
-    "Flags used by the shared libraries linker during coverage builds." FORCE 
+    "Flags used by the shared libraries linker during coverage builds." FORCE
 )
 
 MARK_AS_ADVANCED(
@@ -105,10 +113,10 @@ MARK_AS_ADVANCED(
     CMAKE_C_FLAGS_PROFILE
     CMAKE_EXE_LINKER_FLAGS_PROFILE
     CMAKE_MODULE_LINKER_FLAGS_PROFILE
-    CMAKE_SHARED_LINKER_FLAGS_PROFILE 
+    CMAKE_SHARED_LINKER_FLAGS_PROFILE
     CMAKE_CXX_FLAGS_COVERAGE
     CMAKE_C_FLAGS_COVERAGE
     CMAKE_EXE_LINKER_FLAGS_COVERAGE
     CMAKE_MODULE_LINKER_FLAGS_COVERAGE
-    CMAKE_SHARED_LINKER_FLAGS_COVERAGE 
+    CMAKE_SHARED_LINKER_FLAGS_COVERAGE
 )

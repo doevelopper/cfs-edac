@@ -138,15 +138,14 @@ namespace cfs::edac
 
     class CFS_EDAC_MAIN_EXPORT Exception : public std::exception
     {
-
-        struct Mode 
-        { 
-            enum _v 
-            { 
+        struct Mode
+        {
+            enum _v
+            {
                 Ignore,
                 Throw,
-                Trace 
-            }; 
+                Trace
+            };
         };
 
         /*!
