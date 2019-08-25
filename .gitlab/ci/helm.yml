@@ -1,4 +1,4 @@
-#       cfs-com/.gitlab-ci.yml
+#         cfs-com/.gitlab/ci/globals.yml
 #
 #               Copyright (c) 2014-2018 A.H.L
 #
@@ -21,27 +21,38 @@
 #        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 #        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# sudo usermod -a -G sudo gitlab-runner
-# sudo visudo or sudo vi /etc/sudoers
-# %gitlab-runner ALL=(ALL) NOPASSWD: ALL # All members of gitlab-runner to run sudo w/o pwd
-# gitlab-runner ALL=(ALL) NOPASSWD: ALL # run sudo w/o password
-# gitlab-runner ALL=(ALL) NOPASSWD: /usr/bin/apt
+image: docker:git
+
+variables:
+  HELM_CHART_NAME: ship
+  HELM_REPO_NAME: maven.dist.acme
+  USERNAME: $MAVEN_REPO_USER
+  PASSWORD: $MAVEN_REPO_PASS
+  AUTH: $MAVEN_REPO_USER:$MAVEN_REPO_PASS
+
+services:
+  - docker:dind
 
 stages:
-    - Intro
-    - Configure build
-    - Build sources
-    - Build test sources
-    - Unit testing
-    - Package artifacts
-    - Integration Test
-    - Quality assurance
-    - Code review
-    - Install to local staging repository
-    - web site generation
-    - Deploy artifacts to staging repositories
-    - Clean local artifacts
-    - Outro
+  - deploy
 
-include:
-    - local: .gitlab/ci/globals.yml
+before_script:
+  - mkdir -p .helm_config/plugins
+  #- git clone $HELM_NEXUS_PUSH .helm_config/plugins/helm-nexus-push
+  - docker login -u $DOCKER_REPO_USER -p $DOCKER_REPO_PASS $DOCKER_REPO
+  - alias helm="docker run -e HTTP_PROXY -e HTTPS_PROXY -e USERNAME -e PASSWORD -e AUTH -i -v $CI_PROJECT_DIR:/root/$HELM_CHART_NAME -v $CI_PROJECT_DIR/.helm_config:/root/.helm $DOCKER_REPO/helm:2.11.0"
+
+deploy-helm:
+  image: docker:git
+  stage: deploy
+  script:
+    # we need to do this bullshit because of senseless helm linter
+    # https://github.com/helm/helm/issues/1979
+    # already fixed in version 3, we dont use it yet because of ...
+    # - cd .. && mv $CI_PROJECT_NAME $HELM_CHART_NAME && cd $HELM_CHART_NAME
+    - helm init --client-only
+    - helm repo add $HELM_REPO_NAME $HELM_REPO
+    - helm plugin install --version master $HELM_NEXUS_PUSH
+    - helm nexus-push $HELM_REPO_NAME /root/$HELM_CHART_NAME
+  only:
+    - master

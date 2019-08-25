@@ -1,0 +1,188 @@
+#         cfs-com/.gitlab/ci/applications-qa.yml
+#
+#               Copyright (c) 2014-2018 A.H.L
+#
+#        Permission is hereby granted, free of charge, to any person obtaining
+#        a copy of this software and associated documentation files (the
+#        "Software"), to deal in the Software without restriction, including
+#        without limitation the rights to use, copy, modify, merge, publish,
+#        distribute, sublicense, and/or sell copies of the Software, and to
+#        permit persons to whom the Software is furnished to do so, subject to
+#        the following conditions:
+#
+#        The above copyright notice and this permission notice shall be
+#        included in all copies or substantial portions of the Software.
+#
+#        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Code duplicate detection:
+    <<: *agent-who
+    stage: Unit testing
+    before_script:
+        - echo  "Static code analysis, copy-paste detection and..."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+Continuous code quality:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+        SONAR_PROJECT_KEY: "<YOUR PROJECT KEY>"  
+        SONAR_PROJECT_NAME: "$CI_PROJECT_NAME"  
+        SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
+    stage: Quality assurance
+    before_script:
+        - echo  "Sonnar code source continuous Inspection."
+    script:
+        - echo "Sonar scanner should be installed"
+#        - sonar-scanner
+#            -Dsonar.source=.
+#            -Dsonar.host.url=$SONAR_URL
+#            -Dsonar.login=$SONAR_LOGIN
+#            -Dsonar.password=$PASSWD
+#            -Dsonar.projectKey="KEY"
+#            -Dsonar.projectVersion=$SONAR_PROJECT_VERSION
+#            -Dsonar.gitlab.projectName=$CI_PROJECT_ID
+#            -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA $CI_BUILD_RE
+#            -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME $CI_BUILD_REF_NAME
+#            -Dsonar.branch=$SONAR_BRANCH
+#            -Dsonar.analysis.mode=$SONAR_ANALYSIS_MODE
+#            -Dsonar.issuesReport.console.enable=true"
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+    only: 
+        - /^features\/.*/
+    except:
+        - tags
+        - schedule
+
+Code coverage:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Source code coverage analysis and statement-by-statement profiling."
+    script:
+        - uname -a
+    # coverage: /lines[.: ]*\d+.\d+%/
+    # coverage: - ^TOTAL.*\s+(\d+\%)$
+    # coverage: '/^TOTAL[\s\d]+\s+(\d+.\d+\%)\s*$/'
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY/x86_64-Linux-GNU_GCC_*qa*.html
+
+Dynamic code analysis:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+Static Code Analysis:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Run Static code analysis."
+#        - >
+#            if [ ! -d "${BUILD_DIRECTORY}" ]; then
+#                wget -q https://scan.coverity.com/download/linux64 --post-data "token=${COVERITY_TOKEN}&project=Zephyr" -O coverity-tool.tgz
+#                tar xvf coverity-tool.tgz;
+#                rm -f coverity-tool.tgz;
+#                mv cov-*  cov-analysis;
+#            fi
+#        - export PATH=$PATH:${PWD}/cov-analysis/bin	
+    script:
+        - uname -a
+#        - cov-configure --comptype gcc --compiler aarch64-linux-gnu-gcc --template
+    after_script:
+        - echo "Done."
+
+Dynamic application security testing:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+Static application security testing:
+    <<: *agent-who
+    stage: Quality assurance
+    allow_failure: true
+    tags: []
+    before_script: []
+    cache: {}
+    dependencies: []
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+Run time application security protection:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+Binary code performance:
+    <<: *agent-who
+    stage: Quality assurance
+    allow_failure: true
+    before_script:
+        - echo  "Run any checks to verify the package is valid and meets quality criteria."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+Publish code quality:
+    <<: *agent-who
+    stage: Quality assurance
+    before_script:
+        - echo  "Publish code Inspection."
+    script:
+        - echo "Sonar scanner should be installed"
+  #      - sonar-scanner
+  #          -Dsonar.source=.
+  #          -Dsonar.host.url=$SONAR_URL
+  #          -Dsonar.login=$SONAR_LOGIN
+  #          -Dsonar.gitlab.project=$CI_PROJECT_ID
+  #          -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA
+  #          -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+  #          -Dsonar.analysis.mode=publish
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+    only: 
+        - /^(master|develop)$/
+    except:
+        - tags
+        - schedules

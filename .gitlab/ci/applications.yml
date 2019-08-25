@@ -1,0 +1,170 @@
+#         cfs-com/.gitlab/ci/applications.yml
+#
+#               Copyright (c) 2014-2018 A.H.L
+#
+#        Permission is hereby granted, free of charge, to any person obtaining
+#        a copy of this software and associated documentation files (the
+#        "Software"), to deal in the Software without restriction, including
+#        without limitation the rights to use, copy, modify, merge, publish,
+#        distribute, sublicense, and/or sell copies of the Software, and to
+#        permit persons to whom the Software is furnished to do so, subject to
+#        the following conditions:
+#
+#        The above copyright notice and this permission notice shall be
+#        included in all copies or substantial portions of the Software.
+#
+#        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+.application-build-container-prerequisities: &application-build-container-prerequisities
+    variables:
+        BUILD_IMAGE:${STAGING_REGISTRY}/${DTR_NAMESPACE}/${CI_PROJECT_NAME}/${DDS_TYPE}:${VERSION}
+    image: ${BUILD_IMAGE}
+    services:
+        - docker:dind
+
+.application-build-prerequisites: &application-build-prerequisites
+    before_script:
+        - echo "Running $CI_JOB_NAME in stage $CI_JOB_STAGE"
+        - echo $CI_PIPELINE_ID
+        - echo ${CMAKE_BUILD_TYPE} in ${BUILD_DIRECTORY}
+        - g++ --version
+        - cmake --version
+        - doxygen --version
+        - uncrustify --version 
+        - make --version 
+        - java -version 
+        - mvn --version 
+        - gradle -v 
+        - bazel version
+
+.variables: &cross-compile
+    CC: ${TRIPLET}-gcc
+    CXX: ${TRIPLET}-g++
+    NM: ${TRIPLET}-nm
+    AR: ${TRIPLET}-ar
+    AS: ${TRIPLET}-as
+    LD: ${TRIPLET}-ld
+    CPP: ${TRIPLET}-cpp
+    OBJDUMP: ${TRIPLET}-objdump
+    OBJCOPY: ${TRIPLET}-objcopy
+    READELF: ${TRIPLET}-readelf
+    RANLIB: ${TRIPLET}-ranlib
+    GDB: ${TRIPLET}-gdb
+    GFORTRAN: ${TRIPLET}-gfortran
+    STRINGS: ${TRIPLET}-strings
+    SIZE: ${TRIPLET}-size
+    GCOV: ${TRIPLET}-gcov
+    STRIP: ${TRIPLET}-strip
+    GPROF: ${TRIPLET}-gprof
+    BUILDTYPE_ARGS: >
+        -Dpython=enabled
+        -Drtsp_server=enabled
+
+# .variables: &build_debug_variables
+#     CMAKE_BUILD_TYPE: "Debug"
+
+# .variables: &build_release_variables
+#     CMAKE_BUILD_TYPE: "Release"
+
+# .variables: &build_coverage_variables
+#     CMAKE_BUILD_TYPE: "Coverage"
+
+# .variables: &build_profiling_variables
+#     CMAKE_BUILD_TYPE: "Profiling"
+
+.aarch32-target-build-template: &aarch32
+    before_script:
+        - export PATH=/opt/arm-linux-gnueabihf/bin/:$PATH
+        - export TRIPLET=arm-linux-gnueabihf
+
+.armv8l-build-template: &armv8l
+    before_script:
+        - export PATH=/opt/armv8l-linux-gnueabihf/bin/:$PATH
+        - export TRIPLET=armv8l-linux-gnueabihf
+
+.aarch64-build-template: &aarch64
+    before_script:
+        - export PATH=/opt/aarch64-linux-gnu/bin/:$PATH
+        - export TRIPLET=aarch64-linux-gnu
+
+.unit-test: &unit-test
+    stage: Unit testing
+    variables: &unit-test-variable
+        DDS_TYPE: OPENDDS
+
+    before_script:
+        - echo ${DDS_TYPE} $BUILD_OPTIONS
+
+    script:
+        - echo ${DDS_TYPE} $BUILD_OPTIONS
+        - > 
+           if [ ! -d "${BUILD_DIRECTORY}" ]; then
+              cmake -E make_directory ${BUILD_DIRECTORY}
+              cmake -E touch ${BUILD_DIRECTORY}/.keepme
+           fi
+
+        - cmake -E chdir ${BUILD_DIRECTORY} cmake -G "${BUILD_GENERATOR}" 
+                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+                -DCMAKE_INSTALL_PREFIX=${BUILD_INSTALL_DIRECTORY}/ ..
+        - cmake --build ${BUILD_DIRECTORY} --target all --clean-first -- -j$NUM_CORES
+    after_script:
+        - echo ${DDS_TYPE} $BUILD_OPTIONS
+
+    dependencies: []
+    only:
+        - master
+        - tags
+
+.build-artefacts-template: &build-artefacts-definition
+    artifacts:
+        name: "${CI_BUILD_REF_NAME}_${CI_BUILD_REF}"
+        when: on_success
+        expire_in: 1 day
+        paths:
+           - "$BUILD_DIRECTORY/*"
+
+.build_template: &build_definition
+    stage: build
+    script:
+        - cmake -E make_directory build
+        - cmake -E chdir build cmake .. -G "${BUILD_GENERATOR}" 
+                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_INSTALL_PREFIX=$CI_PROJECT_NAMESPACE/dds
+        - cmake --build build --target all --clean-first
+        - cmake --build build --target test -- --gtest_output=xml:tests/result.xml
+        - cmake --build build --target install
+    <<: *build-artefacts-definition
+
+.test_template: &test_definition
+    variables:
+        TEST_ARGS: "--iterration 1 --outputpath $BUILD_DIRECTORY --module dummy"
+    stage: Unit testing
+    allow_failure: true
+    before_script:
+        - echo  "Run tests using a suitable unit testing framework. These tests should not require the code be packaged or deployed."    
+    script:
+        - hostname
+#        - make -C $BUILD_DIRECTORY test ARGS="--extra-verbose"
+#        - cmake --build $BUILD_DIRECTORY --target test
+#        - ctest $BUILD_DIRECTORY -V --build-and-test
+#        - cmake --build $BUILD_DIRECTORY --target test -- ARGS="$TEST_ARGS"
+#        - cmake -E env CTEST_OUTPUT_ON_FAILURE=TRUE cmake --build $BUILD_DIRECTORY --target test    
+#        - cmake --build build --target test -- --gtest_output=xml:tests/result.xml
+    after_script:
+        - echo " ${CI_PROJECT_NAME} Unit testing done."
+
+.integration-test-template: &integration-test-definition
+    before_script:
+        - echo  "Process and deploy the package if necessary into an environment where integration tests can be run."
+    script:
+        - uname -a
+#        - cmake --build $BUILD_DIRECTORY --target integration-test
+    after_script:
+        - echo "Done."

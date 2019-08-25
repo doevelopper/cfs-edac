@@ -1,0 +1,269 @@
+#         cfs-com/.gitlab/ci/globals.yml
+#
+#               Copyright (c) 2014-2018 A.H.L
+#
+#        Permission is hereby granted, free of charge, to any person obtaining
+#        a copy of this software and associated documentation files (the
+#        "Software"), to deal in the Software without restriction, including
+#        without limitation the rights to use, copy, modify, merge, publish,
+#        distribute, sublicense, and/or sell copies of the Software, and to
+#        permit persons to whom the Software is furnished to do so, subject to
+#        the following conditions:
+#
+#        The above copyright notice and this permission notice shall be
+#        included in all copies or substantial portions of the Software.
+#
+#        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+.define_config: &triggered_by_api_call
+    only:
+        - triggers
+
+.define_config: &triggered_by_schedules
+    only:
+        - schedules
+
+.Log files: &log_files  [./*.log, ./build/logs/]
+
+# .Build logs: &save_build_logs
+#     artifacts:
+#         name: log
+#         when: always
+#         paths:
+#             <<: *log_file
+
+.Git Untracked files: &save_untracked_files
+    artifacts:
+        name: untracked
+        paths: [$(pwd)]
+        expire_in: 3h45min
+
+.agent-who:
+    retry:
+        max: 1
+        when:
+            - unknown_failure
+            - api_failure
+            - runner_system_failure
+    tags:
+        # - agent-smith
+        # - gitlab-org
+        - docker
+
+.default-cache: &default-cache
+    key: "dind-${CI_BUILD_REF_NAME}_${CI_BUILD_REF}"
+    paths:
+        - ${CI_PROJECT_PATH}/.cache
+
+.agent-who-default-cache:
+    extends: .agent-who
+    cache:
+        <<: *default-cache
+
+# Jobs that only need to pull cache
+.dedicated-pull-cache-job:
+    extends: .agent-who
+    cache:
+        <<: *default-cache
+        policy: pull
+    stage: Unit testing
+
+.only_stable:
+    only:
+        - master
+        - /^release-.*$/
+
+.tumbleweed:
+    only:
+        - develop
+        - /^feature-.*$/
+        - /^hotfix-.*$/
+        - /^bugfix-.*$/
+        - /^bugfix[/]v[0-9.]*$/
+        - /^support-.*$/
+#        - /(develop|feature|bugfix|hotfix)\/?(.*)/
+
+.notify:
+    image: alpine
+    stage: notification
+    cache: {}
+    before_script:
+        - apk update && apk add git curl bash
+    only:
+        - schedules
+    except:
+        variables:
+            - $CI_SLACK_NOTIFY != "true"
+            - $CI_SLACK_WEBHOOK_URL == null
+            - $CI_SLACK_CHANNEL == null
+
+.branch_exceptions:
+    only:
+        - branches
+    except:
+        - coverity_scan
+
+.amd64_variables:
+    variables:
+        IMAGE_ARCH=amd64
+
+.arm64v8_variables:
+    variables:
+        IMAGE_ARCH=arm64v8
+        HOSTCC=aarch64-linux-gnu-gcc
+        HOSTCXX=aarch64-linux-gnu-g++
+        TRIPLET=aarch64-linux-gnu
+        # - export PATH=/opt/aarch64-linux-gnu/bin/:/opt/armv8l-linux-gnueabihf/bin/:$PATH
+
+.pre_shared: &pre_shared
+    before_script:
+        - date
+        - docker version || true
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
+        - echo -e "\033[0;31m****** Starting Gitlab CI-controlled ...******\033[0m"
+        - echo -e "\033[0;31m******...continuous integration...******\033[0m"
+        - echo -e "\033[0;31m******... continuous deployement...******\033[0m"
+        - echo -e "\033[0;31m******... and Continuous Code Quality!******\033[0m"
+        - env | sort
+
+.post_shared: &post_shared
+    after_script:
+        - date
+        - docker version  || true
+        - docker logout docker.io || true
+
+.variables: &common_variables
+#    CI_DEBUG_TRACE: "true"
+#    GIT_SUBMODULE_STRATEGY: "none"
+#    GIT_SUBMODULE_STRATEGY: "recursive"
+#    GIT_STRATEGY: "fetch"
+#    GIT_CHECKOUT: "false"
+    GET_SOURCES_ATTEMPTS: "3"
+    ARTIFACT_DOWNLOAD_ATTEMPTS: "2"
+    GIT_DEPTH: "1"
+    LSB_RELEASE_ID: "$(lsb_release -i 2> /dev/null || echo Distributor ID: Unknown)"
+    LSB_RELEASE_RELEASE: "$(lsb_release -r 2> /dev/null || echo Release: Unknown)"
+    CACHE_KEY: '$(if [[ ! -z ${CI_COMMIT_TAG+x} || "${CI_COMMIT_REF_SLUG}" == "prod" ]]; then echo "${CI_COMMIT_REF_SLUG}"; else echo "not-prod-or-tag"; fi)'
+    STAGING_REGISTRY: "docker.io"
+    DTR_NAMESPACE: $CI_PROJECT_NAMESPACE
+    PROJECT_SOURCE_DIR: "$CI_PROJECT_DIR"
+    PROJECT_NAME: $CI_PROJECT_NAME
+    TAG: $CI_BUILD_REF_NAME
+    ARCH: amd64
+    COMMIT_ID: ${CI_COMMIT_SHA:0:8}
+    CCACHE_BASEDIR: $CI_PROJECT_DIR
+    OS_NAME: $(lsb_release -is) || true
+    OS_VERS_LONG: $(lsb_release -rs | sed -r "s/^([0-9]+).*/\1/") || true
+    BUILD_DATE: $(date +%Y-%m-%d-%H:%M:%S)
+    COMMIT_TIME: $(git show -s --format=%ct $CI_APPLICATION_TAG)
+    DOCKER_TRUSTED_REGISTRY: ${STAGING_REGISTRY}
+
+.dind_hub_variables:
+    variables:
+        <<: *common_variables
+        DOCKER_DIRVER: overlay2
+        DOCKER_HOST: tcp://docker:2376
+        DOCKER_TLS_VERIFY: 1
+        DOCKER_TLS_CERTDIR: "/certs"
+        DOCKER_CERT_PATH: "/certs/client"
+        IMG_IMAGE: ${STAGING_REGISTRY}/${CI_PROJECT_NAMESPACE}/cfs-com
+
+.docker:
+    stage: Build docker image
+    services:
+        - docker:19.03.0-dind
+    extends: .dind_hub_variables
+
+.docker-app-prerequisities:
+    image: ${IMG_IMAGE}-cfs-com:0.0.1
+    extends: .docker
+    # only:
+        # refs:
+            # - branches
+        # changes:
+            # - src/main/resources/docker/${ARCH}/Dockerfile
+
+.use-docker-container:
+    extends:
+        - .agent-who
+        - .docker-app-prerequisities
+    before_script:
+        - echo "Performing (${GOAL}) on (${MODULE}) (${CI_JOB_STAGE}[${CI_JOB_NAME}])"
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin docker.io
+    script:
+
+    after_script:
+        - docker logout ${DOCKER_TRUSTED_REGISTRY} || true
+
+.deploy_functions: &deploy_functions |
+    [[ "$TRACE" ]] && set -x
+    skipvar="SKIP_$(echo ${CI_JOB_STAGE} | tr 'a-z' 'A-Z')"
+    [ "$(printenv $skipvar)" ] && echo "Skipping stage!" && exit 0
+
+# before_script:
+#   - *deploy_functions
+
+
+#  Caching configurations
+
+.push-cache: &push-cache
+    cache:
+        <<: *default-cache
+    policy: push
+
+.pull-cache: &pull-cache
+    cache:
+        <<: *default-cache
+    policy: pull
+
+.per job caching:
+    cache:
+        key: "$CI_BUILD_NAME"
+        untracked: true
+
+.per branch caching:
+    cache:
+        key: "$CI_BUILD_REF_NAME"
+        untracked: true
+
+.per job and per branch caching:
+    cache:
+        key: "$CI_BUILD_STAGE/$CI_BUILD_REF_NAME"
+        untracked: true
+
+.weekly build:
+    only:
+        variables:
+            - $SCHEDULE_TYPE == "weekly"
+
+Intro CI:
+    stage: Intro
+    extends:
+        - .docker-hub-dind
+    <<: *pre_shared
+    script:
+        - echo '...'
+
+Outro CI:
+    stage: Outro
+    extends:
+        - .docker-hub-dind
+    <<: *post_shared
+    script:
+        - echo '...'
+
+# script:
+#    - if [ "$CXX" == "clang++" ];then cmake -G "Unix Makefiles" -DENABLE_TESTING=TRUE -Wno-dev " ;fi
+#    - if [ "$CXX" == "g++" ];then cmake -G "Unix Makefiles" -Wno-dev .. ;fi
+#    - if [ "$CXX" == "g++" ];then cmake -GNinja -DENABLE_TESTING=TRUE ;fi
+    # - cmake -E chdir build cmake -DENABLE_EXAMPLES=on -DCMAKE_INSTALL_PREFIX=/usr/ ..
+    # - cmake --build build
+    # - cmake --build build --target test
+    # - cmake --build build --target integration-test
+    # - cmake --build build --target install

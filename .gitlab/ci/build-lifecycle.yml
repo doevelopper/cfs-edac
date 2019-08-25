@@ -1,0 +1,755 @@
+#         cfs-com/.gitlab/ci/build-lifecycle.yml
+#
+#               Copyright (c) 2014-2018 A.H.L
+#
+#        Permission is hereby granted, free of charge, to any person obtaining
+#        a copy of this software and associated documentation files (the
+#        "Software"), to deal in the Software without restriction, including
+#        without limitation the rights to use, copy, modify, merge, publish,
+#        distribute, sublicense, and/or sell copies of the Software, and to
+#        permit persons to whom the Software is furnished to do so, subject to
+#        the following conditions:
+#
+#        The above copyright notice and this permission notice shall be
+#        included in all copies or substantial portions of the Software.
+#
+#        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+.Build procedure: &build_procedure
+    - cmake -E cmake_echo_color --cyan "$BUILD_DIRECTORY"
+    - cmake -E make_directory ${BUILD_DIRECTORY}
+    - cmake -E chdir $BUILD_DIRECTORY cmake -G "Unix Makefiles" 
+            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+            -DCMAKE_INSTALL_PREFIX=${CI_PROJECT_NAME}_install/ ..
+
+validate:
+    <<: *agent-who 
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: configure
+    before_script:
+        - echo $CI_PIPELINE_ID
+        - echo "Validate ${CI_PROJECT_NAME} is correct and all necessary information is available."
+    script:
+       - > 
+           if [ ! -d "${BUILD_DIRECTORY}" ]; then
+               cmake -E make_directory ${BUILD_DIRECTORY}
+           fi
+    after_script:
+        - echo "${BUILD_DIRECTORY} directory created"
+    artifacts:
+        name: "${CI_BUILD_NAME}"
+        expire_in: 1 hour
+        paths:
+            - $BUILD_DIRECTORY
+
+initialize:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: configure
+    dependencies:
+        - validate
+    before_script:
+        - echo $CI_PIPELINE_ID
+        - echo "Initialize ${CI_PROJECT_NAME} build state, e.g. set properties or create directories."
+    script:
+        - uname -a
+        - cmake -E cmake_echo_color --cyan "$BUILD_DIRECTORY"
+        - cmake -E make_directory ${BUILD_DIRECTORY}
+        - cmake -E chdir $BUILD_DIRECTORY cmake -G "Unix Makefiles" 
+                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} 
+                -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+                -DCMAKE_INSTALL_PREFIX=$HOME/${CI_PROJECT_NAME}_install/ ..
+    after_script:
+        - echo "Project initialization done"
+    artifacts:
+        name: "${CI_BUILD_NAME}" 
+        expire_in: 1 hour 
+        paths:
+            - $BUILD_DIRECTORY
+
+generate-sources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: configure
+    before_script:
+        - echo "Generate any source code for inclusion in compilation."
+    script:
+        - uname -a
+    after_script:
+        - echo "${CI_PROJECT_NAME} generation done"
+
+process-sources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: configure
+    before_script:
+        - echo  "Process the source code, for example to filter any values, prettying..." 
+    script:
+        - uname -a
+    after_script:
+        - echo "Sources processed done"
+
+generate-resources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: configure
+    before_script:
+        - echo  "Generate ${CI_PROJECT_NAME} resources for inclusion in the package."
+    script:
+        - uname -a
+    after_script:
+        - echo "${CI_PROJECT_NAME} Resources generation done"
+
+process-resources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage:  configure
+    before_script:
+        - echo  "Copy and process the resources into the destination directory, ready for packaging."
+    script:
+        - uname -a
+    after_script:
+        - echo "Resources process done"
+
+compile:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: compile
+    before_script:
+        - echo  "Compile the source code of the project."
+    script:
+        - hostname
+#        - cmake --build $BUILD_DIRECTORY --target all --clean-first -- -j$NUM_CORES
+#        - make -C $BUILD_DIRECTORY -j$NUM_CORES
+#    dependencies:
+#        - prettify-sources
+    after_script:
+        - echo "Compile the source code done."
+    artifacts:
+        name: "${CI_BUILD_REF_NAME}_${CI_BUILD_REF}"
+        expire_in: 1 day
+        paths:
+            - $BUILD_DIRECTORY/x86_64-Linux-GNU_GCC_*
+
+process-compile:
+    <<: *agent-who 
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: compile
+    before_script:
+        - echo  "Post-process the generated files from compilation."
+    script:
+        - uname -a
+    after_script:
+        - echo "Post-process done."
+
+generate-test-sources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Generate any test source code for inclusion in compilation."
+    script:
+        - uname -a
+    after_script:
+        - echo "Test source code for inclusion in compilation done."
+
+process-test-sources:
+    <<: *agent-who 
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Process the test source code, for example to filter any values."
+    script:
+        - uname -a
+    after_script:
+        - echo "Test source code process done."
+
+generate-test-resources:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Create resources for testing."
+    script:
+        - uname -a
+    after_script:
+        - echo "Resources for testing done."
+
+process-test-resources:
+    <<: *agent-who 
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Copy and process the resources into the test destination directory."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+test-compile:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Compile the test source code into the test destination directory."
+    script:
+        - uname -a
+    dependencies:
+        - compile
+    after_script:
+        - echo "Test copilation done."
+
+process-test:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: unit-testing
+    before_script:
+        - echo  "Post-process the generated files from test compilation."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+unit-testing:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+        TEST_ARGS: "--iterration 1 --outputpath $BUILD_DIRECTORY --module dummy"
+    stage: unit-testing
+    before_script:
+        - echo  "Run tests using a suitable unit testing framework. These tests should not require the code be packaged or deployed."
+    script:
+        - hostname
+#        - make -C $BUILD_DIRECTORY test ARGS="--extra-verbose"
+#        - cmake --build $BUILD_DIRECTORY --target test
+#        - ctest $BUILD_DIRECTORY -V --build-and-test
+#        - cmake --build $BUILD_DIRECTORY --target test -- ARGS="$TEST_ARGS"
+#        - cmake -E env CTEST_OUTPUT_ON_FAILURE=TRUE cmake --build $BUILD_DIRECTORY --target test
+    # dependencies:
+        # - test-compile
+    after_script:
+        - echo " ${CI_PROJECT_NAME} Unit testing done."
+
+prepare-package:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: package
+    before_script:
+        - echo  "Perform any operations necessary to prepare a package before the actual packaging."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+package:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: package
+    before_script:
+        - echo  "Take the compiled code and package it in its distributable format, such as a ZIP."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    artifacts:
+        name: "$CI_JOB_STAGE-$CI_COMMIT_REF_NAME"
+        paths:
+            - $BUILD_DIRECTORY
+
+pre-integration-test:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: integration-testing
+    before_script:
+        - echo  "Perform actions required before integration tests are executed. This may involve things such as setting up the required environment."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+integration-test:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: integration-testing
+    before_script:
+        - echo  "Process and deploy the package if necessary into an environment where integration tests can be run."
+    script:
+        - uname -a
+#        - cmake --build $BUILD_DIRECTORY --target integration-test
+    dependencies:
+        - test-compile
+    after_script:
+        - echo "Done."
+
+post-integration-test:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: integration-testing
+    before_script:
+        - echo  "Perform actions required after integration tests have been executed. This may including cleaning up the environment."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+static-code-analysis:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Run Static code analysis."
+#        - >
+#            if [ ! -d "${BUILD_DIRECTORY}" ]; then
+#                wget -q https://scan.coverity.com/download/linux64 --post-data "token=${COVERITY_TOKEN}&project=Zephyr" -O coverity-tool.tgz
+#                tar xvf coverity-tool.tgz;
+#                rm -f coverity-tool.tgz;
+#                mv cov-*  cov-analysis;
+#            fi
+#        - export PATH=$PATH:${PWD}/cov-analysis/bin	
+    script:
+        - uname -a
+#        - cov-configure --comptype gcc --compiler aarch64-linux-gnu-gcc --template
+    after_script:
+        - echo "Done."
+
+dynamic-code-analysis:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+source-code-linter:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Check the C++ source code to analyze it for syntax errors and other faults."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+source-code-coverage:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Source code coverage analysis and statement-by-statement profiling."
+    script:
+        - uname -a
+    # coverage: /lines[.: ]*\d+.\d+%/
+    # coverage: - ^TOTAL.*\s+(\d+\%)$
+    # coverage: '/^TOTAL[\s\d]+\s+(\d+.\d+\%)\s*$/'
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY/x86_64-Linux-GNU_GCC_*qa*.html
+
+code-duplicate-detection:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Static code analysis, copy-paste detection and..."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+
+continuous-code-quality:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+        SONAR_PROJECT_KEY: "<YOUR PROJECT KEY>"  
+        SONAR_PROJECT_NAME: "$CI_PROJECT_NAME"  
+        SONAR_PROJECT_VERSION: "$CI_BUILD_ID"
+    stage: verify
+    before_script:
+        - echo  "Sonnar code source continuous Inspection."
+    script:
+        - echo "Sonar scanner should be installed"
+#        - sonar-scanner
+#            -Dsonar.source=.
+#            -Dsonar.host.url=$SONAR_URL
+#            -Dsonar.login=$SONAR_LOGIN
+#            -Dsonar.password=$PASSWD
+#            -Dsonar.projectKey="KEY"
+#            -Dsonar.projectVersion=$SONAR_PROJECT_VERSION
+#            -Dsonar.gitlab.projectName=$CI_PROJECT_ID
+#            -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA $CI_BUILD_RE
+#            -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME $CI_BUILD_REF_NAME
+#            -Dsonar.branch=$SONAR_BRANCH
+#            -Dsonar.analysis.mode=$SONAR_ANALYSIS_MODE
+#            -Dsonar.issuesReport.console.enable=true"
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+    only: 
+        - /^features\/.*/
+    except:
+        - tags
+        - schedule
+
+publish-code-quality:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: deploy
+    before_script:
+        - echo  "Publish code Inspection."
+    script:
+        - echo "Sonar scanner should be installed"
+  #      - sonar-scanner
+  #          -Dsonar.source=.
+  #          -Dsonar.host.url=$SONAR_URL
+  #          -Dsonar.login=$SONAR_LOGIN
+  #          -Dsonar.gitlab.project=$CI_PROJECT_ID
+  #          -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA
+  #          -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME
+  #          -Dsonar.analysis.mode=publish
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+    only: 
+        - /^(master|develop)$/
+    except:
+        - tags
+        - schedules
+
+dynamic-application-security-testing:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+static-application-security-testing:
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    allow_failure: true
+    tags: []
+    before_script: []
+    cache: {}
+    dependencies: []
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+run-time-application-security-protection:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Run dynamic code analysis."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+binary-code-performance:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    allow_failure: true
+    before_script:
+        - echo  "Run any checks to verify the package is valid and meets quality criteria."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+
+verify:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: verify
+    before_script:
+        - echo  "Run any checks to verify the package is valid and meets quality criteria."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "$CI_PROJECT_NAME Verification done! (${CI_RUNNER_ID})"
+
+install:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: install
+    before_script:
+        - echo "Install the package into the local repository, for use as a dependency in other projects locally."
+    script:
+        - uname -a
+        - make --version
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+        - $BUILD_DIRECTORY
+
+pre-site:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: site
+    when: always
+    before_script:
+        - echo  "Execute processes needed prior to the actual project site generation."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    only:
+        - master
+    except:
+        - schedules
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+site:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: site
+    before_script:
+        - echo  "Generate the project's site documentation."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    only:
+        - master
+    except:
+        - schedules
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+post-site:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: site
+    before_script:
+        - echo  "Execute processes needed to finalize the site generation, and to prepare for site deployment."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    only:
+        - master
+    except:
+        - schedules
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+site-deploy:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: deploy
+    before_script:
+        - echo  "Deploy the generated site documentation to the specified web server."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    only:
+        - master
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+pre-clean:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: clean
+    before_script:
+        - echo  "Execute processes needed prior to the actual project cleaning."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+clean:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: clean
+    before_script:
+        - echo "Remove all files generated by the previous build."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+post-clean:
+    <<: *agent-who
+    variables:
+        JOB_DATE: "date +%Y-%m-%d-%H:%M:%S"
+    stage: clean
+    before_script:
+        - echo "Execute processes needed to finalize the project cleaning."
+    script:
+        - uname -a
+    after_script:
+        - echo "Done."
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+end-to-end:
+    stage: deploy
+    script:
+        - echo "Invoking end to end  ($CI_JOB_NAME in $CI_JOB_STAGE)"
+    environment:
+        name: qa/$CI_COMMIT_REF_NAME
+        url: https://dashboard.acme/status?id=staging/
+    only:
+        - /release\/.+/
+        - /hotfix\/.+/
+
+deploy-to-staging:
+    stage: deploy
+    before_script:
+        - echo  "Integration or release environment, copies the final package to the remote repository for sharing with other developers and projects."
+        - echo "Deploy to $ENVS ($CI_JOB_NAME in $CI_JOB_STAGE)"
+    script:
+        - cicd/deploy $CI_ENVIRONMENT_NAME
+    environment:
+        name: staging
+        url:  https://dashboard.acme/status?id=staging/
+    when: manual
+    only:
+        # executes the build on every push to the branch: 
+        - master
+    except:
+        - branches
+    artifacts:
+        expire_in: 1d
+        paths:
+            - "*.zip"
+            - "*.tgz"
+
+deploy-to-production:
+    stage: deploy
+    before_script:
+        - echo "Deploy to $ENVS ($CI_JOB_NAME in $CI_JOB_STAGE)"
+    script:
+        - cicd/deploy $CI_ENVIRONMENT_NAME
+    environment:
+        name: production
+        url:  https://dashboard.acme/status?id=production
+    when: manual
+    only:
+        # executes the build on every push to the branch: 
+        - master
+        - tags
+        - /^v\d+\.\d+\.\d+$/
+        - /^v\d+\.\d+\.\d+([abc]\d*)?$/
+        - /^v\d+\.\d+\.\d+(?:(?:(?:\+|\.)?[a-zA-Z0-9]+)*)?$/
+        - /^v\d+\.\d+\.\d+(?:-(?:beta|rc)(?:(?:(?:\+|\.)?[a-zA-Z0-9]+)*)?)?$/
+    except:
+        - branches
+    artifacts:
+        expire_in: 1d
+        paths:
+            - "*.zip"
+            - "*.tgz"
+
+deploy-review:
+    stage: deploy
+    tags:
+        - dds-ci
+    allow_failure: false
+    script:
+        - echo "Deploy a review app"
+    environment:
+        name: review/$CI_COMMIT_REF_NAME
+        url: https://$CI_ENVIRONMENT_SLUG.review.acme
+    only:
+        - branches
+    except:
+        - master
+        - /^release-.*/
+        - /^production-.*/
+    artifacts:
+        paths:
+            - $BUILD_DIRECTORY
+
+End to end:
+    stage: Clean local artifacts
+    script:
+        - echo "Invoking end to end  ($CI_JOB_NAME in $CI_JOB_STAGE)"
+    environment:
+        name: qa/$CI_COMMIT_REF_NAME
+        url: https://dashboard.acme/status?id=staging/
+    when: manual   
+    only:
+        - /release\/.+/
+        - /hotfix\/.+/
+

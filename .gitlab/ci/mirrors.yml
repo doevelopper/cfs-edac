@@ -1,4 +1,4 @@
-#       cfs-com/.gitlab-ci.yml
+#         cfs-com/.gitlab/ci/mirros.yml
 #
 #               Copyright (c) 2014-2018 A.H.L
 #
@@ -21,27 +21,22 @@
 #        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 #        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-# sudo usermod -a -G sudo gitlab-runner
-# sudo visudo or sudo vi /etc/sudoers
-# %gitlab-runner ALL=(ALL) NOPASSWD: ALL # All members of gitlab-runner to run sudo w/o pwd
-# gitlab-runner ALL=(ALL) NOPASSWD: ALL # run sudo w/o password
-# gitlab-runner ALL=(ALL) NOPASSWD: /usr/bin/apt
-
-stages:
-    - Intro
-    - Configure build
-    - Build sources
-    - Build test sources
-    - Unit testing
-    - Package artifacts
-    - Integration Test
-    - Quality assurance
-    - Code review
-    - Install to local staging repository
-    - web site generation
-    - Deploy artifacts to staging repositories
-    - Clean local artifacts
-    - Outro
-
-include:
-    - local: .gitlab/ci/globals.yml
+Github Mirror:
+    stage: deploy
+    tags:
+        - deploy
+    script:
+      - git push --mirror https://$GITHUB_USERNAME:$GITHUB_PASSWORD@$GITHUB_REPO
+      - git push https://$GITHUB_USERNAME:$GITHUB_PASSWORD@$GITHUB_REPO HEAD:master
+ 
+Bitbucket Mirror:
+    stage: deploy
+    tags:
+        - deploy
+    script:
+        - mkdir -p ~/.ssh
+        - echo "$BB_SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+        - chmod 600 ~/.ssh/id_rsa
+        - ssh-keyscan -H 'bitbucket.org' >> ~/.ssh/known_hosts
+        - git push --mirror git@$BITBUCKET_REPO
+        - git push git@$BITBUCKET_REPO HEAD:master
