@@ -9,6 +9,7 @@
 
 namespace cfs::edac::test
 {
+
     class ExceptionTest : public ::testing::Test
     {
         public:
@@ -27,6 +28,7 @@ namespace cfs::edac::test
 
 //            Exception * m_test_exception;
     };
+
 }
 #endif
 

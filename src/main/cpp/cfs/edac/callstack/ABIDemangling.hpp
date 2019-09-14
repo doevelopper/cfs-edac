@@ -15,6 +15,7 @@
 
 namespace cfs::edac::callstack
 {
+
     class ABIDemangling
     {
         public:
@@ -47,6 +48,7 @@ namespace cfs::edac::callstack
 
         private:
     };
+
 }
 #endif
 

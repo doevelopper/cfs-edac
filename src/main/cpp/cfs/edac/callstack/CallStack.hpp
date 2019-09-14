@@ -10,6 +10,7 @@
 
 namespace cfs::edac::callstack
 {
+
     class CallStackDataStructure;
 
     class CallStack
@@ -33,6 +34,7 @@ namespace cfs::edac::callstack
 
 //std::vector < CallStackDataStructure > m_stackData;
     };
+
 }
 #endif
 

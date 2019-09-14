@@ -10,6 +10,7 @@
 
 namespace cfs::edac
 {
+
     template< class ParamType >
     class IsErrorActive
     {
@@ -33,6 +34,7 @@ namespace cfs::edac
             ParamType m_value;
             bool m_isValid;
     };
+
 }
 
 #endif

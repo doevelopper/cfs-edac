@@ -9,12 +9,15 @@
 class StackExceptionTest : public ::testing::Test
 {
     public:
+
         StackExceptionTest();
         virtual ~StackExceptionTest();
 
         virtual void SetUp();
         virtual void TearDown ();
+
     protected:
+
 /*!
  * @brief Object that is about to be tested.
  */
@@ -25,7 +28,6 @@ class StackExceptionTest : public ::testing::Test
         static log4cxx::LoggerPtr logger;
 
     private:
-
 };
 
 #endif

@@ -32,6 +32,7 @@
 
 namespace cfs::utils
 {
+
 /*!
  * @brief Extract the length of a static array
  *
@@ -44,6 +45,7 @@ namespace cfs::utils
     {
         return N;
     }
+
 }
 
 #endif

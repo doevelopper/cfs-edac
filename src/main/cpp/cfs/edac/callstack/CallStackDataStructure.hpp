@@ -7,6 +7,7 @@
 
 namespace cfs::edac::callstack
 {
+
     class CallStackDataStructure
     {
         public:
@@ -26,6 +27,7 @@ namespace cfs::edac::callstack
             void * m_address;           // memory address of stack pointer (raw)
             void * m_address2;          // memory address of stack pointer (from dladdr; data segment offset subtracted)
     };
+
 }
 
 std::ostream & operator << ( std::ostream & out, const CallStackDataStructure & ent );

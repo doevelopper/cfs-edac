@@ -9,6 +9,7 @@
 
 namespace cfs::edac::test
 {
+
     class Test
     {
         public:
@@ -27,6 +28,7 @@ namespace cfs::edac::test
             std::string m_testSuites;
             unsigned int m_numberOfTestIteration;
     };
+
 }
 
 #endif

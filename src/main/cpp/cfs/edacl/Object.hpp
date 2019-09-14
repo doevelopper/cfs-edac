@@ -5,6 +5,7 @@
 
 namespace cfs::edacl
 {
+
 #include <utility>
 #include <typeinfo>
     class Object
@@ -113,6 +114,7 @@ namespace cfs::edacl
 
             None * none;
     };
+
 }
 #endif
 

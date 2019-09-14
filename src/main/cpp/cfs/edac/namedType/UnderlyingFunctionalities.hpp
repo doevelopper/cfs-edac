@@ -12,6 +12,7 @@
 
 namespace cfs::edac::namedType
 {
+
     template <typename T>
     struct Incrementable : Crtp<T, Incrementable>
     {
@@ -165,6 +166,7 @@ namespace cfs::edac::namedType
 
     namespace   //std
     {
+
         template <typename T, typename Parameter, template<typename> class ... Skills>
         struct hash<cfs : edac : namedType::NamedType<T, Parameter, Skills...> >
         {
@@ -175,7 +177,9 @@ namespace cfs::edac::namedType
                 return std::hash<T>()(x.get());
             }
         };
+
     }
+
 }
 
 #endif

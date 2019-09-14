@@ -9,6 +9,7 @@
 class StackTest : public ::testing::Test
 {
     public:
+
         StackTest();
         virtual ~StackTest();
 
@@ -16,6 +17,7 @@ class StackTest : public ::testing::Test
         virtual void TearDown ();
 
     protected:
+
 /*!
  * @brief Object that is about to be tested.
  */
@@ -24,8 +26,8 @@ class StackTest : public ::testing::Test
  * @brief Class logger.
  */
         static log4cxx::LoggerPtr logger;
-    private:
 
+    private:
 };
 
 #endif

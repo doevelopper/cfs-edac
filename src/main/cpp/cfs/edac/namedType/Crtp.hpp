@@ -5,6 +5,7 @@
 
 namespace cfs::edac::namedType
 {
+
     template <typename T, template<typename> class crtpType>
     struct Crtp
     {
@@ -18,6 +19,7 @@ namespace cfs::edac::namedType
             return static_cast<T const&>(*this);
         }
     };
+
 }
 
 #endif

@@ -5,6 +5,7 @@
 
 namespace cfs::edac::namedType
 {
+
 /*
  *      @exemple
  *          using SeatId = StrongType<int, struct SeatIdTag>;
@@ -49,5 +50,6 @@ namespace cfs::edac::namedType
 
             T m_value;
     };
+
 }
 

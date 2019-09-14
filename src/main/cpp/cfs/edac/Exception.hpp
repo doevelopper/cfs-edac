@@ -17,6 +17,7 @@
 
 namespace cfs::edac
 {
+
     class CFS_EDAC_MAIN_EXPORT NotImplemented : public std::logic_error
     {
         public:
@@ -325,6 +326,7 @@ namespace cfs::edac
     {
         throw Exception( msg );
     }
+
 }
 
 #endif

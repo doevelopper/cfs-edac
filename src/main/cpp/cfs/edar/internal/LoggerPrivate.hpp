@@ -40,6 +40,7 @@
 
 namespace cfs::edac::internal
 {
+
     class LoggerPrivate
     {
         enum class Level : std::uint32_t
@@ -128,6 +129,7 @@ namespace cfs::edac::internal
 //log4cxx::LoggerPtr m_logger;
             static std::string m_loggerConfigLocation;
     };
+
 }
 #endif
 

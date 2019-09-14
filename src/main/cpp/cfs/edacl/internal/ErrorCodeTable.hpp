@@ -13,6 +13,7 @@
 
 namespace cfs::edacl::internal
 {
+
     class ErrorCodeTable//: public std::map<int, std::pair<const char*, const char*> >
     {
         public:
@@ -45,6 +46,7 @@ namespace cfs::edacl::internal
                 //throw(errno);
             }
     };
+
 }
 #endif
 

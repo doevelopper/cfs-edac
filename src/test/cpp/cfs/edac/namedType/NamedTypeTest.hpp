@@ -17,6 +17,7 @@
 
 namespace cfs::edac::namedtype::test
 {
+
     template<typename T>
     decltype(auto) tee(T&& value)
     {
@@ -73,6 +74,7 @@ namespace cfs::edac::namedtype::test
             void Setup() override;
             void TearDown override;
     };
+
 }
 #endif
 

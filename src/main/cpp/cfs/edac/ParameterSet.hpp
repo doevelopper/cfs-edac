@@ -12,6 +12,7 @@
 
 namespace cfs::edac
 {
+
     class ParameterSet
     {
         public:
@@ -78,6 +79,7 @@ namespace cfs::edac
             std::map<std::string, std::string> m_values;
             std::vector<std::string> m_params;
     }
+
 }
 
 #endif

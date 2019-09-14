@@ -8,6 +8,7 @@
 
 namespace cfs::edac::namedType::internal
 {
+
     template<typename T>
     using IsNotReference = typename std::enable_if<!std::is_reference<T>::value, void>::type;
 
@@ -70,6 +71,7 @@ namespace cfs::edac::namedType::internal
     {
         return StrongType<T>(value);
     }
+
 }
 
 #endif

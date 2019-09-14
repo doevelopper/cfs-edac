@@ -117,6 +117,7 @@
 
 namespace cfs::edac::internal
 {
+
     using HRESULT = std::uint32_t;
     using status_t = std::uint32_t;
     HRESULT EDAC_SUCCESS = static_cast<std::uint32_t>( 0ULL );
@@ -375,9 +376,11 @@ namespace cfs::edac::internal
 
         private:
     };
+
 }
 namespace std
 {
+
 // Tell the C++ 11 STL metaprogramming that enum edac::errc::edacErrc
 // is registered with the standard error code system
     template <>
@@ -413,6 +416,7 @@ namespace std
    struct is_error_condition_enum<cfs::com::Severity> : std::true_type
    {};
  */
+
 }
 #endif
 

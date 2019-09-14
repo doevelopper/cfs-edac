@@ -8,6 +8,7 @@
 namespace cfs::edac::callstack
 
 {
+
     class ABIDemanglingTest : public ::testing::Test
     {
         public:
@@ -22,6 +23,7 @@ namespace cfs::edac::callstack
 
         private:
     };
+
 }
 #endif
 

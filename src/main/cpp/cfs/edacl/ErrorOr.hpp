@@ -19,6 +19,7 @@
 
 namespace cfs::edac
 {
+
     template<std::size_t Alignment, std::size_t Size>
     struct AlignedCharArray;
 
@@ -419,6 +420,7 @@ namespace cfs::edac
     {
         return Err.getError() == Code;
     }
+
 }
 #endif
 

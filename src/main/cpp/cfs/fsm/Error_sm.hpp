@@ -7,6 +7,7 @@
 
 namespace cfs::fsm
 {
+
     namespace sml = boost::sml;
 
     class Error_SM
@@ -18,6 +19,7 @@ namespace cfs::fsm
                 //return make_transition_table(
             }
     }
+
 }
 
 #endif

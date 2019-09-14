@@ -31,6 +31,7 @@
 
 namespace cfs::edac
 {
+
     class cfs::edac::internal::LoggerPrivate;
 
     class Logger
@@ -64,6 +65,7 @@ namespace cfs::edac
 // DECLARE_PRIVATE( Logger )
 // DISABLE_COPY( Logger )
     };
+
 }
 #endif
 

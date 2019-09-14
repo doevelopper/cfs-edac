@@ -5,6 +5,7 @@
 
 namespace cfs::edac
 {
+
     template< class T >
     class NotFoundError : public std::runtime_error
     {
@@ -21,6 +22,7 @@ namespace cfs::edac
 
             T m_value;
     }
+
 }
 #endif
 

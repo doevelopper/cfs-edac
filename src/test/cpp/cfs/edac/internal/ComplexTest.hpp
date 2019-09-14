@@ -10,6 +10,7 @@
 class ComplexTest : public ::testing::Test
 {
     public:
+
         ComplexTest();
         virtual ~ComplexTest();
 
@@ -17,6 +18,7 @@ class ComplexTest : public ::testing::Test
         virtual void TearDown ();
 
     protected:
+
 /*!
  * @brief Object that is about to be tested.
  */
@@ -25,8 +27,8 @@ class ComplexTest : public ::testing::Test
  * @brief Class logger.
  */
         static log4cxx::LoggerPtr logger;
-    private:
 
+    private:
 };
 
 #endif

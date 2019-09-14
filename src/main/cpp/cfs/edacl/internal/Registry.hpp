@@ -10,6 +10,7 @@
 
 namespace cfs::edacl::internal
 {
+
     template <typename T>
     struct Mask
     {
@@ -70,11 +71,13 @@ namespace cfs::edacl::internal
 
     namespace internals
     {
+
         template <typename T, T value, T limit>
         struct CheckUSL : std::integral_constant<bool, value <= limit> {};
         template <std::uintptr_t address, std::size_t alignment>
         struct Aligned
             : std::integral_constant<bool, (address & (alignment - 1)) == 0> {};
+
     }
 
     template <std::uintptr_t B, std::uint32_t P>
@@ -603,6 +606,7 @@ namespace cfs::edacl::internal
         static_assert(width != std::uint8_t{0}
                       , "Field:: defining a Field type of zero width is not allowed");
     };
+
 }
 
 #endif

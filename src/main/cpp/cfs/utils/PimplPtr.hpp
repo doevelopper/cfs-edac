@@ -37,6 +37,7 @@
 
 namespace cfs::utils
 {
+
 /*!
  * @brief Smart pointer implementing the pimpl idiom
  *
@@ -204,6 +205,7 @@ namespace cfs::utils
 
             boost::shared_ptr<T> m_data; ///< Pointer to the instance of the private implementation
     };
+
 }
 
 #include <cfs/utils/PimplPtr.inl>

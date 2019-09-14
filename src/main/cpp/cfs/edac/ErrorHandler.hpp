@@ -5,6 +5,7 @@
 
 namespace cfs::edac
 {
+
     class ErrorHandler
     {
         public:
@@ -107,6 +108,7 @@ namespace cfs::edac
 
             virtual ~ErrorHandler() = default;
     };
+
 }
 #endif
 
