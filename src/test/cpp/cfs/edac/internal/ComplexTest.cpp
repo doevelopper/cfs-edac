@@ -1,3 +1,5 @@
+
+
 #include <cppbdd101/lectures/gotw/ComplexTest.hpp>
 
 log4cxx::LoggerPtr ComplexTest::logger = log4cxx::Logger::getLogger(std::string("cppbdd101.lectures.gotw.ComplexTest"));
@@ -32,3 +34,4 @@ TEST_F(ComplexTest, basic)
     EXPECT_DOUBLE_EQ(2.0, c.real());
     EXPECT_DOUBLE_EQ(3.0, (c + c2).imaginary());
 }
+

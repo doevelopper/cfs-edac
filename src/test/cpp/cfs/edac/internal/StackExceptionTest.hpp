@@ -1,4 +1,5 @@
 
+
 #ifndef CPPBDD101_LECTURES_GOTW_STACKEXCEPTIONTEST_HPP
 #define CPPBDD101_LECTURES_GOTW_STACKEXCEPTIONTEST_HPP
 
@@ -28,3 +29,4 @@ class StackExceptionTest : public ::testing::Test
 };
 
 #endif
+

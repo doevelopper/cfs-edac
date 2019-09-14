@@ -1,3 +1,5 @@
+
+
 #include <cppbdd101/lectures/gotw/StackTest.hpp>
 
 log4cxx::LoggerPtr StackTest::logger = log4cxx::Logger::getLogger(std::string("cppbdd101.lectures.gotw.StackTest"));
@@ -89,3 +91,4 @@ void StackTest::TearDown ()
     EXPECT_TRUE(s.empty());
    }
  */
+
