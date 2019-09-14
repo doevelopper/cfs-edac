@@ -11,7 +11,7 @@
 
 
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
-#define LOG std::clog << __DATE__ << " " <<__TIME__ << __FUNCTION__ << std::endl;
+#define LOG std::clog << __DATE__ << " " << __TIME__ << __FUNCTION__ << std::endl;
 #define ERROR_LOCATION std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
 				__LINE__ ) + std::string ( ")" )
 

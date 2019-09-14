@@ -40,12 +40,12 @@ int Test::run (int argc, char * argv[])
 		}
 		catch (std::exception & e)
 		{
-				std::cerr<< "Issues while innitializing test environment" << typeid (e).name () << ": " << e.what () <<
+				std::cerr << "Issues while innitializing test environment" << typeid (e).name () << ": " << e.what () <<
 				        std::endl;
 		}
 		catch (...)
 		{
-				std::cerr<< "Unhandled exception" <<std::endl;
+				std::cerr << "Unhandled exception" << std::endl;
 		}
 
 		return RUN_ALL_TESTS();

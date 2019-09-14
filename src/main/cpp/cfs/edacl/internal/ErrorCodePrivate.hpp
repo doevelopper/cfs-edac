@@ -233,10 +233,10 @@ struct ErrorDescription
 
 enum status
 {
-		STATUS_PENDING  = (1<<0),    /* initial status (written by host)  */
-		STATUS_COMPLETE = (1<<1),    /* completion status (written by cp) */
-		STATUS_FREE     = (1<<2),    /* initial status (written by host)  */
-		STATUS_ERROR    = (1<<3)     /* completion status (written by cp) */
+		STATUS_PENDING  = (1 << 0),    /* initial status (written by host)  */
+		STATUS_COMPLETE = (1 << 1),    /* completion status (written by cp) */
+		STATUS_FREE     = (1 << 2),    /* initial status (written by host)  */
+		STATUS_ERROR    = (1 << 3)     /* completion status (written by cp) */
 }
 /*!
  * @defgroup CFS_Status_Codes CFS Error Space
