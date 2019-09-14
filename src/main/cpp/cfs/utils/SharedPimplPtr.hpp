@@ -95,7 +95,7 @@ public:
  *
  * This constructor initializes the data with a new default constructed instance of T
  */
-    SharedPimplPtr();
+        SharedPimplPtr();
 
 /*!
  * @brief Construct the pimpl pointer from an instance of the private implementation
@@ -104,7 +104,7 @@ public:
  *
  * @param data Instance of the private implementation to use
  */
-    explicit SharedPimplPtr(T* data);
+        explicit SharedPimplPtr(T* data);
 
 /*!
  * @brief Construct the pimpl pointer from a parameter
@@ -113,8 +113,8 @@ public:
  *
  * @param arg1 Argument to pass to the implementation
  */
-    template <typename T1>
-    SharedPimplPtr(T1 arg1);
+        template <typename T1>
+        SharedPimplPtr(T1 arg1);
 
 /*!
  * @brief Construct the pimpl pointer from two parameters
@@ -124,8 +124,8 @@ public:
  * @param arg1 First argument to pass to the implementation
  * @param arg2 Second argument to pass to the implementation
  */
-    template <typename T1, typename T2>
-    SharedPimplPtr(T1 arg1, T2 arg2);
+        template <typename T1, typename T2>
+        SharedPimplPtr(T1 arg1, T2 arg2);
 
 /*!
  * @brief Construct the pimpl pointer from three parameters
@@ -136,43 +136,43 @@ public:
  * @param arg2 Second argument to pass to the implementation
  * @param arg3 Third argument to pass to the implementation
  */
-    template <typename T1, typename T2, typename T3>
-    SharedPimplPtr(T1 arg1, T2 arg2, T3 arg3);
+        template <typename T1, typename T2, typename T3>
+        SharedPimplPtr(T1 arg1, T2 arg2, T3 arg3);
 
 /*!
  * @brief Overload of -> operator for accessing the private implementation (non-const version)
  *
  * @return Non-const pointer to the private implementation
  */
-    T* operator->();
+        T* operator->();
 
 /*!
  * @brief Overload of -> operator for accessing the private implementation (const version)
  *
  * @return Const pointer to the private implementation
  */
-    const T* operator->() const;
+        const T* operator->() const;
 
 /*!
  * @brief Overload of * operator for accessing the private implementation (non-const version)
  *
  * @return Non-const reference to the private implementation
  */
-    T& operator*();
+        T& operator*();
 
 /*!
  * @brief Overload of * operator for accessing the private implementation (const version)
  *
  * @return Const reference to the private implementation
  */
-    const T& operator*() const;
+        const T& operator*() const;
 
 /*!
  * @brief Swap the data of two SharedPimplPtr instances
  *
  * @param other SharedPimplPtr instance to swap contents with
  */
-    void swap(SharedPimplPtr<T>& other);
+        void swap(SharedPimplPtr<T>& other);
 
 /*!
  * @brief Ensure that the private implementation is no longer shared with other SharedPimplPtr instances
@@ -180,18 +180,18 @@ public:
  * This function checks the reference counter: if it's more than 1, it creates a new implementation which
  * is a deep copy of the previous one
  */
-    void unique();
+        void unique();
 
 private:
 
 /*!
  * @brief Assignment is disabled, once constructed a SharedPimplPtr cannot point to another implementation
  */
-    SharedPimplPtr<T>& operator=(const SharedPimplPtr<T>&);
+        SharedPimplPtr<T>& operator=(const SharedPimplPtr<T>&);
 
 private:
 
-    boost::shared_ptr<T> m_data;        ///< Pointer to the instance of the private implementation
+        boost::shared_ptr<T> m_data;    ///< Pointer to the instance of the private implementation
     };
 }
 

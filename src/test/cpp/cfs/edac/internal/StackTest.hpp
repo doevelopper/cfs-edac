@@ -8,11 +8,11 @@
 class StackTest : public ::testing::Test
 {
 public:
-StackTest();
-virtual ~StackTest();
+    StackTest();
+    virtual ~StackTest();
 
-virtual void SetUp();
-virtual void TearDown ();
+    virtual void SetUp();
+    virtual void TearDown ();
 
 protected:
 /*!
@@ -22,7 +22,7 @@ protected:
 /*!
  * @brief Class logger.
  */
-static log4cxx::LoggerPtr logger;
+    static log4cxx::LoggerPtr logger;
 private:
 
 };

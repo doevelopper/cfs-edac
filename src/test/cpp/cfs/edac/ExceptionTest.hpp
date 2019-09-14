@@ -13,15 +13,15 @@ namespace cfs::edac::test
     {
 public:
 
-    ExceptionTest();
-    ExceptionTest(const ExceptionTest&) = default;
-    ExceptionTest(ExceptionTest&&) = default;
-    ExceptionTest& operator=(const ExceptionTest&) = default;
-    ExceptionTest& operator=(ExceptionTest&&) = default;
-    virtual ~ExceptionTest();
+        ExceptionTest();
+        ExceptionTest(const ExceptionTest&) = default;
+        ExceptionTest(ExceptionTest&&) = default;
+        ExceptionTest& operator=(const ExceptionTest&) = default;
+        ExceptionTest& operator=(ExceptionTest&&) = default;
+        virtual ~ExceptionTest();
 
-    void SetUp() override;
-    void TearDown() override;
+        void SetUp() override;
+        void TearDown() override;
 
 protected:
 

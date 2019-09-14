@@ -13,19 +13,19 @@ namespace cfs::edac::test
     {
 public:
 
-    Test();
-    Test(std::string & suite, unsigned int iteration = 1);
-    Test(const Test & orig) = default;
-    virtual ~Test();
+        Test();
+        Test(std::string & suite, unsigned int iteration = 1);
+        Test(const Test & orig) = default;
+        virtual ~Test();
 
-    int run (int argc = 0, char * argv[] = NULL);
-    static void showUsage(std::string name);
-    void notYetImplemented();
+        int run (int argc = 0, char * argv[] = NULL);
+        static void showUsage(std::string name);
+        void notYetImplemented();
 
 private:
 
-    std::string m_testSuites;
-    unsigned int m_numberOfTestIteration;
+        std::string m_testSuites;
+        unsigned int m_numberOfTestIteration;
     };
 }
 

@@ -16,18 +16,18 @@ namespace cfs::edac::callstack
     {
 public:
 
-    CallStack();
+        CallStack();
 
 /*!
  * @brief Stack-trace consructor.
  * @param num_discard - number of stack entries to discard at the top.
  */
-    CallStack( const size_t num_discard = 0 );
+        CallStack( const size_t num_discard = 0 );
 
 /*!
  *  @brief Serializes the entire call-stack into a text string.
  */
-    virtual ~CallStack() = default;
+        virtual ~CallStack() = default;
 
 private:
 

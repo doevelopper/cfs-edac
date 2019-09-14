@@ -13,10 +13,10 @@ namespace cfs::fsm
     {
 public:
 
-    auto opeartor()()
-    {
-        //return make_transition_table(
-    }
+        auto opeartor()()
+        {
+            //return make_transition_table(
+        }
     }
 }
 

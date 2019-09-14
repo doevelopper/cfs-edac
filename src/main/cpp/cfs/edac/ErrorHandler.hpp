@@ -9,49 +9,49 @@ namespace cfs::edac
     {
 public:
 
-    ErrorHandler();
+        ErrorHandler();
 /*!
  * @brief Move constructor
  */
-    ErrorHandler( const ErrorHandler & ) = default;
+        ErrorHandler( const ErrorHandler & ) = default;
 /*!
  * @brief Move constructor
  */
-    ErrorHandler( ErrorHandler && ) = default;
+        ErrorHandler( ErrorHandler && ) = default;
 /*!
  * @brief Copy assignment operator
  */
-    ErrorHandler & operator= ( const ErrorHandler & ) & = default;
+        ErrorHandler & operator= ( const ErrorHandler & ) & = default;
 /*!
  * @brief Move assignment operator
  */
-    ErrorHandler & operator= ( ErrorHandler && ) & = default;
+        ErrorHandler & operator= ( ErrorHandler && ) & = default;
 /*!
  * @brief Receive notification of a warning.
  */
-    virtual void onWarning ( /*const Exception& exc*/ ) = 0;
+        virtual void onWarning ( /*const Exception& exc*/ ) = 0;
 /*!
  * @brief Receive notification of a recoverable error(system is in error conditions).
  */
-    virtual void error ( /*const Exception& exc*/ ) = 0;
+        virtual void error ( /*const Exception& exc*/ ) = 0;
 /*!
  * @brief Receive notification of a non-recoverable error.
  */
-    virtual void fatalError ( /*const Exception& exc*/ ) = 0;
+        virtual void fatalError ( /*const Exception& exc*/ ) = 0;
 /*!
  * @brief Receive notification of a critical conditions.
  */
-    virtual void criticalError ( /*const Exception& exc*/ ) = 0;
+        virtual void criticalError ( /*const Exception& exc*/ ) = 0;
 /*!
  * @brief Receive notification that an action must be taken immediately.
  */
-    virtual void alertError ( /*const Exception& exc*/ ) = 0;
+        virtual void alertError ( /*const Exception& exc*/ ) = 0;
 /*!
  * @brief Receive notification that system is unusable.
  */
-    virtual void emergencyError ( /*const Exception& exc*/ ) = 0;
+        virtual void emergencyError ( /*const Exception& exc*/ ) = 0;
 
-    virtual void dispatchCleanup () = 0;
+        virtual void dispatchCleanup () = 0;
 /*!
  * @brief Called when a Exception (or a subclass) caused the thread to terminate.
  */
@@ -61,7 +61,7 @@ public:
  * @brief Called when a std::exception (or a subclass) caused the thread to terminate.
  */
 
-    virtual void exception (const std::exception & exc);
+        virtual void exception (const std::exception & exc);
 /*!
  * @brief Invokes the currently registered Error.
  */
@@ -71,7 +71,7 @@ public:
  * @brief Invokes the currently registered Error.
  */
 
-    static void handle (const std::exception & exc);
+        static void handle (const std::exception & exc);
 /*!
  * @brief Receive notification of a warning.
  */
@@ -105,7 +105,7 @@ public:
 
 private:
 
-    virtual ~ErrorHandler() = default;
+        virtual ~ErrorHandler() = default;
     };
 }
 #endif

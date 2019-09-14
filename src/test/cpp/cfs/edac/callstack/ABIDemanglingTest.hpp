@@ -12,13 +12,13 @@ namespace cfs::edac::callstack
     {
 public:
 
-    ABIDemanglingTest();
-    ~ABIDemanglingTest();
+        ABIDemanglingTest();
+        ~ABIDemanglingTest();
 
 protected:
 
-    void SetUp() override;
-    void TearDown() override;
+        void SetUp() override;
+        void TearDown() override;
 
 private:
     };

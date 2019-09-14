@@ -15,39 +15,39 @@ namespace cfs::edac::namedType
     {
 public:
 
-    explicit StrongType(T const& value)
-        : m_value(value)
-    {
-    }
+        explicit StrongType(T const& value)
+            : m_value(value)
+        {
+        }
 
-    explicit StrongType(T&& value)
-        : m_value(std::move(value))
-    {
-    }
+        explicit StrongType(T&& value)
+            : m_value(std::move(value))
+        {
+        }
 
-    T & get()
-    {
-        return m_value;
-    }
+        T & get()
+        {
+            return m_value;
+        }
 
-    T const& get() const
-    {
-        return m_value;
-    }
+        T const& get() const
+        {
+            return m_value;
+        }
 
-    operator T&() const
-    {
-        return m_value;
-    }
+        operator T&() const
+        {
+            return m_value;
+        }
 
-    operator T&()
-    {
-        return m_value;
-    }
+        operator T&()
+        {
+            return m_value;
+        }
 
 private:
 
-    T m_value;
+        T m_value;
     };
 }
 

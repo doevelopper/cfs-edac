@@ -364,12 +364,12 @@ namespace cfs::edac::internal
     {
 public:
 
-    ErrorCodePrivate();
-    ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
-    ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
-    ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
-    ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
-    virtual ~ErrorCodePrivate();
+        ErrorCodePrivate();
+        ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
+        ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
+        ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
+        ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
+        virtual ~ErrorCodePrivate();
 
 // const error_category & edac_category();
 

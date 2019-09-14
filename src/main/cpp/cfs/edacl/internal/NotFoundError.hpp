@@ -10,16 +10,16 @@ namespace cfs::edac
     {
 public:
 
-    NotFoundError(const std::string& message, const T& value) throw();
-    ~NotFoundError() throw();
+        NotFoundError(const std::string& message, const T& value) throw();
+        ~NotFoundError() throw();
 /*!
  * @brief Returns a copy of the value that could not be found.
  */
-    const T& get_value(void) const throw();
+        const T& get_value(void) const throw();
 
 private:
 
-    T m_value;
+        T m_value;
     }
 }
 #endif
