@@ -9,24 +9,24 @@
 
 namespace cfs::edac::test
 {
-class ExceptionTest : public ::testing::Test
-{
+    class ExceptionTest : public ::testing::Test
+    {
 public:
 
-ExceptionTest();
-ExceptionTest(const ExceptionTest&) = default;
-ExceptionTest(ExceptionTest&&) = default;
-ExceptionTest& operator=(const ExceptionTest&) = default;
-ExceptionTest& operator=(ExceptionTest&&) = default;
-virtual ~ExceptionTest();
+    ExceptionTest();
+    ExceptionTest(const ExceptionTest&) = default;
+    ExceptionTest(ExceptionTest&&) = default;
+    ExceptionTest& operator=(const ExceptionTest&) = default;
+    ExceptionTest& operator=(ExceptionTest&&) = default;
+    virtual ~ExceptionTest();
 
-void SetUp() override;
-void TearDown() override;
+    void SetUp() override;
+    void TearDown() override;
 
 protected:
 
 //            Exception * m_test_exception;
-};
+    };
 }
 #endif
 

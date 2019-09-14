@@ -17,62 +17,62 @@
 
 namespace cfs::edac::namedtype::test
 {
-template<typename T>
-decltype(auto) tee(T&& value)
-{
-		std::cout << value << '\n';
+    template<typename T>
+    decltype(auto) tee(T&& value)
+    {
+        std::cout << value << '\n';
 
-		return std::forward<T>(value);
-}
+        return std::forward<T>(value);
+    }
 
-using Meter = fluent::NamedType<double, struct MeterParameter, fluent::Addable, fluent::Comparable>;
-Meter operator"" _meter(unsigned long long value)
-{
-		return Meter(value);
-}
+    using Meter = fluent::NamedType<double, struct MeterParameter, fluent::Addable, fluent::Comparable>;
+    Meter operator"" _meter(unsigned long long value)
+    {
+        return Meter(value);
+    }
 
 //Meter operator"" _meter(long double value) { return Meter(value); }
-using Width = fluent::NamedType<Meter, struct WidthParameter>;
-using Height = fluent::NamedType<Meter, struct HeightParameter>;
+    using Width = fluent::NamedType<Meter, struct WidthParameter>;
+    using Height = fluent::NamedType<Meter, struct HeightParameter>;
 
-class Rectangle
-{
+    class Rectangle
+    {
 public:
 
-Rectangle(Width width, Height height)
-		: width_(width.get())
-		, height_(height.get())
-{
-}
+    Rectangle(Width width, Height height)
+        : width_(width.get())
+        , height_(height.get())
+    {
+    }
 
-Meter getWidth() const
-{
-		return width_;
-}
+    Meter getWidth() const
+    {
+        return width_;
+    }
 
-Meter getHeight() const
-{
-		return height_;
-}
+    Meter getHeight() const
+    {
+        return height_;
+    }
 
 private:
 
-Meter width_;
-Meter height_;
-};
+    Meter width_;
+    Meter height_;
+    };
 
-class NamedTypeTest : public ::testing::Test
-{
+    class NamedTypeTest : public ::testing::Test
+    {
 public:
 
-NamedTypeTest();
-~NamedTypeTest();
+    NamedTypeTest();
+    ~NamedTypeTest();
 
 protected:
 
-void Setup() override;
-void TearDown override;
-};
+    void Setup() override;
+    void TearDown override;
+    };
 }
 #endif
 

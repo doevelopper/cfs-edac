@@ -14,25 +14,25 @@ explicit Complex(double real, double imaginary = .0);
 
 const Complex& operator+=(const Complex& other)
 {
-		m_real = m_real + other.m_real;
-		m_imaginary = m_imaginary + other.m_imaginary;
+    m_real = m_real + other.m_real;
+    m_imaginary = m_imaginary + other.m_imaginary;
 
-		return *this;
+    return *this;
 }
 
 Complex& operator++()
 {
-		++m_real;
+    ++m_real;
 
-		return *this;
+    return *this;
 }
 
 const Complex operator++( int )
 {
-		Complex cpl = *this;
-		++m_real;
+    Complex cpl = *this;
+    ++m_real;
 
-		return cpl;
+    return cpl;
 }
 
 virtual ~Complex();
@@ -53,12 +53,12 @@ static log4cxx::LoggerPtr logger;
 
 std::ostream & operator<<(std::ostream & os, const Complex & complex)
 {
-		return os << "(" << complex.m_real << "," << complex.m_imaginary << ")";
+    return os << "(" << complex.m_real << "," << complex.m_imaginary << ")";
 }
 
 const Complex operator+(const Complex& lhs, const Complex& rhs)
 {
-		return Complex(lhs.m_real + rhs.m_real, lhs.m_imaginary + rhs.m_imaginary);
+    return Complex(lhs.m_real + rhs.m_real, lhs.m_imaginary + rhs.m_imaginary);
 }
 
 #endif

@@ -12,8 +12,8 @@
 
 namespace cfs::edac
 {
-class ParameterSet
-{
+    class ParameterSet
+    {
 public:
 
 /*!
@@ -21,7 +21,7 @@ public:
  *
  * @param line
  */
-void add(const std::string line);
+    void add(const std::string line);
 
 /*!
  * @brief
@@ -30,7 +30,7 @@ void add(const std::string line);
  * @param value
  * @param atStart
  */
-void addParam(const std::string param, const std::string value = NULL, bool atStart = false);
+    void addParam(const std::string param, const std::string value = NULL, bool atStart = false);
 
 /*!
  * @brief
@@ -39,7 +39,7 @@ void addParam(const std::string param, const std::string value = NULL, bool atSt
  * @return true
  * @return false
  */
-bool isSet(const std::string key) const;
+    bool isSet(const std::string key) const;
 
 /*!
  * @brief
@@ -48,8 +48,8 @@ bool isSet(const std::string key) const;
  * @param key
  * @return T
  */
-template<typename T>
-T get(const std::string key) const;
+    template<typename T>
+    T get(const std::string key) const;
 
 /*!
  * @brief
@@ -57,27 +57,27 @@ T get(const std::string key) const;
  * @param key
  * @return const std::string&
  */
-const std::string& get(const std::string key) const;
+    const std::string& get(const std::string key) const;
 
 /*!
  * @brief Get the Parameters object
  *
  * @return std::string
  */
-std::string getParameters () const;
+    std::string getParameters () const;
 
 /*!
  * @brief
  *
  * @param key
  */
-void erase(const std::string key);
+    void erase(const std::string key);
 
 private:
 
-std::map<std::string, std::string> m_values;
-std::vector<std::string> m_params;
-}
+    std::map<std::string, std::string> m_values;
+    std::vector<std::string> m_params;
+    }
 }
 
 #endif

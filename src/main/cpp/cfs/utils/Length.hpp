@@ -39,11 +39,11 @@ namespace cfs::utils
  *
  * @return Number of elements in the array
  */
-template <typename T, int N>
-int length(T (&)[N])
-{
-		return N;
-}
+    template <typename T, int N>
+    int length(T (&)[N])
+    {
+        return N;
+    }
 }
 
 #endif

@@ -8,20 +8,20 @@
 namespace cfs::edac::callstack
 
 {
-class ABIDemanglingTest : public ::testing::Test
-{
+    class ABIDemanglingTest : public ::testing::Test
+    {
 public:
 
-ABIDemanglingTest();
-~ABIDemanglingTest();
+    ABIDemanglingTest();
+    ~ABIDemanglingTest();
 
 protected:
 
-void SetUp() override;
-void TearDown() override;
+    void SetUp() override;
+    void TearDown() override;
 
 private:
-};
+    };
 }
 #endif
 

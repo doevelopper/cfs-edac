@@ -28,8 +28,8 @@ virtual ~StackException() noexcept;
 template <class ... Args>
 void constructAt(sizeType pos, Args&& ... args)
 {
-		LOG4CXX_ASSERT(logger,pos < m_capacity,"pos < m_capacity");
-		new (&m_data[pos]) T(std::forward<Args>(args)...);
+    LOG4CXX_ASSERT(logger,pos < m_capacity,"pos < m_capacity");
+    new (&m_data[pos]) T(std::forward<Args>(args)...);
 }
 
 protected:

@@ -40,52 +40,52 @@
 
 namespace cfs::edac::internal
 {
-class LoggerPrivate
-{
-enum class Level : std::uint32_t
-{
-		EMERGENCY = (1 << 0),        /* system is unusable. A panic condition was reported to all processes. */
-		CRITICAL = (1 << 1),
-		FATAL = (1 << 2),            /* critical conditions */
-		ALERT = (1 << 3),
-		ERROR = (1 << 4),            /* action must be taken immediately. A condition that should be corrected
-			                            immediately.  */
-		WARNING = (1 << 5),          /* error conditions */
-		INFO = (1 << 6),             /* warning conditions */
-		TRACE = (1 << 7),            /* informational */
-		DEBUG = (1 << 8),            /* debug-level messages. A message useful for debugging programs.  */
-		ADVISORY = (1 << 9),
-		INHIBIT = (1 << 10),
-		HINDENBUG = (1 << 11),       /* "... bug with catastrophic behavior" */
-		MANDELBUG = (1 << 12),       /* "... bug whose causes are so complex it defies repair" */
-		BOHRBUG = (1 << 13),         /* "... relatively easily detected" */
-		HEISENBUG = (1 << 14),       /* "... software bug that seems to disappear or alter its behavior when one
-			                            attempts to study it."*/
-		SCHROEDINBUG = (1 << 15)     /* "... bug that manifests itself in running software" */
-};
+    class LoggerPrivate
+    {
+    enum class Level : std::uint32_t
+    {
+        EMERGENCY = (1 << 0),        /* system is unusable. A panic condition was reported to all processes. */
+        CRITICAL = (1 << 1),
+        FATAL = (1 << 2),            /* critical conditions */
+        ALERT = (1 << 3),
+        ERROR = (1 << 4),            /* action must be taken immediately. A condition that should be corrected
+                                        immediately.  */
+        WARNING = (1 << 5),          /* error conditions */
+        INFO = (1 << 6),             /* warning conditions */
+        TRACE = (1 << 7),            /* informational */
+        DEBUG = (1 << 8),            /* debug-level messages. A message useful for debugging programs.  */
+        ADVISORY = (1 << 9),
+        INHIBIT = (1 << 10),
+        HINDENBUG = (1 << 11),       /* "... bug with catastrophic behavior" */
+        MANDELBUG = (1 << 12),       /* "... bug whose causes are so complex it defies repair" */
+        BOHRBUG = (1 << 13),         /* "... relatively easily detected" */
+        HEISENBUG = (1 << 14),       /* "... software bug that seems to disappear or alter its behavior when one
+                                        attempts to study it."*/
+        SCHROEDINBUG = (1 << 15)     /* "... bug that manifests itself in running software" */
+    };
 
 public:
 
-LoggerPrivate( unsigned long delay = 5000UL );
-~LoggerPrivate( );
+    LoggerPrivate( unsigned long delay = 5000UL );
+    ~LoggerPrivate( );
 /*!
  * @brief Retrieve valy of delay beetween the read of config file
  * @param  s is a char array containing a proper C-string
  * @return value do delay (minus null) as an usigned int
  */
-unsigned long periodicalCheck ( ) const;
+    unsigned long periodicalCheck ( ) const;
 /*!
  * @brief
  */
-void loggerReset ( );
+    void loggerReset ( );
 /*!
  * @brief
  * @param[in]  loggerName  The Logger name to get reference from.
  */
-log4cxx::LoggerPtr getLoggerByName ( const char * loggerName );
-void loadConfig ( const std::string & configFilename );
-void loadConfigAndWatch ( const std::string & configFilename );
-void loggerNames ( std::vector<std::string> & names );
+    log4cxx::LoggerPtr getLoggerByName ( const char * loggerName );
+    void loadConfig ( const std::string & configFilename );
+    void loadConfigAndWatch ( const std::string & configFilename );
+    void loggerNames ( std::vector<std::string> & names );
 
 //log4cxx::LoggerPtr operator ->( )
 //{
@@ -107,17 +107,17 @@ private:
  *  @brief
  *  @return logger configuration status
  */
-bool checkLogManagerStatus ( );
+    bool checkLogManagerStatus ( );
 /*!
  *  @brief
  *  @param[in,out] s required file extention
  *  @return file extension
  */
-std::string getFileExtension ( const std::string & s );
+    std::string getFileExtension ( const std::string & s );
 /*!
  *  @brief Value for periodical check if configFilename has been created or modified!
  */
-unsigned long m_watchPeriod;
+    unsigned long m_watchPeriod;
 /*!
  *  @brief
  */
@@ -126,8 +126,8 @@ unsigned long m_watchPeriod;
  *  @brief
  */
 //log4cxx::LoggerPtr m_logger;
-static std::string m_loggerConfigLocation;
-};
+    static std::string m_loggerConfigLocation;
+    };
 }
 #endif
 

@@ -19,69 +19,69 @@
 
 namespace cfs::edac
 {
-template<std::size_t Alignment, std::size_t Size>
-struct AlignedCharArray;
+    template<std::size_t Alignment, std::size_t Size>
+    struct AlignedCharArray;
 
-template<std::size_t Size>
-struct AlignedCharArray<1, Size> {
-		union
-		{
-				char aligned;
-				char buffer[Size];
-		};
-};
+    template<std::size_t Size>
+    struct AlignedCharArray<1, Size> {
+        union
+        {
+            char aligned;
+            char buffer[Size];
+        };
+    };
 
-template<std::size_t Size>
-struct AlignedCharArray<2, Size>
-{
-		union
-		{
-				short aligned;
-				char buffer[Size];
-		};
-};
+    template<std::size_t Size>
+    struct AlignedCharArray<2, Size>
+    {
+        union
+        {
+            short aligned;
+            char buffer[Size];
+        };
+    };
 
-template<std::size_t Size>
-struct AlignedCharArray<4, Size>
-{
-		union
-		{
-				int aligned;
-				char buffer[Size];
-		};
-};
+    template<std::size_t Size>
+    struct AlignedCharArray<4, Size>
+    {
+        union
+        {
+            int aligned;
+            char buffer[Size];
+        };
+    };
 
-template<std::size_t Size>
-struct AlignedCharArray<8, Size>
-{
-		union
-		{
-				double aligned;
-				char buffer[Size];
-		};
-};
+    template<std::size_t Size>
+    struct AlignedCharArray<8, Size>
+    {
+        union
+        {
+            double aligned;
+            char buffer[Size];
+        };
+    };
 
 /// Stores a reference that can be changed.
-template <typename T1,
-          typename T2 = char, typename T3 = char, typename T4 = char,
-          typename T5 = char, typename T6 = char, typename T7 = char,
-          typename T8 = char, typename T9 = char, typename T10 = char>
-class AlignerImpl
-{
-T1 t1; T2 t2; T3 t3; T4 t4; T5 t5; T6 t6; T7 t7; T8 t8; T9 t9; T10 t10;
-AlignerImpl() = delete;
-};
+    template <typename T1,
+              typename T2 = char, typename T3 = char, typename T4 = char,
+              typename T5 = char, typename T6 = char, typename T7 = char,
+              typename T8 = char, typename T9 = char, typename T10 = char>
+    class AlignerImpl
+    {
+    T1 t1; T2 t2; T3 t3; T4 t4; T5 t5; T6 t6; T7 t7; T8 t8; T9 t9; T10 t10;
+    AlignerImpl() = delete;
+    };
 
-template <typename T1,
-          typename T2 = char, typename T3 = char, typename T4 = char,
-          typename T5 = char, typename T6 = char, typename T7 = char,
-          typename T8 = char, typename T9 = char, typename T10 = char>
-union SizerImpl
-{
-		char arr1[sizeof(T1)], arr2[sizeof(T2)], arr3[sizeof(T3)], arr4[sizeof(T4)],
-		     arr5[sizeof(T5)], arr6[sizeof(T6)], arr7[sizeof(T7)], arr8[sizeof(T8)],
-		     arr9[sizeof(T9)], arr10[sizeof(T10)];
-};
+    template <typename T1,
+              typename T2 = char, typename T3 = char, typename T4 = char,
+              typename T5 = char, typename T6 = char, typename T7 = char,
+              typename T8 = char, typename T9 = char, typename T10 = char>
+    union SizerImpl
+    {
+        char arr1[sizeof(T1)], arr2[sizeof(T2)], arr3[sizeof(T3)], arr4[sizeof(T4)],
+             arr5[sizeof(T5)], arr6[sizeof(T6)], arr7[sizeof(T7)], arr8[sizeof(T8)],
+             arr9[sizeof(T9)], arr10[sizeof(T10)];
+    };
 /// This union template exposes a suitably aligned and sized character
 /// array member which can hold elements of any of up to ten types.
 ///
@@ -89,39 +89,39 @@ union SizerImpl
 /// expose a char array buffer member which can be used as suitable storage for
 /// a placement new of any of these types. Support for more than ten types can
 /// be added at the cost of more boilerplate.
-template <typename T1,
-          typename T2 = char, typename T3 = char, typename T4 = char,
-          typename T5 = char, typename T6 = char, typename T7 = char,
-          typename T8 = char, typename T9 = char, typename T10 = char>
-struct AlignedCharArrayUnion : cfs::edac::AlignedCharArray<
-				alignof(cfs::edac::AlignerImpl<T1, T2, T3, T4, T5,
-				                               T6, T7, T8, T9, T10>),
-				sizeof(cfs::edac::SizerImpl<T1, T2, T3, T4, T5,
-				                            T6, T7, T8, T9, T10>)>
-{
-};
+    template <typename T1,
+              typename T2 = char, typename T3 = char, typename T4 = char,
+              typename T5 = char, typename T6 = char, typename T7 = char,
+              typename T8 = char, typename T9 = char, typename T10 = char>
+    struct AlignedCharArrayUnion : cfs::edac::AlignedCharArray<
+            alignof(cfs::edac::AlignerImpl<T1, T2, T3, T4, T5,
+                                           T6, T7, T8, T9, T10>),
+            sizeof(cfs::edac::SizerImpl<T1, T2, T3, T4, T5,
+                                        T6, T7, T8, T9, T10>)>
+    {
+    };
 
-template <typename T>
-class ReferenceStorage
-{
-T *Storage;
+    template <typename T>
+    class ReferenceStorage
+    {
+    T *Storage;
 
 public:
 
-ReferenceStorage(T &Ref)
-		: Storage(&Ref) {
-}
+    ReferenceStorage(T &Ref)
+        : Storage(&Ref) {
+    }
 
-operator T &() const
-{
-		return *Storage;
-}
+    operator T &() const
+    {
+        return *Storage;
+    }
 
-T &get() const
-{
-		return *Storage;
-}
-};
+    T &get() const
+    {
+        return *Storage;
+    }
+    };
 
 /*!
  * @brief Represents either an error or a value T.
@@ -153,272 +153,272 @@ T &get() const
  *
  *   T cannot be a rvalue reference.
  */
-template<class T>
-class ErrorOr
-{
-static const bool isRef = std::is_reference<T>::value;
-using wrap = ReferenceStorage<typename std::remove_reference<T>::type>;
-using reference = typename std::remove_reference<T>::type &;
-using const_reference = const typename std::remove_reference<T>::type &;
-using pointer = typename std::remove_reference<T>::type *;
-using const_pointer = const typename std::remove_reference<T>::type *;
+    template<class T>
+    class ErrorOr
+    {
+    static const bool isRef = std::is_reference<T>::value;
+    using wrap = ReferenceStorage<typename std::remove_reference<T>::type>;
+    using reference = typename std::remove_reference<T>::type &;
+    using const_reference = const typename std::remove_reference<T>::type &;
+    using pointer = typename std::remove_reference<T>::type *;
+    using const_pointer = const typename std::remove_reference<T>::type *;
 
 public:
 
-using storage_type = typename std::conditional<isRef, wrap, T>::type;
+    using storage_type = typename std::conditional<isRef, wrap, T>::type;
 
-template <class E>
-ErrorOr(E ErrorCode, typename std::enable_if<std::is_error_code_enum<E>::value
-                                             || std::is_error_condition_enum<E>::value, void *>::type =
-				nullptr)
-		: HasError(true)
-{
-		new (getErrorStorage()) std::error_code(make_error_code(ErrorCode));
-}
+    template <class E>
+    ErrorOr(E ErrorCode, typename std::enable_if<std::is_error_code_enum<E>::value
+                                                 || std::is_error_condition_enum<E>::value, void *>::type =
+                nullptr)
+        : HasError(true)
+    {
+        new (getErrorStorage()) std::error_code(make_error_code(ErrorCode));
+    }
 
-ErrorOr(std::error_code EC)
-		: HasError(true)
-{
-		new (getErrorStorage()) std::error_code(EC);
-}
+    ErrorOr(std::error_code EC)
+        : HasError(true)
+    {
+        new (getErrorStorage()) std::error_code(EC);
+    }
 
-template <class OtherT>
-ErrorOr(OtherT &&Val, typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
-		: HasError(false)
-{
-		new (getStorage()) storage_type(std::forward<OtherT>(Val));
-}
+    template <class OtherT>
+    ErrorOr(OtherT &&Val, typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
+        : HasError(false)
+    {
+        new (getStorage()) storage_type(std::forward<OtherT>(Val));
+    }
 
-ErrorOr(const ErrorOr &Other)
-{
-		copyConstruct(Other);
-}
+    ErrorOr(const ErrorOr &Other)
+    {
+        copyConstruct(Other);
+    }
 
-template <class OtherT>
-ErrorOr( const ErrorOr<OtherT> &Other,
-         typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
-{
-		copyConstruct(Other);
-}
+    template <class OtherT>
+    ErrorOr( const ErrorOr<OtherT> &Other,
+             typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
+    {
+        copyConstruct(Other);
+    }
 
-template <class OtherT>
-explicit ErrorOr(const ErrorOr<OtherT> &Other,
-                 typename std::enable_if< !std::is_convertible<OtherT, const T &>::value>::type * = nullptr)
-{
-		copyConstruct(Other);
-}
+    template <class OtherT>
+    explicit ErrorOr(const ErrorOr<OtherT> &Other,
+                     typename std::enable_if< !std::is_convertible<OtherT, const T &>::value>::type * = nullptr)
+    {
+        copyConstruct(Other);
+    }
 
-ErrorOr(ErrorOr &&Other)
-{
-		moveConstruct(std::move(Other));
-}
+    ErrorOr(ErrorOr &&Other)
+    {
+        moveConstruct(std::move(Other));
+    }
 
-template <class OtherT>
-ErrorOr(ErrorOr<OtherT> &&Other,
-        typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
-{
-		moveConstruct(std::move(Other));
-}
+    template <class OtherT>
+    ErrorOr(ErrorOr<OtherT> &&Other,
+            typename std::enable_if<std::is_convertible<OtherT, T>::value>::type * = nullptr)
+    {
+        moveConstruct(std::move(Other));
+    }
 
 // This might eventually need SFINAE but it's more complex than is_convertible
 // & I'm too lazy to write it right now.
-template <class OtherT>
-explicit ErrorOr(ErrorOr<OtherT> &&Other,
-                 typename std::enable_if<!std::is_convertible<OtherT, T>::value>::type * = nullptr)
-{
-		moveConstruct(std::move(Other));
-}
+    template <class OtherT>
+    explicit ErrorOr(ErrorOr<OtherT> &&Other,
+                     typename std::enable_if<!std::is_convertible<OtherT, T>::value>::type * = nullptr)
+    {
+        moveConstruct(std::move(Other));
+    }
 
-ErrorOr &operator=(const ErrorOr &Other)
-{
-		copyAssign(Other);
+    ErrorOr &operator=(const ErrorOr &Other)
+    {
+        copyAssign(Other);
 
-		return *this;
-}
+        return *this;
+    }
 
-ErrorOr &operator=(ErrorOr &&Other)
-{
-		moveAssign(std::move(Other));
+    ErrorOr &operator=(ErrorOr &&Other)
+    {
+        moveAssign(std::move(Other));
 
-		return *this;
-}
+        return *this;
+    }
 
-~ErrorOr()
-{
-		if (!HasError)
-				getStorage()->~storage_type();
-}
+    ~ErrorOr()
+    {
+        if (!HasError)
+            getStorage()->~storage_type();
+    }
 
 /// Return false if there is an error.
-explicit operator bool() const
-{
-		return !HasError;
-}
+    explicit operator bool() const
+    {
+        return !HasError;
+    }
 
-reference get()
-{
-		return *getStorage();
-}
+    reference get()
+    {
+        return *getStorage();
+    }
 
-const_reference get() const
-{
-		return const_cast<ErrorOr<T> *>(this)->get();
-}
+    const_reference get() const
+    {
+        return const_cast<ErrorOr<T> *>(this)->get();
+    }
 
-std::error_code getError() const
-{
-		return HasError ? *getErrorStorage() : std::error_code();
-}
+    std::error_code getError() const
+    {
+        return HasError ? *getErrorStorage() : std::error_code();
+    }
 
-pointer operator ->()
-{
-		return toPointer(getStorage());
-}
+    pointer operator ->()
+    {
+        return toPointer(getStorage());
+    }
 
-const_pointer operator->() const
-{
-		return toPointer(getStorage());
-}
+    const_pointer operator->() const
+    {
+        return toPointer(getStorage());
+    }
 
-reference operator *()
-{
-		return *getStorage();
-}
+    reference operator *()
+    {
+        return *getStorage();
+    }
 
-const_reference operator*() const
-{
-		return *getStorage();
-}
+    const_reference operator*() const
+    {
+        return *getStorage();
+    }
 
 private:
 
-template <class OtherT>
-void copyConstruct(const ErrorOr<OtherT> &Other)
-{
-		if (!Other.HasError)
-		{
-				// Get the other value.
-				HasError = false;
-				new (getStorage()) storage_type(*Other.getStorage());
-		}
-		else
-		{
-				// Get other's error.
-				HasError = true;
-				new (getErrorStorage()) std::error_code(Other.getError());
-		}
-}
+    template <class OtherT>
+    void copyConstruct(const ErrorOr<OtherT> &Other)
+    {
+        if (!Other.HasError)
+        {
+            // Get the other value.
+            HasError = false;
+            new (getStorage()) storage_type(*Other.getStorage());
+        }
+        else
+        {
+            // Get other's error.
+            HasError = true;
+            new (getErrorStorage()) std::error_code(Other.getError());
+        }
+    }
 
-template <class T1>
-static bool compareThisIfSameType(const T1 &a, const T1 &b)
-{
-		return &a == &b;
-}
+    template <class T1>
+    static bool compareThisIfSameType(const T1 &a, const T1 &b)
+    {
+        return &a == &b;
+    }
 
-template <class T1, class T2>
-static bool compareThisIfSameType(const T1 &a, const T2 &b)
-{
-		return false;
-}
+    template <class T1, class T2>
+    static bool compareThisIfSameType(const T1 &a, const T2 &b)
+    {
+        return false;
+    }
 
-template <class OtherT>
-void copyAssign(const ErrorOr<OtherT> &Other)
-{
-		if (compareThisIfSameType(*this, Other))
-				return;
+    template <class OtherT>
+    void copyAssign(const ErrorOr<OtherT> &Other)
+    {
+        if (compareThisIfSameType(*this, Other))
+            return;
 
-		this->~ErrorOr();
-		new (this) ErrorOr(Other);
-}
+        this->~ErrorOr();
+        new (this) ErrorOr(Other);
+    }
 
-template <class OtherT>
-void moveConstruct(ErrorOr<OtherT> &&Other)
-{
-		if (!Other.HasError)
-		{
-				// Get the other value.
-				HasError = false;
-				new (getStorage()) storage_type(std::move(*Other.getStorage()));
-		}
-		else
-		{
-				// Get other's error.
-				HasError = true;
-				new (getErrorStorage()) std::error_code(Other.getError());
-		}
-}
+    template <class OtherT>
+    void moveConstruct(ErrorOr<OtherT> &&Other)
+    {
+        if (!Other.HasError)
+        {
+            // Get the other value.
+            HasError = false;
+            new (getStorage()) storage_type(std::move(*Other.getStorage()));
+        }
+        else
+        {
+            // Get other's error.
+            HasError = true;
+            new (getErrorStorage()) std::error_code(Other.getError());
+        }
+    }
 
-template <class OtherT>
-void moveAssign(ErrorOr<OtherT> &&Other)
-{
-		if (compareThisIfSameType(*this, Other))
-				return;
+    template <class OtherT>
+    void moveAssign(ErrorOr<OtherT> &&Other)
+    {
+        if (compareThisIfSameType(*this, Other))
+            return;
 
-		this->~ErrorOr();
-		new (this) ErrorOr(std::move(Other));
-}
+        this->~ErrorOr();
+        new (this) ErrorOr(std::move(Other));
+    }
 
-pointer toPointer(pointer Val)
-{
-		return Val;
-}
+    pointer toPointer(pointer Val)
+    {
+        return Val;
+    }
 
-const_pointer toPointer(const_pointer Val) const
-{
-		return Val;
-}
+    const_pointer toPointer(const_pointer Val) const
+    {
+        return Val;
+    }
 
-pointer toPointer(wrap *Val)
-{
-		return &Val->get();
-}
+    pointer toPointer(wrap *Val)
+    {
+        return &Val->get();
+    }
 
-const_pointer toPointer(const wrap *Val) const
-{
-		return &Val->get();
-}
+    const_pointer toPointer(const wrap *Val) const
+    {
+        return &Val->get();
+    }
 
-storage_type *getStorage()
-{
-		assert(!HasError && "Cannot get value when an error exists!");
+    storage_type *getStorage()
+    {
+        assert(!HasError && "Cannot get value when an error exists!");
 
-		return reinterpret_cast<storage_type*>(TStorage.buffer);
-}
+        return reinterpret_cast<storage_type*>(TStorage.buffer);
+    }
 
-const storage_type *getStorage() const
-{
-		assert(!HasError && "Cannot get value when an error exists!");
+    const storage_type *getStorage() const
+    {
+        assert(!HasError && "Cannot get value when an error exists!");
 
-		return reinterpret_cast<const storage_type*>(TStorage.buffer);
-}
+        return reinterpret_cast<const storage_type*>(TStorage.buffer);
+    }
 
-std::error_code *getErrorStorage()
-{
-		assert(HasError && "Cannot get error when a value exists!");
+    std::error_code *getErrorStorage()
+    {
+        assert(HasError && "Cannot get error when a value exists!");
 
-		return reinterpret_cast<std::error_code *>(ErrorStorage.buffer);
-}
+        return reinterpret_cast<std::error_code *>(ErrorStorage.buffer);
+    }
 
-const std::error_code *getErrorStorage() const
-{
-		return const_cast<ErrorOr<T> *>(this)->getErrorStorage();
-}
+    const std::error_code *getErrorStorage() const
+    {
+        return const_cast<ErrorOr<T> *>(this)->getErrorStorage();
+    }
 
-union
-{
-		AlignedCharArrayUnion<storage_type> TStorage;
-		AlignedCharArrayUnion<std::error_code> ErrorStorage;
-};
-bool HasError : 1;
-};
+    union
+    {
+        AlignedCharArrayUnion<storage_type> TStorage;
+        AlignedCharArrayUnion<std::error_code> ErrorStorage;
+    };
+    bool HasError : 1;
+    };
 
-template <class T, class E>
-typename std::enable_if<std::is_error_code_enum<E>::value ||
-                        std::is_error_condition_enum<E>::value, bool>::type
-operator==(const ErrorOr<T> &Err, E Code)
-{
-		return Err.getError() == Code;
-}
+    template <class T, class E>
+    typename std::enable_if<std::is_error_code_enum<E>::value ||
+                            std::is_error_condition_enum<E>::value, bool>::type
+    operator==(const ErrorOr<T> &Err, E Code)
+    {
+        return Err.getError() == Code;
+    }
 }
 #endif
 
