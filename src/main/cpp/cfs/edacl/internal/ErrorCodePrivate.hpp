@@ -160,28 +160,28 @@ namespace cfs::edac::internal
 
     enum class CfeOperationStatus : std::uint32_t
     {
-        STATUS_OK = CFS_SUCCESS,              ///< Operation has completed successfully.
-        STATUS_FAILURE = 1,                   ///< Operation has failed for some undefined reason.
-        STATUS_UNIMPLEMENTED = 2,             ///< Given operation has not been implemented.
-        STATUS_INVALID_ARGUMENT = 3,          ///< An argument to the operation is invalid.
-        STATUS_INVALID_STATE = 4,             ///< This operation is invalid for the current device state.
-        STATUS_INVALID_COMMAND = 5,           ///< This command is not recognized.
-        STATUS_INVALID_INTERFACE = 6,         ///< This interface is not supported.
-        STATUS_INTERNAL_ERROR = 7,            ///< An internal runtime error has occured.
-        STATUS_SECURITY_ERROR = 8,            ///< A security/authentication error has occured.
-        STATUS_PARSE_ERROR = 9,               ///< A error has occured while parsing the command.
-        STATUS_IN_PROGRESS = 10,              ///< This operation is in progress.
-        STATUS_NOMEM = 11,                    ///< Operation prevented due to memory pressure.
-        STATUS_BUSY = 12,                     ///< The device is currently performing a mutually exclusive operation
-        STATUS_PROP_NOT_FOUND = 13,           ///< The given property is not recognized.
-        STATUS_DROPPED = 14,                  ///< A/The packet was dropped.
-        STATUS_EMPTY = 15,                    ///< The result of the operation is empty.
-        STATUS_CMD_TOO_BIG = 16,              ///< The command was too large to fit in the internal buffer.
-        STATUS_NO_ACK = 17,                   ///< The packet was not acknowledged.
-        STATUS_CCA_FAILURE = 18,              ///< The packet was not sent due to a CCA failure.
-        STATUS_ALREADY = 19,                  ///< The operation is already in progress.
-        STATUS_ITEM_NOT_FOUND = 20,           ///< The given item could not be found.
-        STATUS_INVALID_COMMAND_FOR_PROP = 21, ///< The given command cannot be performed on this property.
+        STATUS_OK = CFS_SUCCESS,                ///< Operation has completed successfully.
+        STATUS_FAILURE = 1,                     ///< Operation has failed for some undefined reason.
+        STATUS_UNIMPLEMENTED = 2,               ///< Given operation has not been implemented.
+        STATUS_INVALID_ARGUMENT = 3,            ///< An argument to the operation is invalid.
+        STATUS_INVALID_STATE = 4,               ///< This operation is invalid for the current device state.
+        STATUS_INVALID_COMMAND = 5,             ///< This command is not recognized.
+        STATUS_INVALID_INTERFACE = 6,           ///< This interface is not supported.
+        STATUS_INTERNAL_ERROR = 7,              ///< An internal runtime error has occured.
+        STATUS_SECURITY_ERROR = 8,              ///< A security/authentication error has occured.
+        STATUS_PARSE_ERROR = 9,                 ///< A error has occured while parsing the command.
+        STATUS_IN_PROGRESS = 10,                ///< This operation is in progress.
+        STATUS_NOMEM = 11,                      ///< Operation prevented due to memory pressure.
+        STATUS_BUSY = 12,                       ///< The device is currently performing a mutually exclusive operation
+        STATUS_PROP_NOT_FOUND = 13,             ///< The given property is not recognized.
+        STATUS_DROPPED = 14,                    ///< A/The packet was dropped.
+        STATUS_EMPTY = 15,                      ///< The result of the operation is empty.
+        STATUS_CMD_TOO_BIG = 16,                ///< The command was too large to fit in the internal buffer.
+        STATUS_NO_ACK = 17,                     ///< The packet was not acknowledged.
+        STATUS_CCA_FAILURE = 18,                ///< The packet was not sent due to a CCA failure.
+        STATUS_ALREADY = 19,                    ///< The operation is already in progress.
+        STATUS_ITEM_NOT_FOUND = 20,             ///< The given item could not be found.
+        STATUS_INVALID_COMMAND_FOR_PROP = 21,   ///< The given command cannot be performed on this property.
     };
 
 /*!
@@ -213,11 +213,11 @@ namespace cfs::edac::internal
 
     enum class Severity : std::uint32_t
     {
-        Heisenbug,    //!< Bug that seems to disappear or alter its behavior when one attempts to study it.
-        Hindenbug,    //!< Bug with catastrophic behavior.
-        Schroedinbug, //!< Bug that manifests itself in running software.
-        Bohrbug,      //!< Bug that do not change its behavior and are relatively easily detected.
-        Mandelbug     //!< Bug whose causes are so complex.
+        Heisenbug,      //!< Bug that seems to disappear or alter its behavior when one attempts to study it.
+        Hindenbug,      //!< Bug with catastrophic behavior.
+        Schroedinbug,   //!< Bug that manifests itself in running software.
+        Bohrbug,        //!< Bug that do not change its behavior and are relatively easily detected.
+        Mandelbug       //!< Bug whose causes are so complex.
     };
 
     struct ErrorDescription
@@ -233,10 +233,10 @@ namespace cfs::edac::internal
 
     enum status
     {
-        STATUS_PENDING = (1 << 0),     /* initial status (written by host)  */
-        STATUS_COMPLETE = (1 << 1),    /* completion status (written by cp) */
-        STATUS_FREE = (1 << 2),        /* initial status (written by host)  */
-        STATUS_ERROR = (1 << 3)        /* completion status (written by cp) */
+        STATUS_PENDING = (1 << 0),      /* initial status (written by host)  */
+        STATUS_COMPLETE = (1 << 1),     /* completion status (written by cp) */
+        STATUS_FREE = (1 << 2),         /* initial status (written by host)  */
+        STATUS_ERROR = (1 << 3)         /* completion status (written by cp) */
     }
 /*!
  * @defgroup CFS_Status_Codes CFS Error Space
@@ -275,22 +275,22 @@ namespace cfs::edac::internal
     {
         CFS_SEVERITY_BITMASK = ( 0xC0000000L ),
         CFS_SEVERITY_SUCCESS = ( 0x00000000L ),
-        CFS_SEVERITY_NOTICE = ( 0x40000000L ),   /*!< An unusual event has occured, though not an error condition. This
-                                                    should be investigated for the root cause. | */
-        CFS_SEVERITY_DEBUG = ( 0x40000000L ),    /*!< Useful non-operational messages that can assist in debugging.
-                                                    These should not occur during normal operation. | */
-        CFS_SEVERITY_INFO = ( 0x40000000L ),     /*!< Normal operational messages. Useful for logging. No action is
-                                                    required for these messages. | */
-        CFS_SEVERITY_ERROR = ( 0x80000000L ),    /*!< Indicates an error in secondary/redundant systems. | */
-        CFS_SEVERITY_WARNING,                    /*!< Indicates about a possible future error if this is not resolved
-                                                    within a given timeframe. Example would be a low battery warning. |
-                                                  */
-        CFS_SEVERITY_ALERT,                      /*!< Action should be taken immediately. Indicates error in
-                                                    non-critical systems. | */
-        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ), /*!< Action must be taken immediately. Indicates failure in a primary
-                                                    system. | */
-        CFS_SEVERITY_EMERGENCY,                  /*!< System is unusable. This is a "panic" condition. | */
-        CFS_SEVERITY_NONE                        /**< No logging will occur */
+        CFS_SEVERITY_NOTICE = ( 0x40000000L ),  /*!< An unusual event has occured, though not an error condition. This
+                                                   should be investigated for the root cause. | */
+        CFS_SEVERITY_DEBUG = ( 0x40000000L ),   /*!< Useful non-operational messages that can assist in debugging.
+                                                   These should not occur during normal operation. | */
+        CFS_SEVERITY_INFO = ( 0x40000000L ),    /*!< Normal operational messages. Useful for logging. No action is
+                                                   required for these messages. | */
+        CFS_SEVERITY_ERROR = ( 0x80000000L ),   /*!< Indicates an error in secondary/redundant systems. | */
+        CFS_SEVERITY_WARNING,                   /*!< Indicates about a possible future error if this is not resolved
+                                                   within a given timeframe. Example would be a low battery warning. |
+                                                 */
+        CFS_SEVERITY_ALERT,                     /*!< Action should be taken immediately. Indicates error in
+                                                   non-critical systems. | */
+        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ),/*!< Action must be taken immediately. Indicates failure in a primary
+                                                   system. | */
+        CFS_SEVERITY_EMERGENCY,                 /*!< System is unusable. This is a "panic" condition. | */
+        CFS_SEVERITY_NONE                       /**< No logging will occur */
     };
 /*!
  * @}

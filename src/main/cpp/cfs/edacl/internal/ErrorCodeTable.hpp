@@ -13,7 +13,7 @@
 
 namespace cfs::edacl::internal
 {
-    class ErrorCodeTable //: public std::map<int, std::pair<const char*, const char*> >
+    class ErrorCodeTable//: public std::map<int, std::pair<const char*, const char*> >
     {
 public:
 

@@ -163,7 +163,7 @@ namespace cfs::edac::namedType
     {
     };
 
-    namespace //std
+    namespace   //std
     {
         template <typename T, typename Parameter, template<typename> class ... Skills>
         struct hash<cfs : edac : namedType::NamedType<T, Parameter, Skills...> >

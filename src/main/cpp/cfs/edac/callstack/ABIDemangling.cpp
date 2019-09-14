@@ -97,7 +97,7 @@ size_t
 cfs::edac::callstack::ABIDemangling::demangle ( const std::type_info & typeInfo, char * buf, size_t bufSize)
 {
     // return (demangle(typeInfo.name(), buf, bufSize));
-    return 42;     // ;)
+    return 42;      // ;)
 }
 
 void

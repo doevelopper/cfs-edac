@@ -29,7 +29,7 @@ void Test::notYetImplemented()
 int Test::run (int argc, char * argv[])
 {
     ::testing::GTEST_FLAG(repeat) = m_numberOfTestIteration;
-    ::testing::GTEST_FLAG(output) = "xml:Report.xml";     // GTEST_FLAG(output) = "xml:" + path;
+    ::testing::GTEST_FLAG(output) = "xml:Report.xml";       // GTEST_FLAG(output) = "xml:" + path;
     //  ::testing::FLAGS_gmock_verbose = "verbose";
     //  ::testing::GTEST_FLAG(print_time) = false;
 

@@ -91,7 +91,7 @@ namespace cfs::edacl
 {
 //class Exception;
 
-    class CFS_EDAC_MAIN_EXPORT Error : public cfs::edac::Exception // std::exception
+    class CFS_EDAC_MAIN_EXPORT Error : public cfs::edac::Exception  // std::exception
     {
 public:
 

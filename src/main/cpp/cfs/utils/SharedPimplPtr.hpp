@@ -191,12 +191,12 @@ private:
 
 private:
 
-    boost::shared_ptr<T> m_data;         ///< Pointer to the instance of the private implementation
+    boost::shared_ptr<T> m_data;        ///< Pointer to the instance of the private implementation
     };
 }
 
 #include <cfs/utils/SharedPimplPtr.inl>
 
 
-#endif // GOOST_SHAREDPIMPLPTR_HPP
+#endif  // GOOST_SHAREDPIMPLPTR_HPP
 
