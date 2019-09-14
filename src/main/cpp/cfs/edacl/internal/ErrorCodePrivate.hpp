@@ -276,22 +276,22 @@ namespace cfs::edac::internal
     {
         CFS_SEVERITY_BITMASK = ( 0xC0000000L ),
         CFS_SEVERITY_SUCCESS = ( 0x00000000L ),
-        CFS_SEVERITY_NOTICE = ( 0x40000000L ),  /*!< An unusual event has occured, though not an error condition. This
-                                                   should be investigated for the root cause. | */
-        CFS_SEVERITY_DEBUG = ( 0x40000000L ),   /*!< Useful non-operational messages that can assist in debugging.
-                                                   These should not occur during normal operation. | */
-        CFS_SEVERITY_INFO = ( 0x40000000L ),    /*!< Normal operational messages. Useful for logging. No action is
-                                                   required for these messages. | */
-        CFS_SEVERITY_ERROR = ( 0x80000000L ),   /*!< Indicates an error in secondary/redundant systems. | */
-        CFS_SEVERITY_WARNING,                   /*!< Indicates about a possible future error if this is not resolved
-                                                   within a given timeframe. Example would be a low battery warning. |
-                                                 */
-        CFS_SEVERITY_ALERT,                     /*!< Action should be taken immediately. Indicates error in
-                                                   non-critical systems. | */
-        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ),/*!< Action must be taken immediately. Indicates failure in a primary
-                                                   system. | */
-        CFS_SEVERITY_EMERGENCY,                 /*!< System is unusable. This is a "panic" condition. | */
-        CFS_SEVERITY_NONE                       /**< No logging will occur */
+        CFS_SEVERITY_NOTICE = ( 0x40000000L ),   /*!< An unusual event has occured, though not an error condition. This
+                                                    should be investigated for the root cause. | */
+        CFS_SEVERITY_DEBUG = ( 0x40000000L ),    /*!< Useful non-operational messages that can assist in debugging.
+                                                    These should not occur during normal operation. | */
+        CFS_SEVERITY_INFO = ( 0x40000000L ),     /*!< Normal operational messages. Useful for logging. No action is
+                                                    required for these messages. | */
+        CFS_SEVERITY_ERROR = ( 0x80000000L ),    /*!< Indicates an error in secondary/redundant systems. | */
+        CFS_SEVERITY_WARNING,                    /*!< Indicates about a possible future error if this is not resolved
+                                                    within a given timeframe. Example would be a low battery warning. |
+                                                  */
+        CFS_SEVERITY_ALERT,                      /*!< Action should be taken immediately. Indicates error in
+                                                    non-critical systems. | */
+        CFS_SEVERITY_CRITICAL = ( 0xC0000000L ), /*!< Action must be taken immediately. Indicates failure in a primary
+                                                    system. | */
+        CFS_SEVERITY_EMERGENCY,                  /*!< System is unusable. This is a "panic" condition. | */
+        CFS_SEVERITY_NONE                        /**< No logging will occur */
     };
 /*!
  * @}
