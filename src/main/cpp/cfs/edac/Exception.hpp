@@ -161,12 +161,12 @@ namespace cfs::edac
  */
             enum TerminateAction
             {
-                NOTHING = 0x0,           /*! Do nothing. Don't even install termination handlers. */
-                BACKTRACE = 0x1,         /*! Load gdb and get a stack dump using gdb bt command.  */
-                WEAK_BACKTRACE = 0x2,    /*! Get backtrace using glibc::backtrace. */
+                NOTHING           = 0x0, /*! Do nothing. Don't even install termination handlers. */
+                BACKTRACE         = 0x1, /*! Load gdb and get a stack dump using gdb bt command.  */
+                WEAK_BACKTRACE    = 0x2, /*! Get backtrace using glibc::backtrace. */
                 TRAP_MANY_SIGNALS = 0x4, /*! Trap a lot of signals not normally trapped. */
-                USE_CURRENT = 0x8,       /*! Inherit values already existing in previous handlers. */
-                LOCAL_VARIABLES = 0x10   /*! Attempt to additionaly display local variables. */
+                USE_CURRENT       = 0x8, /*! Inherit values already existing in previous handlers. */
+                LOCAL_VARIABLES   = 0x10 /*! Attempt to additionaly display local variables. */
             };
 
             public:
