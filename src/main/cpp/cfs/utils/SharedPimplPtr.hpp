@@ -39,161 +39,161 @@
 
 namespace cfs::utils
 {
-    /*!
-     * @brief Smart pointer implementing the pimpl idiom with a sharing stategy
-     *
-     * See PimplPtr documentation for a complete explanation and example about the
-     * pimpl idiom and how to use pimpl pointers.
-     *
-     * Unlike PimplPtr, SharedPimplPtr shares its private implementations when its copied, using a
-     * reference counting strategy. This has the benefits of reducing the memory consumption,
-     * as well as enabling Copy-On-Write.
-     *
-     * Example:
-     *
-     * @code
-     * class MyClass
-     * {
-     * public:
-     *
-     *     int get() const;
-     *     void set(int x);
-     *
-     * private:
-     *
-     *     goost::SharedPimplPtr<struct MyClassPrivate> d;
-     * };
-     * @endcode
-     *
-     * @code
-     * #include <myclass.hpp>
-     *
-     * struct MyClassPrivate
-     * {
-     *     int x;
-     * };
-     *
-     * int MyClass::get() const
-     * {
-     *     return d->x;
-     * }
-     *
-     * void MyClass::set(int x)
-     * {
-     *     d.unique(); // duplicate if it was previously shared
-     *     d->x = x;
-     * }
-     * @endcode
-     */
-    template <typename T>
-    class SharedPimplPtr
-    {
-        public:
+/*!
+ * @brief Smart pointer implementing the pimpl idiom with a sharing stategy
+ *
+ * See PimplPtr documentation for a complete explanation and example about the
+ * pimpl idiom and how to use pimpl pointers.
+ *
+ * Unlike PimplPtr, SharedPimplPtr shares its private implementations when its copied, using a
+ * reference counting strategy. This has the benefits of reducing the memory consumption,
+ * as well as enabling Copy-On-Write.
+ *
+ * Example:
+ *
+ * @code
+ * class MyClass
+ * {
+ * public:
+ *
+ *     int get() const;
+ *     void set(int x);
+ *
+ * private:
+ *
+ *     goost::SharedPimplPtr<struct MyClassPrivate> d;
+ * };
+ * @endcode
+ *
+ * @code
+ * #include <myclass.hpp>
+ *
+ * struct MyClassPrivate
+ * {
+ *     int x;
+ * };
+ *
+ * int MyClass::get() const
+ * {
+ *     return d->x;
+ * }
+ *
+ * void MyClass::set(int x)
+ * {
+ *     d.unique(); // duplicate if it was previously shared
+ *     d->x = x;
+ * }
+ * @endcode
+ */
+template <typename T>
+class SharedPimplPtr
+{
+public:
 
-            /*!
-             * @brief Default constructor
-             *
-             * This constructor initializes the data with a new default constructed instance of T
-             */
-            SharedPimplPtr();
+/*!
+ * @brief Default constructor
+ *
+ * This constructor initializes the data with a new default constructed instance of T
+ */
+SharedPimplPtr();
 
-            /*!
-             * @brief Construct the pimpl pointer from an instance of the private implementation
-             *
-             * This constructor takes the ownership of @a data
-             *
-             * @param data Instance of the private implementation to use
-             */
-            explicit SharedPimplPtr(T* data);
+/*!
+ * @brief Construct the pimpl pointer from an instance of the private implementation
+ *
+ * This constructor takes the ownership of @a data
+ *
+ * @param data Instance of the private implementation to use
+ */
+explicit SharedPimplPtr(T* data);
 
-            /*!
-             * @brief Construct the pimpl pointer from a parameter
-             *
-             * This constructor directly forwards the argument to the constructor of T
-             *
-             * @param arg1 Argument to pass to the implementation
-             */
-            template <typename T1>
-            SharedPimplPtr(T1 arg1);
+/*!
+ * @brief Construct the pimpl pointer from a parameter
+ *
+ * This constructor directly forwards the argument to the constructor of T
+ *
+ * @param arg1 Argument to pass to the implementation
+ */
+template <typename T1>
+SharedPimplPtr(T1 arg1);
 
-            /*!
-             * @brief Construct the pimpl pointer from two parameters
-             *
-             * This constructor directly forwards the arguments to the constructor of T
-             *
-             * @param arg1 First argument to pass to the implementation
-             * @param arg2 Second argument to pass to the implementation
-             */
-            template <typename T1, typename T2>
-            SharedPimplPtr(T1 arg1, T2 arg2);
+/*!
+ * @brief Construct the pimpl pointer from two parameters
+ *
+ * This constructor directly forwards the arguments to the constructor of T
+ *
+ * @param arg1 First argument to pass to the implementation
+ * @param arg2 Second argument to pass to the implementation
+ */
+template <typename T1, typename T2>
+SharedPimplPtr(T1 arg1, T2 arg2);
 
-            /*!
-             * @brief Construct the pimpl pointer from three parameters
-             *
-             * This constructor directly forwards the arguments to the constructor of T
-             *
-             * @param arg1 First argument to pass to the implementation
-             * @param arg2 Second argument to pass to the implementation
-             * @param arg3 Third argument to pass to the implementation
-             */
-            template <typename T1, typename T2, typename T3>
-            SharedPimplPtr(T1 arg1, T2 arg2, T3 arg3);
+/*!
+ * @brief Construct the pimpl pointer from three parameters
+ *
+ * This constructor directly forwards the arguments to the constructor of T
+ *
+ * @param arg1 First argument to pass to the implementation
+ * @param arg2 Second argument to pass to the implementation
+ * @param arg3 Third argument to pass to the implementation
+ */
+template <typename T1, typename T2, typename T3>
+SharedPimplPtr(T1 arg1, T2 arg2, T3 arg3);
 
-            /*!
-             * @brief Overload of -> operator for accessing the private implementation (non-const version)
-             *
-             * @return Non-const pointer to the private implementation
-             */
-            T* operator->();
+/*!
+ * @brief Overload of -> operator for accessing the private implementation (non-const version)
+ *
+ * @return Non-const pointer to the private implementation
+ */
+T* operator->();
 
-            /*!
-             * @brief Overload of -> operator for accessing the private implementation (const version)
-             *
-             * @return Const pointer to the private implementation
-             */
-            const T* operator->() const;
+/*!
+ * @brief Overload of -> operator for accessing the private implementation (const version)
+ *
+ * @return Const pointer to the private implementation
+ */
+const T* operator->() const;
 
-            /*!
-             * @brief Overload of * operator for accessing the private implementation (non-const version)
-             *
-             * @return Non-const reference to the private implementation
-             */
-            T& operator*();
+/*!
+ * @brief Overload of * operator for accessing the private implementation (non-const version)
+ *
+ * @return Non-const reference to the private implementation
+ */
+T& operator*();
 
-            /*!
-             * @brief Overload of * operator for accessing the private implementation (const version)
-             *
-             * @return Const reference to the private implementation
-             */
-            const T& operator*() const;
+/*!
+ * @brief Overload of * operator for accessing the private implementation (const version)
+ *
+ * @return Const reference to the private implementation
+ */
+const T& operator*() const;
 
-            /*!
-             * @brief Swap the data of two SharedPimplPtr instances
-             *
-             * @param other SharedPimplPtr instance to swap contents with
-             */
-            void swap(SharedPimplPtr<T>& other);
+/*!
+ * @brief Swap the data of two SharedPimplPtr instances
+ *
+ * @param other SharedPimplPtr instance to swap contents with
+ */
+void swap(SharedPimplPtr<T>& other);
 
-            /*!
-             * @brief Ensure that the private implementation is no longer shared with other SharedPimplPtr instances
-             *
-             * This function checks the reference counter: if it's more than 1, it creates a new implementation which
-             * is a deep copy of the previous one
-             */
-            void unique();
+/*!
+ * @brief Ensure that the private implementation is no longer shared with other SharedPimplPtr instances
+ *
+ * This function checks the reference counter: if it's more than 1, it creates a new implementation which
+ * is a deep copy of the previous one
+ */
+void unique();
 
-        private:
+private:
 
-            /*!
-             * @brief Assignment is disabled, once constructed a SharedPimplPtr cannot point to another implementation
-             */
-            SharedPimplPtr<T>& operator=(const SharedPimplPtr<T>&);
+/*!
+ * @brief Assignment is disabled, once constructed a SharedPimplPtr cannot point to another implementation
+ */
+SharedPimplPtr<T>& operator=(const SharedPimplPtr<T>&);
 
-        private:
+private:
 
-            boost::shared_ptr<T> m_data; ///< Pointer to the instance of the private implementation
-    };
-} // namespace goost
+boost::shared_ptr<T> m_data;             ///< Pointer to the instance of the private implementation
+};
+}
 
 #include <cfs/utils/SharedPimplPtr.inl>
 

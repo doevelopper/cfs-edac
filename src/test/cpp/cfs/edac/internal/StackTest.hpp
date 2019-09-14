@@ -5,24 +5,24 @@
 #include <gtest/gtest.h>
 #include <cppbdd101/lectures/gotw/Stack.hpp>
 
-class StackTest : public ::testing::Test 
+class StackTest : public ::testing::Test
 {
 public:
-    StackTest();
-    virtual ~StackTest();
+StackTest();
+virtual ~StackTest();
 
-    virtual void SetUp();
-    virtual void TearDown ();
+virtual void SetUp();
+virtual void TearDown ();
 
 protected:
-        /*!
-         * @brief Object that is about to be tested. 
-         */
-        //Stack<int> * objectUnderTest;
-        /*!
-         * @brief Class logger. 
-         */
-        static log4cxx::LoggerPtr logger;
+/*!
+ * @brief Object that is about to be tested.
+ */
+//Stack<int> * objectUnderTest;
+/*!
+ * @brief Class logger.
+ */
+static log4cxx::LoggerPtr logger;
 private:
 
 };

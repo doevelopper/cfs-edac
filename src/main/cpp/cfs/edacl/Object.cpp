@@ -47,7 +47,7 @@ Object::Data<T>::Data()
    }
  */
 Object::Object()
-    : none(nullptr)
+		: none(nullptr)
 {
 }
 
@@ -55,10 +55,10 @@ Object::Object(const Object & orig) {
 }
 
 Object::~Object() {
-    if (!empty())
-    {
-        delete none;
-    }
+		if (!empty())
+		{
+				delete none;
+		}
 }
 
 /*
@@ -135,7 +135,7 @@ Object::~Object() {
    }
  */
 Object::Object()
-    : none(nullptr)
+		: none(nullptr)
 {
 }
 
@@ -143,10 +143,10 @@ Object::Object(const Object & orig) {
 }
 
 Object::~Object() {
-    if (!empty())
-    {
-        delete none;
-    }
+		if (!empty())
+		{
+				delete none;
+		}
 }
 
 /*

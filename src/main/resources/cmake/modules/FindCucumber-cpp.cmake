@@ -21,30 +21,32 @@
 #        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 #        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+set(Boost_USE_STATIC_LIBS       ON)  # only find static libs
+set(Boost_USE_DEBUG_LIBS        OFF) # ignore debug libs and
+set(Boost_USE_RELEASE_LIBS      ON)  # only find release libs
+set(Boost_USE_MULTITHREADED     ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
 
 set(CUCUMBER_BOOST_LIBBRARIES
-    thread
-    system
-    regex
-    date_time
-    program_options
-#    asio
-#    assign
-    filesystem
-#    multi_array
-    signals
+    libboost_thread
+    libboost_system
+    libboost_regex
+    libboost_date_time
+    libboost_program_options
+    libboost_filesystem
 )
 
-find_package(Boost COMPONENTS ${CUCUMBER_BOOST_LIBBRARIES} REQUIRED QUIET
-#    HINTS
-#        /usr/include
-#        /usr/lib
+#find_package(Boost 1.69.0 REQUIRED COMPONENTS ${CUCUMBER_BOOST_LIBBRARIES} QUIET
+find_package(CFSBoost REQUIRED COMPONENTS ${CUCUMBER_BOOST_LIBBRARIES} QUIET
+    #    HINTS
+    #    /usr/lib
+    #    /usr/local/lib
 )
 
 if(Boost_FOUND)
 
     find_path(CUCUMBER_INCLUDE_DIR cucumber-cpp/autodetect.hpp
-        HINTS 
+        HINTS
             /usr/local/include
     )
 
@@ -52,13 +54,13 @@ if(Boost_FOUND)
     list(APPEND CUCUMBER_NO_MAIN_NAMES cucumber-cpp-nomain libcucumber-cpp-nomain)
 
 
-    find_library(CUCUMBER_LIBRARY 
+    find_library(CUCUMBER_LIBRARY
         NAMES ${CUCUMBER_NAMES}
-        HINTS 
+        HINTS
             /usr/local/lib
     )
 
-    find_library(CUCUMBER_NO_MAIN_LIBRARY 
+    find_library(CUCUMBER_NO_MAIN_LIBRARY
         NAMES ${CUCUMBER_NO_MAIN_NAMES}
         HINTS /usr/local/lib
     )
@@ -74,6 +76,7 @@ if(Boost_FOUND)
             ## INTERFACE_COMPILE_DEFINITIONS "${CUCUMBER_DEFINITIONS}"
                 INTERFACE_INCLUDE_DIRECTORIES "${CUCUMBER_INCLUDE_DIRS}"
                 INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;Boost::program_options;Boost::date_time;Boost::filesystem;Boost::regex;Boost::system;Boost::thread"
+                #INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;program_options;date_time;filesystem;regex;system;thread"
                 IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
                 IMPORTED_LOCATION "${CUCUMBER_LIBRARY}"
             )

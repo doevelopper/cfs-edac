@@ -3,11 +3,11 @@
 #
 #  ** File generated automatically, do not modify **
 #
-#  Usage from an external project: 
+#  Usage from an external project:
 #  In your CMakeLists.txt, add these lines:
 #
 #    FIND_PACKAGE(@PROJECT_NAME@ REQUIRED )
-#    TARGET_LINK_LIBRARIES(MY_TARGET_NAME ${@PROJECT_NAME@_LIBS})   
+#    TARGET_LINK_LIBRARIES(MY_TARGET_NAME ${@PROJECT_NAME@_LIBS})
 #
 #  Where xxx is the name of a specific library
 #
@@ -27,9 +27,6 @@ SET(@PROJECT_NAME@_LIB_DIR "@CMAKE_LIB_DIRS_CONFIGCMAKE@")
 SET(@PROJECT_NAME@_COMPONENTS @LIB_COMPONENTS@)
 SET(@PROJECT_NAME@_FOUND "YES")
 
-FIND_PACKAGE(Qt4 	4.6   REQUIRED)
-INCLUDE(${QT_USE_FILE})
-
 SET (@PROJECT_NAME@_LIBS "")
 FOREACH(__LIB @PROJECT_NAME@)
   SET(@PROJECT_NAME@_LIBS ${@PROJECT_NAME@_LIBS} ${__LIB})
@@ -39,3 +36,15 @@ SET(@PROJECT_NAME@_VERSION 		@VERSION@)
 SET(@PROJECT_NAME@_VERSION_MAJOR  @VERSION_MAJOR@)
 SET(@PROJECT_NAME@_VERSION_MINOR  @VERSION_MINOR@)
 SET(@PROJECT_NAME@_VERSION_PATCH  @VERSION_PATCH@)
+
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${prefix}/lib/cfs-com/@CFS_COM_TARGET@/plugins
+includedir=${prefix}/include
+
+Name: cfs.com.edac-@CFS_COM_TARGET@
+Description: Data Distribution Service  abstraction Library
+Requires: pthread rt
+Version: @KDL_VERSION@
+Libs: -L${libdir} -lcfs.com.edac-@CFS_COM_TARGET@
+Cflags: -I${includedir}
+

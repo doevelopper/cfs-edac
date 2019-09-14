@@ -7,17 +7,17 @@
 
 namespace cfs::fsm
 {
-    namespace sml = boost::sml;
+namespace sml = boost::sml;
 
-    class Error_SM
-    {
-        public:
+class Error_SM
+{
+public:
 
-            auto opeartor()()
-            {
-                //return make_transition_table(
-            }
-    }
+auto opeartor()()
+{
+		//return make_transition_table(
+}
+}
 }
 
 #endif

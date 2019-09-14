@@ -32,18 +32,18 @@
 
 namespace cfs::utils
 {
-    /*!
-     * @brief Extract the length of a static array
-     *
-     * @param array Source array
-     *
-     * @return Number of elements in the array
-     */
-    template <typename T, int N>
-    int length(T (&)[N])
-    {
-        return N;
-    }
+/*!
+ * @brief Extract the length of a static array
+ *
+ * @param array Source array
+ *
+ * @return Number of elements in the array
+ */
+template <typename T, int N>
+int length(T (&)[N])
+{
+		return N;
+}
 }
 
 #endif

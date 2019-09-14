@@ -1,4 +1,4 @@
-set (UNCRUSTIFY_CONFIG "${PROJECT_SOURCE_DIR}/src/main/resources/configs/cpp101-style.cfg")
+set (UNCRUSTIFY_CONFIG "${PROJECT_SOURCE_DIR}/src/main/resources/configs/cpp-style.cfg")
 set (UNCRUSTIFY_FLAGS -q --if-changed --no-backup -l CPP  -c ${UNCRUSTIFY_CONFIG})
 
 find_program(UNCRUSTIFY uncrustify

@@ -2,19 +2,19 @@
 add_library(cfs.edac.main
 
 # ${CMAKE_BINARY_DIR}/cfs/edac/Version
-#    cfs/edac/namedType/Crtp
-#    cfs/edac/namedType/internal/NamedTypeInternal
-#    cfs/edac/namedType/UnderlyingFunctionalities
-#    cfs/edac/namedType/StrongType
+#cfs/edac/namedType/Crtp
+    #    cfs/edac/namedType/internal/NamedTypeInternal
+    #cfs/edac/namedType/UnderlyingFunctionalities
+    #cfs/edac/namedType/StrongType
     cfs/edac/callstack/ABIDemangling
 #    cfs/edac/private/ErrorCodePrivate
 #    cfs/edac/ErrorHandler
 #    cfs/edac/ErrorOr
 #    cfs/edac/private/ErrorCodeTable
 #    cfs/edac/IsErrorActive
-    cfs/edac/Exception
-    cfs/edacl/Error
-    cfs/utils/PimplPtr
+#cfs/edac/Exception
+    #    cfs/edacl/Error
+    #    cfs/utils/PimplPtr
 #    cfs/edac/internal/LoggerPrivate
 #    cfs/edac/Logger
 )
@@ -45,7 +45,7 @@ generate_export_header(cfs.edac.main
     EXPORT_FILE_NAME "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Export.hpp"
     INCLUDE_GUARD_NAME CFS_EDAC_EXPORT_HPP
     # EXPORT_MACRO_NAME API_DECLS
-    #BASE_NAME EDAC 
+    #BASE_NAME EDAC
     #PREFIX_NAME EDAC_
     #STATIC_DEFINE BUILT_AS_STATIC
     DEPRECATED_MACRO_NAME CFS_EDAC_DEPRECATED
@@ -67,33 +67,33 @@ target_compile_options(cfs.edac.main
         $<$<CONFIG:Release>:-g0 -O2>
         $<$<CXX_COMPILER_ID:GNU>:$<BUILD_INTERFACE:-Wall;-Wextra;-Wpedantic>>
 
-    PUBLIC 
+    PUBLIC
         -m64
-        
+
         $<IF:$<COMPILE_LANGUAGE:CXX>,-Wold-style-cast,>
         $<$<COMPILE_LANGUAGE:CXX>: -Weffc++ -fdiagnostics-parseable-fixits>
         $<$<CXX_COMPILER_ID:GNU>: ${GNU_CXX_FLAGS} -U_FORTIFY_SOURCE -fsanitize-address-use-after-scope>
         $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:GNU>>: ${COMMON_CXX_FLAGS}>
-        
+
         $<$<CONFIG:Release>:-g0 -O2>
         $<$<CONFIG:Release>:${MY_RELEASE_OPTIONS}>
         $<$<CONFIG:Release>:-ffunction-sections>
         $<$<CONFIG:Release>:-fdata-sections>
         $<$<CONFIG:Release>:-Wl,--gc-sections>
-        
+
         $<$<OR:$<CONFIG:Release>,$<CONFIG:Profile>>: DISABLE_VAR>
-        
+
         $<$<CONFIG:Debug>: ${MY_DEBUG_OPTIONS}>
         $<$<CONFIG:Debug>: -O0>
         $<$<CONFIG:Debug>: -ggdb3>
         $<$<CONFIG:Debug>: -O0 -g -D_DEBUG -D_FORTIFY_SOURCE=2 -fno-strict-aliasing -fno-omit-frame-pointer>
-        
+
         #$<IF:$<CONFIG:Debug>: helper_debug.cpp,helper_release.cpp>
-        
+
         $<$<CONFIG:Coverage>: -O0  -fprofile-arcs -ftest-coverage --coverage>
 
         $<$<CONFIG:Profile>: ${CHECK_MEMORY_FLAGS}>
-        $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>       
+        $<$<CONFIG:Profile>:-fsanitize=memory -fsanitize-memory-track-origins=2 -fno-omit-frame-pointer>
 )
 
 target_compile_features(cfs.edac.main
@@ -128,29 +128,18 @@ target_include_directories(cfs.edac.main
 
 # Support find_package(<target> NO_MODULE).
 
-#include(CMakePackageConfigHelpers)
-#configure_package_config_file(cfs-edac-config.cmake.in cfs-edac-config.cmake
-#    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cfs-edac-${MODULE_VERSION}
-#    PATH_VARS 
-#        INCLUDE_INSTALL_DIR 
-#        SYSCONFIG_INSTALL_DIR
-#)
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/src/main/resources/configs/cfs-edac-config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cfs-edac-config.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/cfs-edac-${PROJECT_VERSION}
+#    PATH_VARS INCLUDE_INSTALL_DIR LIB_INSTALL_DIR SYSCONFIG_INSTALL_DIR
+)
 
-#write_basic_package_version_file(${CMAKE_BINARY_DIR}/cfs-edac-config-version.cmake
-#	VERSION ${MODULE_VERSION}
-#	COMPATIBILITY ExactVersion
-#)
-
-#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cfs-edac-config.cmake 
-#    ${CMAKE_CURRENT_BINARY_DIR}/cfs-edac-config-version.cmake
-#    DESTINATION ${LIB_INSTALL_DIR}/cfs-edac/cmake 
-#)
-
-# To make the component usable not only from the install directory but also from the build directory
-#export(
-#    TARGETS .main.bin
-#    FILE .main.bin-export.cmake
-#)
+write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/cmake/cfs-edac-config-version.cmake
+	VERSION ${PROJECT_VERSION}
+	COMPATIBILITY ExactVersion
+)
 
 #install (
 #    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cfs/osal
@@ -163,19 +152,23 @@ target_include_directories(cfs.edac.main
 #    ARCHIVES DESTINATION ${CMAKE_INSTALL_LIBDIR}
 #)
 
-#install(
-#    FILES
-#        ${CMAKE_BINARY_DIR}/l101.main-config.cmake
-#        ${CMAKE_BINARY_DIR}/l101.main-config-version.cmake
-#    DESTINATION
-#        ${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}-${MODULE_VERSION}
-#    COMPONENT
-#        development
-#)
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/cfs-edac-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/cfs-edac-config-version.cmake
+    DESTINATION
+        ${CMAKE_INSTALL_LIBDIR}/cmake/cfs-edac-${PROJECT_VERSION}
+    COMPONENT
+        development
+)
 
-#install(EXPORT .main
-#	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}-${MODULE_VERSION}
-#	NAMESPACE ${PROJECT_NAME}::
-#	FILE l101.main-export.cmake
-#	COMPONENT development
-#)
+# To make the component usable not only from the install directory but also from the build director#y
+#if(TARGET cfs.edac.main)
+#    install(EXPORT cfs.edac.main
+#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${MODULE_NAME}-${PROJECT_VERSION}
+#    	NAMESPACE ${PROJECT_NAME}::
+#    	FILE cfs.edac.main-export.cmake
+#        COMPONENT development
+#    )
+#endif()
+

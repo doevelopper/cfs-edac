@@ -89,317 +89,317 @@
 
 namespace cfs::edacl
 {
-    //class Exception;
+//class Exception;
 
-    class CFS_EDAC_MAIN_EXPORT Error : public cfs::edac::Exception // std::exception
-    {
-        public:
+class CFS_EDAC_MAIN_EXPORT Error : public cfs::edac::Exception     // std::exception
+{
+public:
 
-            /*!
-             * @brief Constructs a new error with null as its detail message.
-             */
-            Error() noexcept( false );
+/*!
+ * @brief Constructs a new error with null as its detail message.
+ */
+Error() noexcept( false );
 
-            /*!
-             * @brief Construct a new Error object with a detail message.
-             *
-             * @param message
-             */
-            Error( std::string & message );
+/*!
+ * @brief Construct a new Error object with a detail message.
+ *
+ * @param message
+ */
+Error( std::string & message );
 
-            /*!
-             * @brief Construct a new Error object with the specified detail message and cause.
-             *
-             * @param message
-             * @param code
-             */
-            Error( std::string & message, int code )  noexcept( false );
+/*!
+ * @brief Construct a new Error object with the specified detail message and cause.
+ *
+ * @param message
+ * @param code
+ */
+Error( std::string & message, int code )  noexcept( false );
 
-            /*!
-             * @brief Constructs a new error with the specified detail message, cause,
-             *        suppression enabled or disabled, and writable stack trace enabled or disabled.
-             * @param[in,out] message - The detail message.
-             * @param[in] enableSuppression  - Whether or not suppression is enabled or disabled.
-             * @param[in] writableStackTrace   - Whether or not the stack trace should be writable.
-             */
-            Error( std::string & message, bool enableSuppression,  bool writableStackTrace ) noexcept( false );
+/*!
+ * @brief Constructs a new error with the specified detail message, cause,
+ *        suppression enabled or disabled, and writable stack trace enabled or disabled.
+ * @param[in,out] message - The detail message.
+ * @param[in] enableSuppression  - Whether or not suppression is enabled or disabled.
+ * @param[in] writableStackTrace   - Whether or not the stack trace should be writable.
+ */
+Error( std::string & message, bool enableSuppression,  bool writableStackTrace ) noexcept( false );
 
-            /**
-             * @brief Construct a new Error object
-             *
-             * @param code
-             */
-            Error( const std::error_code code ) noexcept;
+/**
+ * @brief Construct a new Error object
+ *
+ * @param code
+ */
+Error( const std::error_code code ) noexcept;
 
-            /*!
-             * @brief Construct a new Error object
-             *
-             * @param code
-             * @param what
-             */
-            Error( const std::error_code code, const char * const what ) noexcept;
+/*!
+ * @brief Construct a new Error object
+ *
+ * @param code
+ * @param what
+ */
+Error( const std::error_code code, const char * const what ) noexcept;
 
-            /*!
-             * @brief Construct a new Error object
-             *
-             * @param code
-             * @param category
-             */
-            Error( const int code, const std::error_category & category ) noexcept;
+/*!
+ * @brief Construct a new Error object
+ *
+ * @param code
+ * @param category
+ */
+Error( const int code, const std::error_category & category ) noexcept;
 
-            /*!
-             * @brief Construct a new Error object
-             *
-             * @param code
-             */
-            Error( const int code ) noexcept;
+/*!
+ * @brief Construct a new Error object
+ *
+ * @param code
+ */
+Error( const int code ) noexcept;
 
-            /*!
-             * @brief Construct a new Error object
-             *
-             * @param code
-             * @param category
-             * @param what
-             */
-            Error( const int code, const std::error_category & category, const char * const what) noexcept;
+/*!
+ * @brief Construct a new Error object
+ *
+ * @param code
+ * @param category
+ * @param what
+ */
+Error( const int code, const std::error_category & category, const char * const what) noexcept;
 
-            /*!
-             * @brief Destructor.
-             */
-            virtual ~Error() = default;
+/*!
+ * @brief Destructor.
+ */
+virtual ~Error() = default;
 
-            /*!
-             * @brief Return a description of the error
-             * @return Pointer to a string containing the error message
-             */
-            virtual const char * what () const throw ( );
+/*!
+ * @brief Return a description of the error
+ * @return Pointer to a string containing the error message
+ */
+virtual const char * what () const throw ( );
 
-            /*!
-             * @brief Return the error location (file + line + function)
-             * @return String containing the error location
-             */
-            virtual const char * where () const throw ( );
+/*!
+ * @brief Return the error location (file + line + function)
+ * @return String containing the error location
+ */
+virtual const char * where () const throw ( );
 
-            /*!
-             * @brief Registers the given handler as the current error handler.
-             * @return The previously registered handler.
-             */
-            static Error * set ( Error * handler );
+/*!
+ * @brief Registers the given handler as the current error handler.
+ * @return The previously registered handler.
+ */
+static Error * set ( Error * handler );
 
-            /*!
-             * @brief Returns a pointer to the currently registered.
-             */
-            static Error * get ();
+/*!
+ * @brief Returns a pointer to the currently registered.
+ */
+static Error * get ();
 
-            /*!
-             * @brief
-             *
-             * @return int
-             */
-            static int lastErrno ();
+/*!
+ * @brief
+ *
+ * @return int
+ */
+static int lastErrno ();
 
-            /*!
-             * @brief
-             *
-             * @return const char*
-             */
-            static const char * lastErrmsg ();
+/*!
+ * @brief
+ *
+ * @return const char*
+ */
+static const char * lastErrmsg ();
 
-            /*!
-             * @brief
-             *
-             * @param e
-             * @param msg
-             * @return std::system_error
-             */
+/*!
+ * @brief
+ *
+ * @param e
+ * @param msg
+ * @return std::system_error
+ */
 
-            std::system_error systemError ( int e, const char * msg )
-            {
-                return std::system_error( std::error_code( e, std::system_category()), msg );
-            }
+std::system_error systemError ( int e, const char * msg )
+{
+		return std::system_error( std::error_code( e, std::system_category()), msg );
+}
 
-            /*!
-             * @brief
-             *
-             * @param e
-             * @param msg
-             * @return std::system_error
-             */
-            std::system_error systemError ( int e, const std::string & msg)
-            {
-                return systemError( e, msg.c_str());
-            }
+/*!
+ * @brief
+ *
+ * @param e
+ * @param msg
+ * @return std::system_error
+ */
+std::system_error systemError ( int e, const std::string & msg)
+{
+		return systemError( e, msg.c_str());
+}
 
-            /*!
-             * @brief
-             *
-             * @param msg
-             * @return std::system_error
-             */
-            std::system_error systemError ( const std::string & msg )
-            {
-                return systemError( errno, msg );
-            }
+/*!
+ * @brief
+ *
+ * @param msg
+ * @return std::system_error
+ */
+std::system_error systemError ( const std::string & msg )
+{
+		return systemError( errno, msg );
+}
 
-            /*!
-             * @brief
-             *
-             * @param msg
-             * @return std::system_error
-             */
-            std::system_error systemError ( const char * msg )
-            {
-                return systemError( errno, msg );
-            }
+/*!
+ * @brief
+ *
+ * @param msg
+ * @return std::system_error
+ */
+std::system_error systemError ( const char * msg )
+{
+		return systemError( errno, msg );
+}
 
-            /*!
-             * @brief
-             *
-             * @param code
-             * @return std::error_code
-             */
-            std::error_code systemErrorCode ( int code )
-            {
-                return ( std::error_code( code, std::system_category()));
-            }
+/*!
+ * @brief
+ *
+ * @param code
+ * @return std::error_code
+ */
+std::error_code systemErrorCode ( int code )
+{
+		return ( std::error_code( code, std::system_category()));
+}
 
-            /*!
-             * @brief
-             *
-             * @param code
-             * @return std::error_code
-             */
-            std::error_code genericErrorCode ( int code )
-            {
-                return ( std::error_code( code, std::generic_category()));
-            }
+/*!
+ * @brief
+ *
+ * @param code
+ * @return std::error_code
+ */
+std::error_code genericErrorCode ( int code )
+{
+		return ( std::error_code( code, std::generic_category()));
+}
 
-            /*!
-             * @brief
-             *
-             * @param code
-             * @return std::error_condition
-             */
-            std::error_condition systemErrorConditionCode ( int code )
-            {
-                return ( std::error_condition( code, std::system_category()));
-            }
+/*!
+ * @brief
+ *
+ * @param code
+ * @return std::error_condition
+ */
+std::error_condition systemErrorConditionCode ( int code )
+{
+		return ( std::error_condition( code, std::system_category()));
+}
 
-            /*!
-             * @brief
-             *
-             * @param code
-             * @return std::error_condition
-             */
-            std::error_condition genericErrorConditionCode ( int code )
-            {
-                return ( std::error_condition( code, std::generic_category()));
-            }
+/*!
+ * @brief
+ *
+ * @param code
+ * @return std::error_condition
+ */
+std::error_condition genericErrorConditionCode ( int code )
+{
+		return ( std::error_condition( code, std::generic_category()));
+}
 
-            /*!
-             *
-             */
-            auto systemErrorCode ()
-            {
-                return ( systemErrorCode( errno ).default_error_condition());
-            }
+/*!
+ *
+ */
+auto systemErrorCode ()
+{
+		return ( systemErrorCode( errno ).default_error_condition());
+}
 
-            /*!
-             * @brief
-             *
-             * @return auto
-             */
-            auto genericErrorCode ()
-            {
-                return ( genericErrorCode( errno ).default_error_condition());
-            }
+/*!
+ * @brief
+ *
+ * @return auto
+ */
+auto genericErrorCode ()
+{
+		return ( genericErrorCode( errno ).default_error_condition());
+}
 
-            /**
-             * @brief
-             *
-             * @param errc
-             */
-            [[noreturn]] void makeErrorCode(std::uint32_t errc)
-            {
-                std::make_error_code(std::errc::timed_out);
-            }
+/**
+ * @brief
+ *
+ * @param errc
+ */
+[[noreturn]] void makeErrorCode(std::uint32_t errc)
+{
+		std::make_error_code(std::errc::timed_out);
+}
 
-            /*!
-             * @brief
-             *
-             */
-            [[noreturn]] void makeAndThrowErrorCode()
-            {
-                throw std::system_error(std::make_error_code(std::errc::timed_out));
-            }
+/*!
+ * @brief
+ *
+ */
+[[noreturn]] void makeAndThrowErrorCode()
+{
+		throw std::system_error(std::make_error_code(std::errc::timed_out));
+}
 
-            void throw_error [[noreturn]]();
-            void throw_error [[noreturn]]( const char * origin, const char * format = nullptr, ... );
-            void throw_error [[noreturn]]( int code );
-            void throw_error [[noreturn]]( int code, const char * origin, const char * format = nullptr, ... );
-            void throw_error [[noreturn]]( int code, const char * origin, const char * format, va_list args );
+void throw_error [[noreturn]]();
+void throw_error [[noreturn]]( const char * origin, const char * format = nullptr, ... );
+void throw_error [[noreturn]]( int code );
+void throw_error [[noreturn]]( int code, const char * origin, const char * format = nullptr, ... );
+void throw_error [[noreturn]]( int code, const char * origin, const char * format, va_list args );
 
-        protected:
+protected:
 
-            //const char* name() const noexcept override;
-            //std::string message(int ev) const override;
-            //std::error_condition default_error_condition(int ev) const noexcept override;
-            //bool equivalent(const std::error_code& code, int condition) const noexcept override;
+//const char* name() const noexcept override;
+//std::string message(int ev) const override;
+//std::error_condition default_error_condition(int ev) const noexcept override;
+//bool equivalent(const std::error_code& code, int condition) const noexcept override;
 
-            /*!
-             * @brief Returns the default Error handler.
-             */
-            static Error * defaultHandler ();
-            /*!
-             * @brief Utility function translating numeric error code to string.
-             */
-            static std::string getErrorDescription ( int errorCode );
+/*!
+ * @brief Returns the default Error handler.
+ */
+static Error * defaultHandler ();
+/*!
+ * @brief Utility function translating numeric error code to string.
+ */
+static std::string getErrorDescription ( int errorCode );
 
 
-            //std::pair < std::size_t /* bytes */, CfsErrorSeverity >  severity ();
-            //std::pair < std::size_t /* bytes */, CfeServiceIdentifiers > serviceId ();
-            //std::pair < std::size_t /* bytes */, CfeOperationStatus > operationStatus ();
+//std::pair < std::size_t /* bytes */, CfsErrorSeverity >  severity ();
+//std::pair < std::size_t /* bytes */, CfeServiceIdentifiers > serviceId ();
+//std::pair < std::size_t /* bytes */, CfeOperationStatus > operationStatus ();
 
-            //using ErrorMessageMap = std::map < std::string, CfsErrorSeverity >;
+//using ErrorMessageMap = std::map < std::string, CfsErrorSeverity >;
 
-            std::map < std::uint32_t, std::string > const errorsList
-            {
-                { 0, "No Error" },
-                { 1, "Wrong ID" },
+std::map < std::uint32_t, std::string > const errorsList
+{
+		{ 0, "No Error" },
+		{ 1, "Wrong ID" },
 
-                /* ... */
-                { 75000, "Unknown" },
-            };
+		/* ... */
+		{ 75000, "Unknown" },
+};
 
-            /*!
-             * @brief Get the Error String object
-             *
-             * @param errorId
-             * @return std::string const&
-             */
-            std::string const & getErrorString ( int errorId )
-            {
-                auto it = errorsList.find( errorId );
+/*!
+ * @brief Get the Error String object
+ *
+ * @param errorId
+ * @return std::string const&
+ */
+std::string const & getErrorString ( int errorId )
+{
+		auto it = errorsList.find( errorId );
 
-                return it != errorsList.end() ? it->second : errorsList.find( 2500 )->second;
-            }
+		return it != errorsList.end() ? it->second : errorsList.find( 2500 )->second;
+}
 
-        private:
+private:
 
-            // handler type, should take the same parameters as the constructor
-            // in order to allow the same information
-            using handler = void (*)( ... );
-            handler set_handler(handler h);
+// handler type, should take the same parameters as the constructor
+// in order to allow the same information
+using handler = void (*)( ... );
+handler set_handler(handler h);
 
-            std::string m_message;  ///< Error message
-            std::string m_location; ///< Location of the error (file, line and function)
-            std::error_code m_ec;
-            std::vector < std::pair < std::string, std::string > > errorProperties;
-            std::uint32_t m_codeMask;
-            std::uint32_t m_facilityMask;
-            std::uint32_t m_ErrorCode;
-            std::uint32_t m_ErrorFacility;
-    };
+std::string m_message;              ///< Error message
+std::string m_location;             ///< Location of the error (file, line and function)
+std::error_code m_ec;
+std::vector < std::pair < std::string, std::string > > errorProperties;
+std::uint32_t m_codeMask;
+std::uint32_t m_facilityMask;
+std::uint32_t m_ErrorCode;
+std::uint32_t m_ErrorFacility;
+};
 }
 
 #endif

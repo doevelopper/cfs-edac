@@ -177,7 +177,7 @@ src/main/resources/guides/extended-coding-style-guide.md
 src/main/resources/scripts/cpplint-python-3.py
 uncrustifyDoc.cfg
 Report.xml
-
+*-build/*
 
 #src/main/resources/cmakeModule/
 #src/main/resources/macros/

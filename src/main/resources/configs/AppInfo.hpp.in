@@ -4,7 +4,7 @@
 #define APPINFO_HPP
 
 #include <boost/preprocessor/stringize.hpp>
-#include <lectures/GitRevision.hpp>
+#include <cfs/com/GitRevision.hpp>
 
 /*
  * AUTO-GENERATION WARNING:

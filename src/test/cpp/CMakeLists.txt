@@ -32,8 +32,8 @@ target_compile_definitions(cfs.edac.test.bin PUBLIC
 #    $<$<OR:$<CONFIG:Release>,$<CONFIG:Profiling>>:DISABLE_CONF>
 )
 
-target_link_libraries(cfs.edac.test.bin 
-    PUBLIC 
+target_link_libraries(cfs.edac.test.bin
+    PUBLIC
         cfs.edac.main
         GMock::GMock
         GTest::GTest

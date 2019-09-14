@@ -166,18 +166,18 @@ function(targetName flag)
     endif(${flag})
 endfunction(targetName)
 
-find_program(VALGRIND "valgrind")
-set(MEMORYCHECK_COMMAND_OPTIONS "--xml=yes --xml-file=test.xml")
-set(MEMORYCHECK_SUPPRESSIONS_FILE "")
-if(VALGRIND)
-    add_custom_target(valgrind
-        COMMAND "${VALGRIND}" 
-                  --tool=memcheck 
-                  --leak-check=yes 
-                  --show-reachable=yes 
-                  --num-callers=20 
-                  --track-fds=yes $<TARGET_FILE:moduleTest>)
-endif()
+# find_program(VALGRIND "valgrind")
+# set(MEMORYCHECK_COMMAND_OPTIONS "--xml=yes --xml-file=test.xml")
+# set(MEMORYCHECK_SUPPRESSIONS_FILE "")
+# if(VALGRIND)
+    # add_custom_target(valgrind
+        # COMMAND "${VALGRIND}" 
+                  # --tool=memcheck 
+                  # --leak-check=yes 
+                  # --show-reachable=yes 
+                  # --num-callers=20 
+                  # --track-fds=yes $<TARGET_FILE:moduleTest>)
+# endif()
 
 function(add_memcheck_test name binary)
     set(memcheck_command "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")

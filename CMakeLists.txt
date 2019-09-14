@@ -1,3 +1,4 @@
+#[[
 #       CMakeLists.txt
 #
 #               Copyright (c) 2014-2017 Nicolas J. FURY
@@ -20,12 +21,13 @@
 #        LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 #        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 #        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#]]
 
-cmake_minimum_required(VERSION 3.11 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 project (cfs.edac
-    VERSION 0.0.0.0
-    DESCRIPTION "Error Detection and Correction Classification Reporting"
+    VERSION 0.0.0.1
+    DESCRIPTION "Error Detection Correction Classification and eporting"
     HOMEPAGE_URL "https://exemple.com"
     LANGUAGES CXX
 )
@@ -116,10 +118,18 @@ configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/Version.cpp.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Version.cpp"
                 @ONLY)
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(${CMAKE_INSTALL_PREFIX}/cmake/cfs-edac-config-version.cmake COMPATIBILITY ExactVersion)
+add_custom_target(build-time-make-directory-and-copy-files all
+    COMMAND
+        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/bin/conf
+    COMMAND
+        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/bin/logs
+     COMMAND
+        ${CMAKE_COMMAND} -E copy_if_different
+                   ${PROJECT_SOURCE_DIR}/src/main/resources/configs/log4cxx.xml
+                   ${CMAKE_INSTALL_PREFIX}/bin/conf
+)
 
 add_subdirectory (src/main/cpp)
-#add_subdirectory (src/test/cpp)
+add_subdirectory (src/test/cpp)
 #add_subdirectory (src/it)
 

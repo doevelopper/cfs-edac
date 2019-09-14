@@ -5,7 +5,7 @@
 using namespace cfs::edac::test;
 /*
    ExceptionTest::ExceptionTest()
-  // : exception()
+   // : exception()
    {
    }
 
@@ -36,5 +36,5 @@ using namespace cfs::edac::test;
    TEST_F(ExceptionTest, testExceptionClone)
    {
    }
- 
-*/
+
+ */
