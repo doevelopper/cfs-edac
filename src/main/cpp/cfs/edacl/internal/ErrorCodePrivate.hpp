@@ -362,18 +362,18 @@ namespace cfs::edac::internal
 
     class EDAC_MAIN_EXPORT ErrorCodePrivate
     {
-public:
+        public:
 
-        ErrorCodePrivate();
-        ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
-        ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
-        ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
-        ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
-        virtual ~ErrorCodePrivate();
+            ErrorCodePrivate();
+            ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
+            ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
+            ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
+            ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
+            virtual ~ErrorCodePrivate();
 
 // const error_category & edac_category();
 
-private:
+        private:
     };
 }
 namespace std

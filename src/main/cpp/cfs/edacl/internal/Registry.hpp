@@ -267,107 +267,107 @@ namespace cfs::edacl::internal
     template <typename Register, typename Register::type mask, std::uint8_t offset, typename Register::type value>
     class Impl
     {
-private:
+        private:
 
-        using base_type = typename Register::type;
-        constexpr static auto m_accumulated = base_type{(value << offset) & mask};
-        constexpr static auto m_combinedMask = mask;
-        template <typename F, base_type new_value>
-        using propagated = Impl<Register
-        , (m_combinedMask | F::mask), std::uint8_t {0}
-        , (m_accumulated & ~F::mask) | ((new_value << F::offset ) & F::mask)>;
-        Impl() = default;
-        static_assert(!Register::shadow::value, "merge write is not available for shadow value register");
+            using base_type = typename Register::type;
+            constexpr static auto m_accumulated = base_type{(value << offset) & mask};
+            constexpr static auto m_combinedMask = mask;
+            template <typename F, base_type new_value>
+            using propagated = Impl<Register
+            , (m_combinedMask | F::mask), std::uint8_t {0}
+            , (m_accumulated & ~F::mask) | ((new_value << F::offset ) & F::mask)>;
+            Impl() = default;
+            static_assert(!Register::shadow::value, "merge write is not available for shadow value register");
 
-public:
+        public:
 
-        static Impl create() noexcept
-        {
-            return {};
-        }
+            static Impl create() noexcept
+            {
+                return {};
+            }
 
-        Impl(const Impl&) = delete;
-        Impl& operator=(const Impl&) = delete;
-        Impl& operator=(Impl&&) = delete;
-        Impl operator=(Impl) = delete;
-        Impl(Impl&&) = delete;
+            Impl(const Impl&) = delete;
+            Impl& operator=(const Impl&) = delete;
+            Impl& operator=(Impl&&) = delete;
+            Impl operator=(Impl) = delete;
+            Impl(Impl&&) = delete;
 
-        void done() const&& noexcept
-        {
-            typename Register::MMIORregisters& mmio_device = Register::rw_mem_device();
-            RegisterWriteConstant<typename Register::MMIORregisters
-            , typename Register::type
-            , m_combinedMask
-            , std::uint8_t{0}
-            , m_accumulated>::write(mmio_device);
-        }
+            void done() const&& noexcept
+            {
+                typename Register::MMIORregisters& mmio_device = Register::rw_mem_device();
+                RegisterWriteConstant<typename Register::MMIORregisters
+                , typename Register::type
+                , m_combinedMask
+                , std::uint8_t{0}
+                , m_accumulated>::write(mmio_device);
+            }
 
-        template <typename F, base_type field_value>
-        propagated<F, field_value>&& with() const&& noexcept
-        {
-            static_assert( std::is_same<typename F::parent_register, Register>::value
-                           , "Impl:: field is not from the same register");
-            constexpr auto no_overflow = internals::CheckUSL<typename Register::type
-                                                             , field_value
-                                                             , (F::mask >> F::offset)>::value;
-            static_assert(no_overflow
-                          , "Impl:: field overflow in with() call");
+            template <typename F, base_type field_value>
+            propagated<F, field_value>&& with() const&& noexcept
+            {
+                static_assert( std::is_same<typename F::parent_register, Register>::value
+                               , "Impl:: field is not from the same register");
+                constexpr auto no_overflow = internals::CheckUSL<typename Register::type
+                                                                 , field_value
+                                                                 , (F::mask >> F::offset)>::value;
+                static_assert(no_overflow
+                              , "Impl:: field overflow in with() call");
 
-            return std::move(propagated<F, field_value>{});
-        }
+                return std::move(propagated<F, field_value>{});
+            }
     };
 
     template <typename Register, typename Register::type mask>
     class MergeWrite
     {
-private:
+        private:
 
-        using base_type = typename Register::type;
-        base_type m_accumulated;
-        constexpr static auto m_combinedMask = mask;
-        template <typename F>
-        using propagated = MergeWrite<Register, m_combinedMask | F::mask>;
-        constexpr MergeWrite()
-            : m_accumulated{0} {
-        };
-        constexpr explicit MergeWrite(const base_type v)
-            : m_accumulated{v} {
-        };
-        static_assert(!Register::shadow::value,"merge write is not available for shadow value register");
+            using base_type = typename Register::type;
+            base_type m_accumulated;
+            constexpr static auto m_combinedMask = mask;
+            template <typename F>
+            using propagated = MergeWrite<Register, m_combinedMask | F::mask>;
+            constexpr MergeWrite()
+                : m_accumulated{0} {
+            };
+            constexpr explicit MergeWrite(const base_type v)
+                : m_accumulated{v} {
+            };
+            static_assert(!Register::shadow::value,"merge write is not available for shadow value register");
 
-public:
+        public:
 
-        constexpr static MergeWrite create(const base_type value) noexcept
-        {
-            return MergeWrite(value);
-        }
+            constexpr static MergeWrite create(const base_type value) noexcept
+            {
+                return MergeWrite(value);
+            }
 
-        MergeWrite(MergeWrite&& mw) noexcept
-            : m_accumulated{mw.m_accumulated} {
-        };
-        MergeWrite(const MergeWrite&) = delete;
-        MergeWrite& operator=(const MergeWrite&) = delete;
-        MergeWrite& operator=(MergeWrite&&) = delete;
+            MergeWrite(MergeWrite&& mw) noexcept
+                : m_accumulated{mw.m_accumulated} {
+            };
+            MergeWrite(const MergeWrite&) = delete;
+            MergeWrite& operator=(const MergeWrite&) = delete;
+            MergeWrite& operator=(MergeWrite&&) = delete;
 
-        void done() const&& noexcept
-        {
-            typename Register::MMIORregisters& mmio_device = Register::rw_mem_device();
-            RegisterWrite<typename Register::MMIORregisters
-            , base_type
-            , m_combinedMask
-            , std::uint8_t{0}>::write(mmio_device, m_accumulated);
-        }
+            void done() const&& noexcept
+            {
+                typename Register::MMIORregisters& mmio_device = Register::rw_mem_device();
+                RegisterWrite<typename Register::MMIORregisters
+                , base_type
+                , m_combinedMask
+                , std::uint8_t{0}>::write(mmio_device, m_accumulated);
+            }
 
-        template <typename F>
-        propagated<F> with(const base_type value) const&& noexcept
-        {
-            static_assert( std::is_same<typename F::parent_register, Register>::value
-                           , "field is not from the same register in merge_write");
-            const auto new_value = static_cast<base_type>( (m_accumulated & ~F::mask) | ((value << F::offset) &
-                                                                                         F::mask));
+            template <typename F>
+            propagated<F> with(const base_type value) const&& noexcept
+            {
+                static_assert( std::is_same<typename F::parent_register, Register>::value
+                               , "field is not from the same register in merge_write");
+                const auto new_value = static_cast<base_type>( (m_accumulated & ~F::mask) | ((value << F::offset) &
+                                                                                             F::mask));
 
-            return std::move(propagated<F>::create(new_value));
-        }
+                return std::move(propagated<F>::create(new_value));
+            }
     };
 
     template <std::uintptr_t reg_address

@@ -97,14 +97,14 @@ namespace cfs::utils
     template <typename T>
     class PimplPtr
     {
-public:
+        public:
 
 /*!
  * @brief Default constructor
  *
  * This constructor initializes the data with a new default constructed instance of T
  */
-        PimplPtr();
+            PimplPtr();
 
 /*!
  * @brief Construct the pimpl pointer from an instance of the private implementation
@@ -113,7 +113,7 @@ public:
  *
  * @param data Instance of the private implementation to use
  */
-        explicit PimplPtr(T* data);
+            explicit PimplPtr(T* data);
 
 /*!
  * @brief Copy constructor
@@ -123,7 +123,7 @@ public:
  *
  * @param copy Instance to copy
  */
-        PimplPtr(const PimplPtr<T>& copy);
+            PimplPtr(const PimplPtr<T>& copy);
 
 /*!
  * @brief Construct the pimpl pointer from a parameter
@@ -132,8 +132,8 @@ public:
  *
  * @param arg1 Argument to pass to the implementation
  */
-        template <typename T1>
-        PimplPtr(T1 arg1);
+            template <typename T1>
+            PimplPtr(T1 arg1);
 
 /*!
  * @brief Construct the pimpl pointer from two parameters
@@ -143,8 +143,8 @@ public:
  * @param arg1 First argument to pass to the implementation
  * @param arg2 Second argument to pass to the implementation
  */
-        template <typename T1, typename T2>
-        PimplPtr(T1 arg1, T2 arg2);
+            template <typename T1, typename T2>
+            PimplPtr(T1 arg1, T2 arg2);
 
 /*!
  * @brief Construct the pimpl pointer from three parameters
@@ -155,54 +155,54 @@ public:
  * @param arg2 Second argument to pass to the implementation
  * @param arg3 Third argument to pass to the implementation
  */
-        template <typename T1, typename T2, typename T3>
-        PimplPtr(T1 arg1, T2 arg2, T3 arg3);
+            template <typename T1, typename T2, typename T3>
+            PimplPtr(T1 arg1, T2 arg2, T3 arg3);
 
 /*!
  * @brief Overload of -> operator for accessing the private implementation (non-const version)
  *
  * @return Non-const pointer to the private implementation
  */
-        T* operator->();
+            T* operator->();
 
 /*!
  * @brief Overload of -> operator for accessing the private implementation (const version)
  *
  * @return Const pointer to the private implementation
  */
-        const T* operator->() const;
+            const T* operator->() const;
 
 /*!
  * @brief Overload of * operator for accessing the private implementation (non-const version)
  *
  * @return Non-const reference to the private implementation
  */
-        T& operator*();
+            T& operator*();
 
 /*!
  * @brief Overload of * operator for accessing the private implementation (const version)
  *
  * @return Const reference to the private implementation
  */
-        const T& operator*() const;
+            const T& operator*() const;
 
 /*!
  * @brief Swap the data of two PimplPtr instances
  *
  * @param other PimplPtr instance to swap contents with
  */
-        void swap(PimplPtr<T>& other);
+            void swap(PimplPtr<T>& other);
 
-private:
+        private:
 
 /*!
  * @brief Assignment is disabled, once constructed a PimplPtr cannot point to another implementation
  */
-        PimplPtr<T>& operator=(const PimplPtr<T>&);
+            PimplPtr<T>& operator=(const PimplPtr<T>&);
 
-private:
+        private:
 
-        boost::shared_ptr<T> m_data;    ///< Pointer to the instance of the private implementation
+            boost::shared_ptr<T> m_data; ///< Pointer to the instance of the private implementation
     };
 }
 

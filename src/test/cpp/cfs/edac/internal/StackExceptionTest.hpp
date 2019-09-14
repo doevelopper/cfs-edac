@@ -7,13 +7,13 @@
 
 class StackExceptionTest : public ::testing::Test
 {
-public:
-    StackExceptionTest();
-    virtual ~StackExceptionTest();
+    public:
+        StackExceptionTest();
+        virtual ~StackExceptionTest();
 
-    virtual void SetUp();
-    virtual void TearDown ();
-protected:
+        virtual void SetUp();
+        virtual void TearDown ();
+    protected:
 /*!
  * @brief Object that is about to be tested.
  */
@@ -21,9 +21,9 @@ protected:
 /*!
  * @brief Class logger.
  */
-    static log4cxx::LoggerPtr logger;
+        static log4cxx::LoggerPtr logger;
 
-private:
+    private:
 
 };
 

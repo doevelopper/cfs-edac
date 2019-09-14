@@ -19,100 +19,100 @@ namespace cfs::edac
 {
     class CFS_EDAC_MAIN_EXPORT NotImplemented : public std::logic_error
     {
-public:
+        public:
 
-        explicit NotImplemented(const std::string &message)
-            : std::logic_error(message)
-        {
-        }
+            explicit NotImplemented(const std::string &message)
+                : std::logic_error(message)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT NumericalProblem : public std::runtime_error
     {
-public:
+        public:
 
-        explicit NumericalProblem(const std::string &message)
-            : std::runtime_error(message)
-        {
-        }
+            explicit NumericalProblem(const std::string &message)
+                : std::runtime_error(message)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT MaterialLawProblem : public NumericalProblem
     {
-public:
+        public:
 
-        explicit MaterialLawProblem(const std::string &message)
-            : NumericalProblem(message)
-        {
-        }
+            explicit MaterialLawProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT LinearSolverProblem : public NumericalProblem
     {
-public:
+        public:
 
-        explicit LinearSolverProblem(const std::string &message)
-            : NumericalProblem(message)
-        {
-        }
+            explicit LinearSolverProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT BadDependency : public ::std::logic_error
     {
-public:
+        public:
 
-        BadDependency(const ::std::string &arg)
-            : std::logic_error(arg)
-        {
-        }
+            BadDependency(const ::std::string &arg)
+                : std::logic_error(arg)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT InvalidResult : public ::std::runtime_error
     {
-public:
+        public:
 
-        InvalidResult(const ::std::string &arg)
-            : std::runtime_error(arg)
-        {
-        }
+            InvalidResult(const ::std::string &arg)
+                : std::runtime_error(arg)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT TooManyIterations : public NumericalProblem
     {
-public:
+        public:
 
-        explicit TooManyIterations(const std::string &message)
-            : NumericalProblem(message)
-        {
-        }
+            explicit TooManyIterations(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
     };
 
     class CFS_EDAC_MAIN_EXPORT notImplementedException : public std::exception
     {
-public:
+        public:
 
-        notImplementedException(const char * message)
-            : m_message(message)
-        {
-        }
+            notImplementedException(const char * message)
+                : m_message(message)
+            {
+            }
 
-        notImplementedException()
-            : m_message("not implemented")
-        {
-        }
+            notImplementedException()
+                : m_message("not implemented")
+            {
+            }
 
-        virtual const char* what() const noexcept override
-        {
-            return m_message;
-        }
+            virtual const char* what() const noexcept override
+            {
+                return m_message;
+            }
 
-        virtual ~notImplementedException()  noexcept
-        {
-        }
+            virtual ~notImplementedException()  noexcept
+            {
+            }
 
-private:
+        private:
 
-        const char * m_message;
+            const char * m_message;
     };
 
     class CFS_EDAC_MAIN_EXPORT IOError : public std::runtime_error
@@ -168,51 +168,51 @@ private:
                 LOCAL_VARIABLES = 0x10  /*! Attempt to additionaly display local variables. */
             };
 
-public:
+            public:
 
 /*!
  * @brief  Constructor. Register @a handler as the current terminate handler.
  */
-            explicit TerminateHandler( std::terminate_handler handler )
-                : m_oldHandler(std::set_terminate( handler ))
-            {
-                //oldHandler = std::set_terminate( handler );
-            }
+                explicit TerminateHandler( std::terminate_handler handler )
+                    : m_oldHandler(std::set_terminate( handler ))
+                {
+                    //oldHandler = std::set_terminate( handler );
+                }
 
 /*!
  * @brief Destructor. Unregister the current terminate handler; reset to
  *        previous handler.
  */
-            virtual ~TerminateHandler()
-            {
-                std::set_terminate( m_oldHandler );
-            }
+                virtual ~TerminateHandler()
+                {
+                    std::set_terminate( m_oldHandler );
+                }
 
-private:
+            private:
 
 /*!
  * @brief  This is the old terminate handler. We need it in the destructor.
  */
-            std::terminate_handler m_oldHandler;
+                std::terminate_handler m_oldHandler;
         };
 
-public:
+        public:
 
 /*!
  * @brief Construct a new Exception object
  *
  * @param code
  */
-        Exception( int code = 0 );
-        Exception( const Exception & orig );
-        Exception & operator = ( const Exception & exc );
-        virtual ~Exception();
+            Exception( int code = 0 );
+            Exception( const Exception & orig );
+            Exception & operator = ( const Exception & exc );
+            virtual ~Exception();
 
-        Exception(const std::string & who, const std::string & what = std::string());
+            Exception(const std::string & who, const std::string & what = std::string());
 /*!
  * @brief Constructs an exeption with message and error code.
  */
-        Exception( const std::string & msg, int code = 0 );
+            Exception( const std::string & msg, int code = 0 );
 
 /*!
  * @brief Constructor.
@@ -221,7 +221,7 @@ public:
  * @param _code Error code.
  * @throw std::runtime_error When socket could not be created.
  */
-        Exception( const std::string & msg, const std::string & arg, int code = 0 );
+            Exception( const std::string & msg, const std::string & arg, int code = 0 );
 
 /*!
  * @brief Constructor.
@@ -230,77 +230,77 @@ public:
  * @param _code Error code.
  * @throw std::runtime_error When socket could not be created.
  */
-        Exception( const std::string & msg, const Exception & nested, int code = 0 );
+            Exception( const std::string & msg, const Exception & nested, int code = 0 );
 
 /*!
  * @brief methodName Method raising the exception.
  */
-        const std::string & methodName ();
+            const std::string & methodName ();
 
 /*!
  * @brief message Message explaining the reason of exception.
  */
-        const std::string & errorDescription ();
+            const std::string & errorDescription ();
 
 /*!
  * @brief errorCode Error code corresponding to errno.h values.
  * @return
  */
-        int errorCode () const;
+            int errorCode () const;
 
 /*!
  * @brief Gets the nested exception which caused this exception.
  * @return The nested exception, or <code>NULL</code> if there is none.
  */
-        const Exception * cause () const throw ( );
+            const Exception * cause () const throw ( );
 
 /*!
  * @brief Return a description of the error
  * @return Pointer to a string containing the error message
  */
-        const char * what () const throw ( );
+            const char * what () const throw ( );
 
 /*!
  * @brief Return the error location (file + line + function)
  * @return String containing the error location
  */
-        virtual const char * where () const throw ( );
+            virtual const char * where () const throw ( );
 
 /*!
  * @brief Return the error summary description
  * @return String containing the error location
  */
-        virtual std::string summary () const;
+            virtual std::string summary () const;
 /*!
  * @brief
  * @return String descrybint type of error or exceptin
  */
-        virtual std::string name () const;
+            virtual std::string name () const;
 /*!
  * @brief Retrieve the stack trace trace of process
  *
  * @return String containing the procces
  */
-        virtual std::string stackTrace () const;
+            virtual std::string stackTrace () const;
 
-protected:
+        protected:
 
 //explicit Exception(const std::string & message);
-        explicit Exception(std::terminate_handler handler);
+            explicit Exception(std::terminate_handler handler);
 
-private:
+        private:
 
-        void create( std::size_t nSize);
+            void create( std::size_t nSize);
 
 //std::shared_ptr< std::string > m_message; ///< Error message
-        const std::string m_who;                ///< name of function throwing exception
-        const std::string m_where;              ///< source:line info
-        const std::string m_reason;             ///< optional, provides context-specific reason
-        std::terminate_handler m_oldHandler;    ///< old terminate handler. We need it in the destructor.
-        std::string m_stackTrace;
-        std::string m_message;                  ///< Error message.
-        std::string m_location;                 ///< Location of the error : file, line and procedure)
-        std::int32_t m_code;                    ///< Error code
+            const std::string m_who;            ///< name of function throwing exception
+            const std::string m_where;          ///< source:line info
+            const std::string m_reason;         ///< optional, provides context-specific reason
+            std::terminate_handler m_oldHandler; ///< old terminate handler. We need it in the destructor.
+            std::string m_stackTrace;
+            std::string m_message;              ///< Error message.
+            std::string m_location;             ///< Location of the error : file, line and procedure)
+            std::int32_t m_code;                ///< Error code
     };
 
     std::ostream & operator << ( std::ostream & out, const Exception & ex)

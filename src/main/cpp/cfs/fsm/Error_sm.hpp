@@ -11,12 +11,12 @@ namespace cfs::fsm
 
     class Error_SM
     {
-public:
+        public:
 
-        auto opeartor()()
-        {
-            //return make_transition_table(
-        }
+            auto opeartor()()
+            {
+                //return make_transition_table(
+            }
     }
 }
 

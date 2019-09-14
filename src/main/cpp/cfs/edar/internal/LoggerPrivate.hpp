@@ -64,28 +64,28 @@ namespace cfs::edac::internal
             SCHROEDINBUG = (1 << 15) /* "... bug that manifests itself in running software" */
         };
 
-public:
+        public:
 
-        LoggerPrivate( unsigned long delay = 5000UL );
-        ~LoggerPrivate( );
+            LoggerPrivate( unsigned long delay = 5000UL );
+            ~LoggerPrivate( );
 /*!
  * @brief Retrieve valy of delay beetween the read of config file
  * @param  s is a char array containing a proper C-string
  * @return value do delay (minus null) as an usigned int
  */
-        unsigned long periodicalCheck ( ) const;
+            unsigned long periodicalCheck ( ) const;
 /*!
  * @brief
  */
-        void loggerReset ( );
+            void loggerReset ( );
 /*!
  * @brief
  * @param[in]  loggerName  The Logger name to get reference from.
  */
-        log4cxx::LoggerPtr getLoggerByName ( const char * loggerName );
-        void loadConfig ( const std::string & configFilename );
-        void loadConfigAndWatch ( const std::string & configFilename );
-        void loggerNames ( std::vector<std::string> & names );
+            log4cxx::LoggerPtr getLoggerByName ( const char * loggerName );
+            void loadConfig ( const std::string & configFilename );
+            void loadConfigAndWatch ( const std::string & configFilename );
+            void loggerNames ( std::vector<std::string> & names );
 
 //log4cxx::LoggerPtr operator ->( )
 //{
@@ -101,23 +101,23 @@ public:
 
 //DISABLE_COPY( LoggerPrivate );
 
-private:
+        private:
 
 /*!
  *  @brief
  *  @return logger configuration status
  */
-        bool checkLogManagerStatus ( );
+            bool checkLogManagerStatus ( );
 /*!
  *  @brief
  *  @param[in,out] s required file extention
  *  @return file extension
  */
-        std::string getFileExtension ( const std::string & s );
+            std::string getFileExtension ( const std::string & s );
 /*!
  *  @brief Value for periodical check if configFilename has been created or modified!
  */
-        unsigned long m_watchPeriod;
+            unsigned long m_watchPeriod;
 /*!
  *  @brief
  */
@@ -126,7 +126,7 @@ private:
  *  @brief
  */
 //log4cxx::LoggerPtr m_logger;
-        static std::string m_loggerConfigLocation;
+            static std::string m_loggerConfigLocation;
     };
 }
 #endif

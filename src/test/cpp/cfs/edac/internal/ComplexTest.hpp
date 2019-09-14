@@ -9,23 +9,23 @@
 
 class ComplexTest : public ::testing::Test
 {
-public:
-    ComplexTest();
-    virtual ~ComplexTest();
+    public:
+        ComplexTest();
+        virtual ~ComplexTest();
 
-    virtual void SetUp();
-    virtual void TearDown ();
+        virtual void SetUp();
+        virtual void TearDown ();
 
-protected:
+    protected:
 /*!
  * @brief Object that is about to be tested.
  */
-    Complex * objectUnderTest;
+        Complex * objectUnderTest;
 /*!
  * @brief Class logger.
  */
-    static log4cxx::LoggerPtr logger;
-private:
+        static log4cxx::LoggerPtr logger;
+    private:
 
 };
 

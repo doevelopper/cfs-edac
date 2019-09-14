@@ -35,31 +35,31 @@ namespace cfs::edac
 
     class Logger
     {
-public:
+        public:
 
-        explicit Logger (unsigned long delay);
-        virtual ~Logger ( );
+            explicit Logger (unsigned long delay);
+            virtual ~Logger ( );
 
-        void configure ( );
+            void configure ( );
 
-        [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]]
-        void trace ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
-        void debug ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
-        void info ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
-        void warn ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
-        void error ( const std::string & s );
-        [[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
-        void fatal ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]]
+            void trace ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
+            void debug ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
+            void info ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
+            void warn ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
+            void error ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
+            void fatal ( const std::string & s );
 
-protected:
+        protected:
 
-        std::shared_ptr<cfs::edac::internal::LoggerPrivate> d_ptr;
+            std::shared_ptr<cfs::edac::internal::LoggerPrivate> d_ptr;
 
-private:
+        private:
 
 // DECLARE_PRIVATE( Logger )
 // DISABLE_COPY( Logger )

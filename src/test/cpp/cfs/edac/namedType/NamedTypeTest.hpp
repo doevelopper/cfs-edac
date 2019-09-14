@@ -37,41 +37,41 @@ namespace cfs::edac::namedtype::test
 
     class Rectangle
     {
-public:
+        public:
 
-        Rectangle(Width width, Height height)
-            : width_(width.get())
-            , height_(height.get())
-        {
-        }
+            Rectangle(Width width, Height height)
+                : width_(width.get())
+                , height_(height.get())
+            {
+            }
 
-        Meter getWidth() const
-        {
-            return width_;
-        }
+            Meter getWidth() const
+            {
+                return width_;
+            }
 
-        Meter getHeight() const
-        {
-            return height_;
-        }
+            Meter getHeight() const
+            {
+                return height_;
+            }
 
-private:
+        private:
 
-        Meter width_;
-        Meter height_;
+            Meter width_;
+            Meter height_;
     };
 
     class NamedTypeTest : public ::testing::Test
     {
-public:
+        public:
 
-        NamedTypeTest();
-        ~NamedTypeTest();
+            NamedTypeTest();
+            ~NamedTypeTest();
 
-protected:
+        protected:
 
-        void Setup() override;
-        void TearDown override;
+            void Setup() override;
+            void TearDown override;
     };
 }
 #endif

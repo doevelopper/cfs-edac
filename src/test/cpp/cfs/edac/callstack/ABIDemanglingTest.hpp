@@ -10,17 +10,17 @@ namespace cfs::edac::callstack
 {
     class ABIDemanglingTest : public ::testing::Test
     {
-public:
+        public:
 
-        ABIDemanglingTest();
-        ~ABIDemanglingTest();
+            ABIDemanglingTest();
+            ~ABIDemanglingTest();
 
-protected:
+        protected:
 
-        void SetUp() override;
-        void TearDown() override;
+            void SetUp() override;
+            void TearDown() override;
 
-private:
+        private:
     };
 }
 #endif
