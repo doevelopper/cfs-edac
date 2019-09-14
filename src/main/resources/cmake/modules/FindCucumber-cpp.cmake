@@ -21,11 +21,11 @@
 #        OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 #        WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-set(Boost_USE_STATIC_LIBS       ON)  # only find static libs
-set(Boost_USE_DEBUG_LIBS        OFF) # ignore debug libs and
-set(Boost_USE_RELEASE_LIBS      ON)  # only find release libs
-set(Boost_USE_MULTITHREADED     ON)
-set(Boost_USE_STATIC_RUNTIME    OFF)
+#set(Boost_USE_STATIC_LIBS       ON)  # only find static libs
+#set(Boost_USE_DEBUG_LIBS        OFF) # ignore debug libs and
+#set(Boost_USE_RELEASE_LIBS      ON)  # only find release libs
+#set(Boost_USE_MULTITHREADED     ON)
+#set(Boost_USE_STATIC_RUNTIME    OFF)
 
 set(CUCUMBER_BOOST_LIBBRARIES
     libboost_thread
@@ -75,8 +75,9 @@ if(Boost_FOUND)
             set_target_properties(CUCUMBER-CPP::CUCUMBER-CPP PROPERTIES
             ## INTERFACE_COMPILE_DEFINITIONS "${CUCUMBER_DEFINITIONS}"
                 INTERFACE_INCLUDE_DIRECTORIES "${CUCUMBER_INCLUDE_DIRS}"
-                INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;Boost::program_options;Boost::date_time;Boost::filesystem;Boost::regex;Boost::system;Boost::thread"
-                #INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;program_options;date_time;filesystem;regex;system;thread"
+                #INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;Boost::program_options;Boost::date_time;Boost::filesystem;Boost::regex;Boost::system;Boost::thread"
+                #INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;${Boost_PROGRAM_OPTIONS_LIBRARY};${Boost_DATE_TIME_LIBRARY};${Boost_FILESYSTEM_LIBRARY};${Boost_REGEX_LIBRARY};${Boost_SYSTEM_LIBRARY};${Boost_THREAD_LIBRARY}"
+                INTERFACE_LINK_LIBRARIES "GTest::GTest;GMock::GMock;${Boost_LIBRARIES}"
                 IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
                 IMPORTED_LOCATION "${CUCUMBER_LIBRARY}"
             )

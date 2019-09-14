@@ -310,10 +310,10 @@ namespace cfs::edac::internal
         CFS_SOFTWARE_BUS_SERVICE = ( 0x0a000000L ),
         CFS_TABLE_SERVICE = ( 0x0c000000L ),
         CFS_TIME_SERVICE = ( 0x0e000000L )
-                           /*!
-                            * @}
-                            */
     };
+    /*!
+     * @}
+     */
 
     enum class errc : std::int32_t
     {
