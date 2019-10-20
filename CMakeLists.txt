@@ -27,7 +27,7 @@ cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 project (cfs.edac
     VERSION 0.0.0.1
-    DESCRIPTION "Error Detection Correction Classification and eporting"
+    DESCRIPTION "Error Detection Correction Classification and reporting"
     HOMEPAGE_URL "https://exemple.com"
     LANGUAGES CXX
 )
@@ -42,8 +42,11 @@ list(APPEND CMAKE_MODULE_PATH
     "${CMAKE_SOURCE_DIR}/src/main/resources/cmake/toolChains"
     "${CMAKE_SOURCE_DIR}/src/main/resources/cmake/macros"
     "${CMAKE_SOURCE_DIR}/src/test/resources/cmake"
+    "/usr/local/lib/cmake"
+    "/usr/lib/cmake"
 )
 
+include(LSBInfo)
 include(CompilerOption)
 include(DefinePlatformSpecfic)
 include(macros)
@@ -53,7 +56,7 @@ include(CPPCheck)
 include(CpplintWrapper)
 include(lizard)
 include(GccCoverage)
-
+include(CucumberCppConfig)
 getGitInfo()
 TODAY(APP_BUILD_DATE)
 set(COPYRIGHT_YEAR ${APP_BUILD_DATE})
@@ -69,10 +72,15 @@ ProcessorCount(Ncpu)
 
 find_package(Log4cxx)
 find_package(GoogleTestFwk)
-find_package(Cucumber-cpp)
 find_package(Doxygen
-   REQUIRED  dot
-   OPTIONAL_COMPONENTS mscgen dia
+    #   REQUIRED  dot
+   OPTIONAL_COMPONENTS mscgen dia dot
+)
+set(Boost_USE_STATIC_LIBS ON)
+find_package(Boost 1.69.0
+    COMPONENTS
+        thread system regex date_time program_options filesystem unit_test_framework
+    REQUIRED
 )
 
 option(EXCLUDE_DEPRECATED "Exclude deprecated parts of the library" TRUE)
@@ -118,18 +126,13 @@ configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/Version.cpp.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Version.cpp"
                 @ONLY)
 
-add_custom_target(build-time-make-directory-and-copy-files all
-    COMMAND
-        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/bin/conf
-    COMMAND
-        ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/bin/logs
-     COMMAND
-        ${CMAKE_COMMAND} -E copy_if_different
-                   ${PROJECT_SOURCE_DIR}/src/main/resources/configs/log4cxx.xml
-                   ${CMAKE_INSTALL_PREFIX}/bin/conf
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    ${CMAKE_INSTALL_PREFIX}/cmake/cfs-osal-config-version.cmake
+    COMPATIBILITY ExactVersion
 )
 
-add_subdirectory (src/main/cpp)
-add_subdirectory (src/test/cpp)
-add_subdirectory (src/it)
+#add_subdirectory (src/main/cpp)
+#add_subdirectory (src/test/cpp)
+#add_subdirectory (src/it)
 

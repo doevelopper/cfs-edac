@@ -1,0 +1,57 @@
+@startuml
+
+skinparam shadowing false
+skinparam backgroundColor LightYellow
+title CFS Error handling
+
+skinparam state {
+  StartColor Blue
+  EndColor Red
+  BackgroundColor Plum
+  BackgroundColor<<Warning>> Olive
+  BorderColor Gray
+  FontName Impact
+}
+
+state PowerOff
+state PowerOn
+state Init
+state Diagnostic
+state Operational
+state Error
+state FatalError
+state Shutdown
+
+PowerOff: entry/ init HW
+PowerOn: enterOnPowerOn/exitOnPowerOn/step
+Init: enterOnInit/exitOnInit/stepinit
+Diagnostic: enterOnDiag/exitOnDiag/steprunDiagnostic
+Operational: entry/exit/stepsetError/stepclearError
+Error: enterOnError/exitOnPowerError/cleaError/steperror
+FatalError: enterOnPanic/exitOnPanic/steppanic
+Shutdown: enterOnShutdown/exitOnShutdown/stepshutdown
+
+[*] --> PowerOff
+PowerOff --> PowerOn: (1)
+PowerOn --> Init: (2)
+Init --> Diagnostic: (3)
+Diagnostic --> Operational: (4)
+Operational --> Shutdown: (5)
+Shutdown --> PowerOff: (6)
+Operational --> Error: (7)
+Error --> Shutdown: (8)
+Error --> FatalError: (9)
+FatalError --> Shutdown: (10)
+PowerOn --> Shutdown: (11)
+PowerOn --> FatalError: (12)
+Diagnostic --> FatalError: (13)
+Diagnostic --> Error: (14)
+Operational --> FatalError: (15)
+Operational --> Diagnostic: (16)
+Error --> Diagnostic: (17)
+Init --> Error: (18)
+Init --> FatalError: (19)
+Error --> Error: (20)
+Shutdown --> [*]
+@enduml
+

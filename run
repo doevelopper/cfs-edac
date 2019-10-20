@@ -1,54 +1,92 @@
 #!/bin/bash
 
-# start docker and emacs
-#docker run -d \
-#    --volume $(dirname $SSH_AUTH_SOCK):$(dirname $SSH_AUTH_SOCK) \
-#    -p 5000:5000 \
-#    --memory="500m" \
-#    --memory-swap="1g" \
-#    --env DISPLAY=${DISPLAY} \
-#    --net="host" \
-#    --volume $XAUTHORITY:/developer/.Xauthority \
-#    -e DISPLAY \
-#    --env XAUTHORITY=/developer/.Xauthority \
-#    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
-#    --device /dev/snd \
-#    --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
-#    --user $(id -u ${USER}):$(id -g ${USER}) \
+export GIT_ROOTDIR=$(git rev-parse --show-toplevel)
+export DTR_NAMESPACE=doevelopper
+export RND_NS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 
-docker run  --rm -ti \
-    --volume ${PWD}/project:/project \
-    --volume ${HOME}/.conan:/home/developer/.conan:rw \
-    --volume ${HOME}/.ssh:/home/developer/.ssh:rw \
-    --volume ${PWD}/src/main/resources/dotfiles/.vim:/home/developer/.vim:rw \
-    --volume ${HOME}/.m2:/home/developer/.m2:rw \
-    --volume ${PWD}/dotfiles/.vimrc:/home/developer/.vimrc \
-    --volume ${PWD}/dotfiles/.bashrc:/home/developer/.bashrc  \
-    --volume "$PWD:/home/developer/workspace" \
-    --name cfs-edac-vscode \
-    --privileged doevelopper/cfs-com-common:0.0.1
+function helpFunction()
+{
+	cat <<tac
+Usage: $0 [options]
 
-#      --entrypoint "urxvt" \
-# alternatively, you can map your settings into the container
-# docker run -it \
-#        -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
-#        -v $XAUTHORITY:/developer/.Xauthority \
-#        -v ${HOME}/.config/Code:/developer/.config/Code \
-#        -v ${HOME}/.vscode:/developer/.vscode \
-#        -v ${HOME}/.ssh:/developer/.ssh \
-#        -v ${HOME}/.gitconfig:/developer/.gitconfig \
-#        -v ${PWD}/project:/project \
-#        -v ${SSH_AUTH_SOCK}:/ssh_auth_sock \
-#        -e SSH_AUTH_SOCK=/ssh_auth_sock \
-#        -e DISPLAY=unix${DISPLAY} \
-#        -e XAUTHORITY=/developer/.Xauthority \
-#        -p 5000:5000 \
-#        --device /dev/snd \
-#        --name docker-vscode \
-#        --entrypoint "xterm" \
-#        registry.gear.ge.com/100034251/ide:latest
+Options:
+    --base        -b   Run common SW developemment platform.
+    --adlinktech  -a   Run Vortex OpenSplice DDS container for SW dev.
+    --eprosima    -e   Run Fast-RTPS DDS container for SW dev.
+    --opendds     -o   Run OMG OpenDDS container for SW dev.
+    --dind        -d   Run my custum docker in docker container.
+    --rti         -r   Run RTI DDS container.
 
-#docker exec docker-vscode /developer/bin/start-vscode
-#docker exec docker-vscode /developer/bin/start-emacs
+Note: Combining options (like this: -qkn) not handled.
+tac
+	exit 0
+}
 
+if [ $# -lt 1 ];then
+	helpFunction
+  exit 1
+fi
 
+select_container () {
+	# Parse arguments.
+	#
+	while [ "$1" != "" ]; do
+		ARG="$1"
+		shift
+		if [ -d "$ARG" ]; then
+			WORKINGDIR="$ARG"
+			continue
+		else
+			case $ARG in
+				-b|--base)
+					export CONTAINER="doevelopper/cfs-dev-tools-common"
+					run_container
+					;;
+				-a|--adlinktech)
+					export CONTAINER="doevelopper/cfs-dev-tools-adlinktech"
+					run_container
+					;;
+				-o|--opendds)
+					export CONTAINER="doevelopper/cfs-dev-tools-opendds"
+					run_container
+					;;
+				-e|--eprosima)
+					export CONTAINER="doevelopper/cfs-dev-tools-eprosima"
+					run_container
+					;;
+				-r|--rti)
+					export CONTAINER="doevelopper/cfs-dev-tools-rti"
+					run_container
+					;;
+				--dind)
+					export CONTAINER="doevelopper/cfs-dev-tools-dind"
+					run_container
+					;;
+				*)
+					helpFunction
+					;;
+			esac
+		fi
+	done
+}
+
+# --memory="1024m" 
+# --memory=$(($(head -n 1 /proc/meminfo | awk '{print $2}') * 4 / 5))k \
+# --cpus=$((`nproc` - 1))
+# --log-opt max-size=50m  \
+# --volume /etc/passwd:/etc/passwd:ro \
+# --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
+# --volume ${HOME}/.Xauthority:/root/.Xauthority \
+# --env DISPLAY=unix${DISPLAY}
+# --env LANG=C.UTF-8 \
+# --env LC_ALL=C.UTF-8 \
+# --env DOCKER_USER=`id -un` \
+# --env DOCKER_USER_ID=`id -u` \
+# --env DOCKER_PASSWORD=`id -un` \
+# --env DOCKER_GROUP_ID=`id -g`
+
+run_container() {
+	docker run --rm --volume /etc/passwd:/etc/passwd:ro --volume /etc/group:/etc/group:ro --volume ${HOME}/.ssh:/home/${USER}/.ssh --volume ${HOME}/.conan:/home/${USER}/.conan --volume ${HOME}/.m2:/home/${USER}/.m2 --volume $GIT_ROOTDIR/src/main/resources/dotfiles/.vim:/home/${USER}/.vim --volume $GIT_ROOTDIR/src/main/resources/dotfiles/.vimrc:/home/${USER}/.vimrc  --volume $GIT_ROOTDIR/src/main/resources/dotfiles/.bashrc:/home/${USER}/.bashrc --workdir "/home/${USER}/workspace" --volume ${PWD}:/home/${USER}/workspace --user $(id -u ${USER}):$(id -g ${USER}) --name=$(whoami) --hostname="$(basename ${PWD})-${RND_NS}" --tty --interactive ${CONTAINER}:0.0.1
+}
+
+select_container $@
