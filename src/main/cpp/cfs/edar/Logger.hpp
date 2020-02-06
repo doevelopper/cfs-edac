@@ -5,7 +5,8 @@
 
 #include <memory>
 #include <string>
-#include <cfs/edac/internal/LoggerPrivate.hpp>
+#include <cfs/utils/PimplPtr.hpp>
+#include <cfs/edar/internal/LoggerPrivate.hpp>
 
 // EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
 // ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
@@ -29,41 +30,45 @@
         static const log4cxx::LoggerPtr LOGGER;
  */
 
-namespace cfs::edac
+namespace cfs::edar
 {
-class cfs::edac::internal::LoggerPrivate;
+    //class cfs::edar::internal::LoggerPrivate;
 
-class Logger
-{
-public:
+    class Logger
+    {
+        public:
 
-explicit Logger (unsigned long delay);
-virtual ~Logger ( );
+            explicit Logger (unsigned long delay);
+            Logger(const Logger&) = delete;
+            Logger(Logger&&) = delete;
+            Logger& operator=(const Logger&) = delete;
+            Logger& operator=(Logger&&) = delete;
+            virtual ~Logger ( );
 
-void configure ( );
+            void configure ( );
 
-[[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]]
-void trace ( const std::string & s );
-[[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
-void debug ( const std::string & s );
-[[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
-void info ( const std::string & s );
-[[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
-void warn ( const std::string & s );
-[[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
-void error ( const std::string & s );
-[[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
-void fatal ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_TRACE macro, which has an improved interface")]]
+            void trace ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_BEBUG, which has an improved interface")]]
+            void debug ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_INFO, which has an improved interface")]]
+            void info ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_WARN, which has an improved interface")]]
+            void warn ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_ERROR, which has an improved interface")]]
+            void error ( const std::string & s );
+            [[deprecated("Replaced by LOG4CXX_FATAL, which has an improved interface")]]
+            void fatal ( const std::string & s );
 
-protected:
+        protected:
 
-std::shared_ptr<cfs::edac::internal::LoggerPrivate> d_ptr;
+        //std::shared_ptr<cfs::utils::internal::LoggerPrivate> d_ptr;
 
-private:
+        private:
 
-// DECLARE_PRIVATE( Logger )
-// DISABLE_COPY( Logger )
-};
+            //            std::shared_ptr<cfs::edar::internal::LoggerPrivate> d_ptr;
+            cfs::utils::PimplPtr<cfs::edar::internal::LoggerPrivate> d_ptr;
+    };
 }
 #endif
 

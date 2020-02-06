@@ -1,8 +1,8 @@
 
 
-#include <cfs/edac/internal/ErrorCodeTable.hpp>
+#include <cfs/edacl/internal/ErrorCodeTable.hpp>
 
-using namespace cfs::edac::internal;
+using namespace cfs::edacl::internal;
 
 ErrorCodeTable::ErrorCodeTable()
 {

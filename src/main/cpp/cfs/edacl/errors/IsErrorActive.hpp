@@ -7,24 +7,24 @@
 template <class ParamType>
 class IsErrorActive
 {
-public:
+    public:
 
-IsErrorActive();
-IsErrorActive(const IsErrorActive& orig) = default;
-IsErrorActive(IsErrorActive&& orig) = default;
-IsErrorActive & operator=(const IsErrorActive& orig) = default;
-IsErrorActive & operator=(IsErrorActive && orig) = default;
-virtual ~IsErrorActive() = default;
+        IsErrorActive();
+        IsErrorActive(const IsErrorActive& orig) = default;
+        IsErrorActive(IsErrorActive&& orig) = default;
+        IsErrorActive & operator=(const IsErrorActive& orig) = default;
+        IsErrorActive & operator=(IsErrorActive && orig) = default;
+        virtual ~IsErrorActive() = default;
 
-void value (const ParamType &value);
-ParamType value () const;
-bool isActive () const;
-void isActive (bool value);
+        void value (const ParamType &value);
+        ParamType value () const;
+        bool isActive () const;
+        void isActive (bool value);
 
-private:
+    private:
 
-ParamType m_value;
-bool m_isValid;
+        ParamType m_value;
+        bool      m_isValid;
 };
 
 #endif

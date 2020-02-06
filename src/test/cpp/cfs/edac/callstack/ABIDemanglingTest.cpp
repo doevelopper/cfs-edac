@@ -1,5 +1,6 @@
 
 
+#include <cfs/edac/callstack/ABIDemangling.hpp>
 #include <cfs/edac/callstack/ABIDemanglingTest.hpp>
 
 using cfs::edac::callstack::ABIDemanglingTest;
@@ -18,6 +19,20 @@ void ABIDemanglingTest::SetUp()
 
 void ABIDemanglingTest::TearDown()
 {
+}
+
+TEST_F(ABIDemanglingTest, test_simpleObject)
+{
+    struct foobar
+    {
+        /** random stuff for fun **/
+        int a;
+        int b = 42;
+    };
+
+    foobar f;
+    std::string output = demangle( typeid( f ).name() );
+    ASSERT_EQ("foobar",output);
 }
 
 /*

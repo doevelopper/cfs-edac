@@ -1,6 +1,8 @@
 
 
-#include <edac/errors/FutureError.hpp>
+#include <cfs/edacl/errors/FutureError.hpp>
+
+using namespace cfs::edacl::errors;
 
 FutureError::FutureError()
 {
@@ -12,18 +14,19 @@ FutureError::~FutureError()
 
 const char * FutureError::name() const noexcept
 {
-	return "Future Error Category";
-}
-
-std::error_condition FutureError::default_error_condition(int code) const noexcept
-{
-	//const detail::field *f = detail::find_ntstatus(code);
-	//if(f == nullptr || f->posix == 0)
-	//return std::error_condition(code, *this);
-	//return std::error_condition(f->posix, std::generic_category());
+    return "Future Error Category";
 }
 
 /*
+
+   std::error_condition FutureError::default_error_condition(int code) const noexcept
+   {
+    //const detail::field *f = detail::find_ntstatus(code);
+    //if(f == nullptr || f->posix == 0)
+    //return std::error_condition(code, *this);
+    //return std::error_condition(f->posix, std::generic_category());
+   }
+
    const char * FutureError::name() const noexcept
    {
     return "asynchronous operations error";

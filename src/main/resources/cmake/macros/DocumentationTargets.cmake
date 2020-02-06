@@ -4,7 +4,7 @@
 # This CMake package creates a Doxygen documentation target.
 #
 
-FIND_PACKAGE (Doxygen)
+FIND_PACKAGE (Doxygen REQUIRED)
 IF (DOXYGEN_FOUND)
     IF (EXISTS ${PROJECT_SOURCE_DIR}/Doxyfile)
         ADD_CUSTOM_TARGET(
@@ -35,3 +35,21 @@ ELSE (DOXYGEN_FOUND)
     ADD_CUSTOM_TARGET(documentation COMMENT "Doxygen not found. Please install doxygen to use this target." VERBATIM)
     ADD_CUSTOM_TARGET(docs COMMENT "Doxygen not found. Please install doxygen to use this target." VERBATIM)
 ENDIF (DOXYGEN_FOUND)
+
+## https://devblogs.microsoft.com/cppblog/clear-functional-c-documentation-with-sphinx-breathe-doxygen-cmake/
+
+#Look for an executable called sphinx-build
+find_program(SPHINX_EXECUTABLE
+    NAMES sphinx-build
+    DOC "Path to sphinx-build executable"
+)
+
+include(FindPackageHandleStandardArgs)
+
+#Handle standard arguments to find_package like REQUIRED and QUIET
+find_package_handle_standard_args(
+    Sphinx
+    "Failed to find sphinx-build executable"
+    SPHINX_EXECUTABLE
+)
+

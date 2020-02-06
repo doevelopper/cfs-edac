@@ -1,8 +1,9 @@
 
 
-#ifndef EDAC_ERRORCODE_HPP
-#define EDAC_ERRORCODE_HPP
-#include <edac/errors/private/ErrorCodePrivate.hpp>
+#ifndef CFS_EDACL_ERRORS_ERRORCODE_HPP
+#define CFS_EDACL_ERRORS_ERRORCODE_HPP
+
+#include <cfs/edacl/errors/internal/ErrorCodePrivate.hpp>
 
 /*!
  * @brief Holds a platform dependent error code
@@ -10,25 +11,25 @@
  */
 class ErrorCode
 {
-public:
+    public:
 
-ErrorCode();
-ErrorCode(const ErrorCode& orig) = delete;
-ErrorCode(ErrorCode&& orig) = delete;
-ErrorCode & operator=(const ErrorCode& orig) = delete;
-ErrorCode & operator=(ErrorCode && orig) = delete;
-virtual ~ErrorCode();
-void check(std::error_code ec);
+        ErrorCode();
+        ErrorCode(const ErrorCode& orig) = delete;
+        ErrorCode(ErrorCode&& orig) = delete;
+        ErrorCode & operator=(const ErrorCode& orig) = delete;
+        ErrorCode & operator=(ErrorCode && orig) = delete;
+        virtual ~ErrorCode();
+        void check(std::error_code ec);
 
-protected:
+    protected:
 
-const std::error_category &future_category() noexcept;
-const std::error_category &generic_category() noexcept;
-const std::error_category &io_category() noexcept;
-const std::error_category &api_category() noexcept;
-const std::error_category &sys_category() noexcept;
+        const std::error_category &future_category() noexcept;
+        const std::error_category &generic_category() noexcept;
+        const std::error_category &io_category() noexcept;
+        const std::error_category &api_category() noexcept;
+        const std::error_category &sys_category() noexcept;
 
-private:
+    private:
 };
 
 #endif

@@ -10,29 +10,29 @@
 
 namespace cfs::edac::callstack
 {
-class CallStackDataStructure;
+    class CallStackDataStructure;
 
-class CallStack
-{
-public:
+    class CallStack
+    {
+        public:
 
-CallStack();
+            CallStack();
 
-/*!
- * @brief Stack-trace consructor.
- * @param num_discard - number of stack entries to discard at the top.
- */
-CallStack( const size_t num_discard = 0 );
+            /*!
+             * @brief Stack-trace consructor.
+             * @param num_discard - number of stack entries to discard at the top.
+             */
+            CallStack( const size_t num_discard = 0 );
 
-/*!
- *  @brief Serializes the entire call-stack into a text string.
- */
-virtual ~CallStack() = default;
+            /*!
+             *  @brief Serializes the entire call-stack into a text string.
+             */
+            virtual ~CallStack();
 
-private:
+        private:
 
-//std::vector < CallStackDataStructure > m_stackData;
-};
+            std::vector < cfs::edac::callstack::CallStackDataStructure > m_stackData;
+    };
 }
 #endif
 

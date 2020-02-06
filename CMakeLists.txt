@@ -25,8 +25,8 @@
 
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
-project (cfs.edac
-    VERSION 0.0.0.1
+project(cfs.edac
+    VERSION 0.0.1
     DESCRIPTION "Error Detection Correction Classification and reporting"
     HOMEPAGE_URL "https://exemple.com"
     LANGUAGES CXX
@@ -126,13 +126,13 @@ configure_file("${PROJECT_SOURCE_DIR}/src/main/resources/configs/Version.cpp.in"
                 "${CMAKE_CURRENT_BINARY_DIR}/cfs/edac/Version.cpp"
                 @ONLY)
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-    ${CMAKE_INSTALL_PREFIX}/cmake/cfs-osal-config-version.cmake
-    COMPATIBILITY ExactVersion
-)
+#include(CMakePackageConfigHelpers)
+#write_basic_package_version_file(
+#    ${CMAKE_INSTALL_PREFIX}/cmake/cfs-osal-config-version.cmake
+#    COMPATIBILITY ExactVersion
+#)
 
-#add_subdirectory (src/main/cpp)
+add_subdirectory (src/main/cpp)
 #add_subdirectory (src/test/cpp)
 #add_subdirectory (src/it)
 

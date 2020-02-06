@@ -1,26 +1,29 @@
 
 
-#ifndef EDAC_IOERROR_HPP
-#define EDAC_IOERROR_HPP
+#ifndef CFS_EDACL_ERRORS_IOERROR_HPP
+#define CFS_EDACL_ERRORS_IOERROR_HPP
+
 #include <ios>
-#include <edac/errors/ErrorCode.hpp>
+#include <cfs/edacl/errors/ErrorCode.hpp>
 
-class IOError : public std::error_category //: std::iostream_category
+namespace cfs::edacl::errors
 {
-public:
+    class IOError : public std::error_category //: std::iostream_category
+    {
+        public:
 
-IOError();
-IOError(IOError const&) = delete;
-IOError(IOError&&) = delete;
-IOError& operator=(IOError const&) = delete;
-IOError& operator=(IOError&&) = delete;
-virtual ~IOError();
+            IOError();
+            IOError(IOError const&) = delete;
+            IOError(IOError&&) = delete;
+            IOError& operator=(IOError const&) = delete;
+            IOError& operator=(IOError&&) = delete;
+            virtual ~IOError();
 
-virtual const char *name() const noexcept override final;
-std::string message(int ev) const override;
+            virtual const char *name() const noexcept override final;
+            std::string message(int ev) const override;
 
-private:
-};
-
+        private:
+    };
+}
 #endif
 
