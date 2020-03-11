@@ -1,11 +1,11 @@
 
 
-#ifndef CPPBDD101_TEST_HPP
-#define CPPBDD101_TEST_HPP
+#ifndef CFS_EDAC_TEST_HPP
+#define CFS_EDAC_TEST_HPP
 
 #include <vector>
 #include <gmock/gmock.h>
-//#include <cfs/edar/Logger.hpp>
+#include <cfs/edar/Logger.hpp>
 
 namespace cfs::edac::test
 {

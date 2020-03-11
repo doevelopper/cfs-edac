@@ -1,0 +1,223 @@
+# bazelrc file
+# https://docs.bazel.build/versions/master/user-manual.html
+
+# +------------------------------------------------------------+
+# | Startup Options                                            |
+# +------------------------------------------------------------+
+startup --batch_cpu_scheduling
+
+startup --host_jvm_args=-XX:-UseParallelGC
+
+# build --symlink_prefix=build_artifacts/
+# +------------------------------------------------------------+
+# | Test Configurations                                        |
+# +------------------------------------------------------------+
+
+# By default prints output only from failed tests.
+# test --test_output=errors
+# Show us information about failures.
+# build --verbose_failures
+
+# Work around the sandbox issue.
+# test --spawn_strategy=standalone
+# test --copt='-ggdb3'
+
+# Specify protobuf cc toolchain
+# test --proto_toolchain_for_cc="@com_google_protobuf//:cc_toolchain"
+
+# +------------------------------------------------------------+
+# | CPP Lint Tests & Unit Tests                                |
+# +------------------------------------------------------------+
+# By default, cpplint tests are run as part of `bazel test` alongside all of
+# the other compilation and test targets.  This is a convenience shortcut to
+# only do the cpplint testing and nothing else.
+# Do bazel test --config=cpplint <target> to enable this configuration.
+# To enable the lint test, the BUILD *must* load the cpplint.bzl by having
+# 'load("//tools:cpplint.bzl", "cpplint")' at the beginning and 'cpplint()'
+# at the end.
+test:cpplint --test_tag_filters=cpplint
+test:cpplint --build_tests_only
+
+# Regular unit tests.
+test:unit_test --test_tag_filters=-cpplint
+
+# coverage -s
+# coverage --experimental_cc_coverage
+# coverage --combined_report=lcov
+# coverage --coverage_report_generator=@bazel_tools//tools/test/CoverageOutputGenerator/java/com/google/devtools/coverageoutputgenerator:Main
+# coverage --instrumentation_filter="-/tests[/:]"
+
+
+# Coverage tests
+# test:coverage --test_tag_filters=-cpplint
+# test:coverage --copt=--coverage
+# test:coverage --cxxopt=--coverage
+# test:coverage --cxxopt=-fprofile-arcs
+# test:coverage --cxxopt=-ftest-coverage
+# test:coverage --linkopt=-coverage
+# test:coverage --linkopt=-lgcov
+# test:coverage --linkopt=-lgcc
+# test:coverage --linkopt=-lc
+
+# +------------------------------------------------------------+
+# | Build Configurations                                       |
+# +------------------------------------------------------------+
+# Do not show warnings from external dependencies.
+# build --output_filter="^//"
+# build --output_filter='^//((?!external:).)*$'
+
+# build --show_timestamps
+
+# Work around the sandbox issue.
+# build --spawn_strategy=standalone
+
+# Specify protobuf cc toolchain
+# build --proto_toolchain_for_cc="@com_google_protobuf//:cc_toolchain"
+
+# build with profiling
+# build:cpu_prof --linkopt=-lprofiler
+
+build --copt="-Werror=sign-compare"
+build --copt="-Werror=return-type"
+build --copt="-Werror=reorder"
+# build --copt="-Werror=unused-variable"
+build --copt="-Werror=unused-but-set-variable"
+build --copt="-Werror=switch"
+build --copt="-Werror=non-virtual-dtor"
+build --copt="-Werror=aggressive-loop-optimizations"
+build --copt="-Werror=missing-field-initializers"
+# build --copt="-fmax-errors=5",
+# build --copt="-Werror=conversion"
+build --copt="-Werror=format-security"
+build --copt="-Werror=shadow"
+build --copt="-Werror=address"
+build --copt="-Werror=sequence-point"
+# build --copt="-Werror=implicit-function-declaration"
+# Enable position independent code, this option is not supported on Windows and default on on macOS.
+# build:linux --copt=-fPIC
+
+
+
+# Strict check on type conversion.
+# absl/strings/str_cat.h breaks the rule.
+# build --per_file_copt=^modules/.*\.cc,-modules/tools/visualizer/.*\.cc,^cyber/.*\.cc@-Werror=conversion
+
+
+# Enable C++17
+build --cxxopt="-std=c++17"
+# Enable colorful output of GCC
+build --cxxopt="-fdiagnostics-color=always"
+# build --cxxopt="-Wall"
+# build --cxxopt="-Wextra"
+# build --cxxopt="-Weffc++"
+# build --cxxopt="-Wpedantic"
+# build --cxxopt="-Woverloaded-virtual"
+# build --cxxopt="-Wstack-protector"
+# build --cxxopt="-Wconversion"
+# build --cxxopt="-Wsign-conversion"
+# build --cxxopt="-Wmisleading-indentation"
+# build --cxxopt="-Wduplicated-cond"
+# build --cxxopt="-Wnoexcept"
+# build --cxxopt="-Winit-self"
+# build --cxxopt="-Wmissing-declarations"
+# build --cxxopt="-ftemplate-backtrace-limit=0"
+# build --cxxopt="-Wnull-dereference"
+# build --cxxopt="-Wuseless-cast"
+# build --cxxopt="-Wdouble-promotion"
+# build --cxxopt="-Wfloat-equal"
+# build --cxxopt="-Wcomment"
+# build --cxxopt="-Wimport"
+# build --cxxopt="-Wchar-subscripts"
+# build --cxxopt="-Wswitch-default"
+# build --cxxopt="-Wdisabled-optimization"
+# build --cxxopt="-Wcast-qual"
+# build --cxxopt="-Wold-style-cast"
+# build --cxxopt="-Wcast-align"
+# build --cxxopt="-Wctor-dtor-privacy"
+# build --cxxopt="-Wredundant-decls"
+# build --cxxopt="-Wvariadic-macros"
+# build --cxxopt="-Wwrite-strings"
+# build --cxxopt="-Wmissing-include-dirs"
+# build --cxxopt="-Wlong-long"
+# build --cxxopt="-Wmissing-braces"
+# build --cxxopt="-Wreturn-type"
+# build --cxxopt="-Wsequence-point"
+# build --cxxopt="-Wsign-compare"
+# build --cxxopt="-Wmissing-format-attribute"
+# build --cxxopt="-Wpacked"
+# build --cxxopt="-Wparentheses"
+# build --cxxopt="-Wpointer-arith"
+# build --cxxopt="-Wunused-variable"
+# build --cxxopt="-Wunused-parameter"
+# build --cxxopt="-Wunused-value"
+# build --cxxopt="-Wuninitialized"
+# build --cxxopt="-Wzero-as-null-pointer-constant"
+# build --cxxopt="-Wduplicated-branches"
+# build --cxxopt="-Wvolatile-register-var"
+# build --cxxopt="-Wformat=2"
+# build --cxxopt="-Wfloat-equal"
+# build --cxxopt="-Wformat"
+# build --cxxopt="-Wformat-nonliteral"
+# build --cxxopt="-Wsign-promo"
+
+# Common flags for sanitizers
+# build:sanitizer --define tcmalloc=disabled
+# build:sanitizer --linkopt -ldl
+# build:sanitizer --build_tag_filters=-no_san
+# build:sanitizer --test_tag_filters=-no_san
+
+# --config asan: Address sanitizer
+# build:asan --strip=never
+# build:asan --copt -DADDRESS_SANITIZER
+# build:asan --copt -fsanitize=address
+# build:asan --copt -fno-omit-frame-pointer
+# build:asan --linkopt -fsanitize=address
+
+# --config tsan: ThreadSanitizer
+# build:tsan --strip=never
+# build:tsan --copt -DTHREAD_SANITIZER
+# build:tsan --copt -DDYNAMIC_ANNOTATIONS_ENABLED=1
+# build:tsan --copt -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1
+# build:tsan --copt -fsanitize=thread
+# build:tsan --copt -fno-omit-frame-pointer
+# build:tsan --linkopt -fsanitize=thread
+# build:tsan --linkopt -ltsan
+
+# --config msan: Memory sanitizer
+# build:msan --strip=never
+# build:msan --copt -DADDRESS_SANITIZER
+# build:msan --copt -fsanitize=memory
+# build:msan --copt -fno-omit-frame-pointer
+# build:msan --linkopt -fsanitize=memory
+
+# --config ubsan: Undefined Behavior Sanitizer
+# build:ubsan --strip=never
+# build:ubsan --copt -fsanitize=undefined
+# build:ubsan --copt -fno-omit-frame-pointer
+# build:ubsan --linkopt -fsanitize=undefined
+# build:ubsan --linkopt -lubsan
+
+# Fuzz builds
+# build:asan-fuzzer --config=clang-asan
+# build:asan-fuzzer --define=FUZZING_ENGINE=libfuzzer
+# build:asan-fuzzer --copt=-DFUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+# build:asan-fuzzer --copt=-fsanitize=fuzzer-no-link
+# Remove UBSAN halt_on_error to avoid crashing on protobuf errors.
+# build:asan-fuzzer --test_env=UBSAN_OPTIONS=print_stacktrace=1
+
+# +------------------------------------------------------------+
+# | Python Configurations                                      |
+# +------------------------------------------------------------+
+run --python_path=/usr/bin/python3
+
+
+# +------------------------------------------------------------+
+# | Qrgument to passe for compilation                                      |
+# +------------------------------------------------------------+
+# build --define=LOG_ALL=ON
+
+#+------------------------------------------------------------+
+# |                              Output
+#+------------------------------------------------------------+
+# query --output=label_kind
+

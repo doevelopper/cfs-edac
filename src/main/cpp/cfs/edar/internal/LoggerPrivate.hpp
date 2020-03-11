@@ -5,9 +5,7 @@
 
 #include <string>
 #include <stdexcept>
-// #include <apr-1/apr.h>
-#include <apr.h>
-//#include <apr-1.0/apr.h>
+#include <apr-1/apr.h>
 #include <log4cxx/logger.h>
 #include <log4cxx/appender.h>
 #include <log4cxx/basicconfigurator.h>
