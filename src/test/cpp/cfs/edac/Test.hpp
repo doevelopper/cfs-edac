@@ -5,7 +5,7 @@
 
 #include <vector>
 #include <gmock/gmock.h>
-#include <cfs/edar/Logger.hpp>
+#include <cfs/edar/LoggingService.hpp>
 
 namespace cfs::edac::test
 {
@@ -27,6 +27,7 @@ namespace cfs::edac::test
 
             std::string m_testSuites;
             unsigned int m_numberOfTestIteration;
+            cfs::edar::LoggingService * loggingService;
     };
 
 }

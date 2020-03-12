@@ -33,6 +33,7 @@
 #include <boost/shared_ptr.hpp>
 #include <memory>
 #include <cassert>
+#include <type_traits>
 
 namespace cfs::utils
 {
@@ -166,28 +167,28 @@ namespace cfs::utils
              *
              * @return Non-const pointer to the private implementation
              */
-            T* operator->();
+            T* operator->() noexcept;
 
             /*!
              * @brief Overload of -> operator for accessing the private implementation (const version)
              *
              * @return Const pointer to the private implementation
              */
-            const T* operator->() const;
+            const T* operator->() const noexcept;
 
             /*!
              * @brief Overload of * operator for accessing the private implementation (non-const version)
              *
              * @return Non-const reference to the private implementation
              */
-            T& operator*();
+            T& operator*() noexcept;
 
             /*!
              * @brief Overload of * operator for accessing the private implementation (const version)
              *
              * @return Const reference to the private implementation
              */
-            const T& operator*() const;
+            const T& operator*() const noexcept;
 
             /*!
              * @brief Swap the data of two PimplPtr instances
@@ -196,15 +197,23 @@ namespace cfs::utils
              */
             void swap(PimplPtr<T>& other);
 
+            //
+            // Agregation initialization
+            // SFINAE trick to not confuse with copy constructor
+            //
+/*
+            template <typename U, typename = typename std::enable_if< !std::is_same<PimplPtr, U>::value, void>::type>
+            explicit PimplPtr(U&& u);
+
+            template <typename T1, typename T2, typename ...Args>
+            PimplPtr(T1&& a1, T2&& a2, Args&&... args);
+*/
         private:
 
             /*!
              * @brief Assignment is disabled, once constructed a PimplPtr cannot point to another implementation
              */
             PimplPtr<T>& operator=(const PimplPtr<T>&);
-
-        private:
-
             std::shared_ptr<T> m_data; ///< Pointer to the instance of the private implementation
     };
 }

@@ -1,8 +1,8 @@
 
 
-#include <cppbdd101/lectures/gotw/StackTest.hpp>
+#include <cfs/edac/internal/StackTest.hpp>
 
-log4cxx::LoggerPtr StackTest::logger = log4cxx::Logger::getLogger(std::string("cppbdd101.lectures.gotw.StackTest"));
+log4cxx::LoggerPtr StackTest::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.internal.test.StackTest"));
 
 StackTest::StackTest()
 {

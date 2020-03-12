@@ -12,6 +12,8 @@ cc_test(
         "cfs/edac/unitTest.cpp",
         "cfs/edac/Test.cpp",
         "cfs/edac/Test.hpp",
+        #"cfs/edac/internal/StackTest.cpp",
+        #"cfs/edac/internal/StackTest.hpp",
     ],
 
     includes = [
@@ -46,6 +48,5 @@ cc_test(
     data = [
         "//src/main/resources/configs:log4cxx.xml",
     ],
-
 )
 

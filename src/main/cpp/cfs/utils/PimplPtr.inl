@@ -92,6 +92,65 @@ inline auto qGetPtrHelper(Ptr &ptr) -> decltype(ptr.operator->()) { return ptr.o
     inline const Class* q_func() const { return static_cast<const Class *>(q_ptr); } \
     friend class Class;
 
+/*
+    @brief Utility macros for handling private implementations. It is in addition
+       to QtGlobal: Q_DECLARE_PRIVATE, Q_DECLARE_PUBLIC,
+       Q_D and Q_Q.
+*/
+
+
+/*!
+ * Define a public class constructor with no argument
+ *
+ * Also make sure the Pimpl is initalized
+ *
+ */
+#define CONSTRUCTOR_NO_ARG_CPP(PUB)      \
+  PUB::PUB(): d_ptr(new PUB##Private)    \
+  {                                      \
+  }
+
+/*!
+ * Define a public class constructor with one argument
+ *
+ * Also make sure the Pimpl is initalized
+ */
+#define CONSTRUCTOR_1_ARG_CPP(PUB, _ARG1) \
+  PUB::PUB(_ARG1 _parent)                 \
+    : Superclass( _parent )               \
+    , d_ptr(new PUB##Private)             \
+  {                                       \
+  }
+
+/*!
+ * Define the setter in the public class.
+ *
+ * This should be put in the .cxx file of the public class. The parameter are
+ * the name of the public class (PUB), the type of the argument to return (_TYPE),
+ * the name of the getter(_NAME) and the name of the variable in the Private class(_VARNAME).
+ */
+#define SET_CPP(PUB, _TYPE, _NAME, _VARNAME)    \
+  void PUB::_NAME(_TYPE var)                    \
+  {                                             \
+    Q_D(PUB);                                   \
+    d->_VARNAME =  var;                         \
+  }
+
+/*!
+ * Define the setter in the public class.
+ *
+ * This should be put in the .cxx file of the public class. The parameter are
+ * the name of the public class (PUB), the type of the argument to return (_TYPE),
+ * the name of the setter(_NAME) and the name of the variable in the Private class(_VARNAME).
+ * \see \ref CorePimpl
+ */
+#define GET_CPP(PUB, _TYPE, _NAME, _VARNAME)     \
+  _TYPE PUB::_NAME()const                        \
+  {                                              \
+      Q_D(const PUB);                            \
+      return d->_VARNAME;                        \
+  }
+
 namespace cfs::utils
 {
     template <typename T>
@@ -143,31 +202,59 @@ namespace cfs::utils
     template <typename T>
     T* PimplPtr<T>::operator->()
     {
-        return m_data.get();
+        return (m_data.get());
     }
 
     template <typename T>
     const T* PimplPtr<T>::operator->() const
     {
-        return m_data.get();
+        return (m_data.get());
     }
 
     template <typename T>
     T& PimplPtr<T>::operator*()
     {
-        return *m_data;
+        return (*m_data);
     }
 
     template <typename T>
     const T& PimplPtr<T>::operator*() const
     {
-        return *m_data;
+        return (*m_data);
     }
 
     template <typename T>
     void PimplPtr<T>::swap(PimplPtr<T>& other)
     {
-          m_data.swap(other.m_data);
+        m_data.swap(other.m_data);
     }
+/*
+    template <typename T>
+    PimplPtr<T>& PimplPtr<T>::operator=(PimplPtr const& rhs)
+    {
+        PimplPtr<T> tmp(rhs);
+        *this = std::move(tmp);
+        return (*this);
+    }
+
+//    template <typename T>
+//    PimplPtr<T>& PimplPtr<T>::operator=(PimplPtr<T>&&) noexcept = default;
+
+    template <typename T>
+    template <typename U, typename>
+    PimplPtr<T>::PimplPtr(U&& u)
+    : m_data(new T{std::forward<U>(u)})
+    {
+    }
+
+    template <typename T>
+    template <typename U1, typename U2, typename ...Args>
+    PimplPtr<T>::PimplPtr(U1&& u1, U2&& u2, Args&&... args)
+    : m_data(new T{std::forward<U1>(u1),
+                 std::forward<U2>(u2),
+                 std::forward<Args>(args)...})
+    {
+    }
+*/
 
 }

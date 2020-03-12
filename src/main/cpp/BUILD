@@ -9,13 +9,13 @@ cc_library(
     name = "cfs-edac-main",
 
     srcs = [
-        "cfs/edar/internal/LoggerPrivate.cpp",
-        "cfs/edar/Logger.hpp",
+        "cfs/edar/LoggingServicePrivate.cpp",
+        "cfs/edar/LoggingService.cpp",
     ],
 
     hdrs = [
-        "cfs/edar/internal/LoggerPrivate.hpp",
-        "cfs/edar/Logger.hpp",
+        "cfs/edar/LoggingServicePrivate.hpp",
+        "cfs/edar/LoggingService.hpp",
         "cfs/utils/PimplPtr.hpp",
         "cfs/utils/PimplPtr.inl",
         "cfs/utils/SharedPimplPtr.hpp",
@@ -48,17 +48,17 @@ cc_library(
     #visibility = ["//main:__pkg__"],
 )
 
-#cc_binary(
-#    name = "cfs-edac-main.bin",
-#    srcs = ["computer/science/main.cpp"],
-#    copts = [
-#       "-std=c++17",
-#    ],
+cc_binary(
+    name = "cfs-edac-main.bin",
+    srcs = ["cfs/main.cpp"],
+    copts = [
+       "-std=c++17",
+    ],
 
-#    deps = [
-#        ":cfs-edac-main",
-#    ],
-#)
+    deps = [
+        ":cfs-edac-main",
+    ],
+)
 
 pkg_tar(
     name = "cfs-edac-main-libs",
@@ -82,18 +82,18 @@ pkg_tar(
     mode = "0644",
 )
 
-#pkg_tar(
-#    name = "cfs-edac-main-bin-pkg",
-##    testonly = True,
-#    srcs = [
-#        # ":cfs-algo-main",
-#        ":cfs-edac-main.bin",
-#    ],
-#    # extension = "tar.gz",
-#    package_dir = "/opt/bin",
-#    strip_prefix = "/src/main/cpp",
-#    tags = ["manual"],
-#)
+pkg_tar(
+    name = "cfs-edac-main-bin-pkg",
+#    testonly = True,
+    srcs = [
+        # ":cfs-algo-main",
+        ":cfs-edac-main.bin",
+    ],
+    # extension = "tar.gz",
+    package_dir = "/opt/bin",
+    strip_prefix = "/src/main/cpp",
+    tags = ["manual"],
+)
 
 pkg_tar(
     name = "cfs-edac",
@@ -101,7 +101,7 @@ pkg_tar(
     deps = [
         ":cfs-edac-main-libs",
         ":cfs-edac-main-hdrs-pkg",
-#        ":cfs-edac-main-bin-pkg",
+        ":cfs-edac-main-bin-pkg",
     ],
 )
 

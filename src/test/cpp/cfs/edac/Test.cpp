@@ -8,17 +8,25 @@ using namespace cfs::edac::test;
 Test::Test()
     : m_testSuites(std::string() )
     , m_numberOfTestIteration(1)
+    , loggingService( new cfs::edar::LoggingService(5000UL))
 {
+
 }
 
 Test::Test(std::string & suite, unsigned int iteration)
     : m_testSuites(suite)
     , m_numberOfTestIteration(iteration)
+    , loggingService( new cfs::edar::LoggingService(5000UL))
 {
 }
 
 Test::~Test()
 {
+    if(loggingService)
+    {
+        delete loggingService;
+        loggingService = nullptr;
+    }
 }
 
 void Test::notYetImplemented()
