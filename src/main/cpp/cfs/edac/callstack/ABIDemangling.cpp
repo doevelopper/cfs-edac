@@ -3,31 +3,35 @@
 #include <typeindex>
 #include <cfs/edac/callstack/ABIDemangling.hpp>
 
-using namespace cfs::edac;
+using namespace cfs::edac::callstack;
+log4cxx::LoggerPtr ABIDemangling::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.ABIDemangling"));
 
-callstack::ABIDemangling::ABIDemangling()
+ABIDemangling::ABIDemangling()
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
 }
 
-callstack::ABIDemangling::~ABIDemangling()
+ABIDemangling::~ABIDemangling()
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
 }
 
 template < typename T >
-std::string callstack::ABIDemangling::gccDemangle ( T & e )
+std::string ABIDemangling::gccDemangle ( T & e )
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     int status;
     std::unique_ptr < char > realname;
     const std::type_info & ti = typeid( e );
-    realname.reset( abi::__cxa_demangle( ti.name(), 0, 0, &status ));
+    realname.reset( abi::__cxa_demangle( ti.name(), nullptr, nullptr, &status ));
 
     // assert(status == 0);
     return ( std::string( realname.get()));
 }
 
-const char* callstack::ABIDemangling::cxaDemangle(const std::type_info &typeInfo)
+const char* ABIDemangling::cxaDemangle(const std::type_info &typeInfo)
 {
-    //LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     static std::map<std::type_index, std::unique_ptr<char, void (*)(void *)> > cache;
     auto typeIndex = std::type_index(typeInfo);
     auto iter = cache.find(typeIndex);
@@ -46,7 +50,7 @@ const char* callstack::ABIDemangling::cxaDemangle(const std::type_info &typeInfo
 
     if (status != 0)
     {
-        //LOG4CXX_ERROR(logger,"Demangle failed.");
+        LOG4CXX_ERROR(logger,"Demangle failed.");
         //throw std::runtime_error("Demangle failed.");
     }
 
@@ -56,13 +60,15 @@ const char* callstack::ABIDemangling::cxaDemangle(const std::type_info &typeInfo
 }
 
 template < class T >
-std::string callstack::ABIDemangling::type ( const T & t )
+std::string ABIDemangling::type ( const T & t )
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     return ( demangle( typeid( t ).name()));
 }
 
-std::string callstack::ABIDemangling::demangle ( const char * name /*, std::string& retVal*/ )
+std::string ABIDemangling::demangle ( const char * name)
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     int status;
     std::string retVal;
 
@@ -90,22 +96,26 @@ std::string callstack::ABIDemangling::demangle ( const char * name /*, std::stri
         break;
     }
 
+    LOG4CXX_DEBUG(logger , "Demangle status: " << status << " Desc: " << retVal);
     return (( status == 0 ) ? res.get() : retVal /*name*/ );
 }
 
-std::string callstack::ABIDemangling::demangle ( const std::type_info & typeInfo )
+std::string ABIDemangling::demangle ( const std::type_info & typeInfo )
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     return ( demangle( typeInfo.name()));
 }
 
-size_t callstack::ABIDemangling::demangle ( const std::type_info & typeInfo, char * buf, size_t bufSize)
+size_t ABIDemangling::demangle ( const std::type_info & typeInfo, char * buf, size_t bufSize)
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     // return (demangle(typeInfo.name(), buf, bufSize));
     return 42;  // ;)
 }
 
-void callstack::ABIDemangling::printExceptionStack ( const std::exception & e, std::ostream & output)
+void ABIDemangling::printExceptionStack ( const std::exception & e, std::ostream & output)
 {
+    LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
     output << "Issue on " << abi::__cxa_demangle( typeid( e ).name(), nullptr, nullptr, nullptr ) << ": " << e.what() <<
         std::endl;
 }

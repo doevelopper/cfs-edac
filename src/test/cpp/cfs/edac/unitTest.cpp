@@ -16,7 +16,7 @@ int main(int argc, char**argv)
 
     if (status != EXIT_SUCCESS)
     {
-        LOG4CXX_ERROR(log4cxx::Logger::getRootLogger(),"EDAC unit test failed");
+        LOG4CXX_ERROR(log4cxx::Logger::getRootLogger(),"EDAC unit test failed: " << status);
         //log4cxx::LogManager::getLoggerRepository()->getRootLogger()->error("Unit Test failed");
     }
 

@@ -7,24 +7,10 @@
 #include <string>
 #include <cfs/utils/PimplPtr.hpp>
 #include <log4cxx/logger.h>
-// EMERG    0       /* system is unusable. A panic condition was reported to all processes. */
-// ALERT    1       /* action must be taken immediately. A condition that should be corrected immediately.
-// CRIT     2       /* critical conditions */
-// ERR      3       /* error conditions */
-// WARNING  4       /* warning conditions */
-// NOTICE   5       /* normal but significant condition. A condition requiring special handling.  */
-// INFO     6       /* informational */
-// DEBUG    7       /* debug-level messages. A message useful for debugging programs.  */
 
-/*
- #define LOG_TRACE(message)          LOG4CXX_TRACE(logger, message)
- #define LOG_DEBUG(message)          LOG4CXX_DEBUG(logger, message)
- #define LOG_INFO(message)           LOG4CXX_INFO(logger, message)
- #define LOG_WARNING(message)        LOG4CXX_WARN(logger, message)
- #define LOG_ERROR(message)          LOG4CXX_ERROR(logger, message)
- #define LOG_FATAL(message)          LOG4CXX_FATAL(logger, message)
- #define LOG_ASSERT(cond, message)   LOG4CXX_ASSERT(logger, condition, message)
- #define LOG_GLOBAL_CATEGORY(category) private: static const log4cxx::LoggerPtr LOGGER; */
+#define LOG4CXX_DECLARE_STATIC_LOGGER private: static log4cxx::LoggerPtr logger;
+#define LOG4CXX_DECLARE_STATIC_TEST_LOGGER protected : static log4cxx::LoggerPtr logger;
+#define LOG4CXX_DECLARE_CLASS_LOGGER(name) private: log4cxx::LoggerPtr name;
 
 namespace cfs::edar
 {

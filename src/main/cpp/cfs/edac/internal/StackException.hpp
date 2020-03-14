@@ -1,7 +1,7 @@
 
 
-#ifndef CPPBDD101_LECTURES_GOTW_STACKEXCEPTION_HPP
-#define CPPBDD101_LECTURES_GOTW_STACKEXCEPTION_HPP
+#ifndef CFS_EDAC_INTERNAL_STACKEXCEPTION_HPP
+#define CFS_EDAC_INTERNAL_STACKEXCEPTION_HPP
 
 #include <type_traits>
 #include <cstdint>
@@ -11,6 +11,8 @@
 #include <memory>
 #include <log4cxx/logger.h>
 
+namespace cfs::edac::internal
+{
 template <class T>
 class StackException
 {
@@ -47,6 +49,6 @@ class StackException
          */
         static log4cxx::LoggerPtr logger;
 };
-
+}
 #endif
 

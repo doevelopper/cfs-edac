@@ -42,27 +42,7 @@ namespace cfs::edar::internal
     {
         public:
 
-            enum class Level : std::uint32_t
-            {
-                EMERGENCY = (1 << 0),    //<! System is unusable. A panic condition was reported to all processes.
-                CRITICAL = (1 << 1),     //<!
-                FATAL = (1 << 2),        //<! Critical conditions
-                ALERT = (1 << 3),        //<!
-                ERROR = (1 << 4),        //<! Action must be taken immediately. A condition that should be corrected
-                                         // immediately.
-                WARNING = (1 << 5),      //<! Error conditions
-                INFO = (1 << 6),         //<! Warning conditions
-                TRACE = (1 << 7),        //<! Informational
-                DEBUG = (1 << 8),        //<! Debug-level messages. A message useful for debugging programs.
-                ADVISORY = (1 << 9),     //<!
-                INHIBIT = (1 << 10),     //<! System is unusable. a Reset is required to recover
-                HINDENBUG = (1 << 11),   //<! ... bug with catastrophic behavior
-                MANDELBUG = (1 << 12),   //<! ... bug whose causes are so complex it defies repair
-                BOHRBUG = (1 << 13),     //<! ... relatively easily detected
-                HEISENBUG = (1 << 14),   //<! ... software bug that seems to disappear or alter its behavior when one
-                                         // attempts to study it."*/
-                SCHROEDINBUG = (1 << 15) //<! ... bug that manifests itself in running software"
-            };
+
 
 
             LoggerPrivate( unsigned long delay = 5000UL );

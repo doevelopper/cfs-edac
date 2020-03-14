@@ -12,11 +12,13 @@
 #include <map>
 #include <string>
 #include <typeinfo>
+#include <cfs/edar/LoggingService.hpp>
 
 namespace cfs::edac::callstack
 {
     class ABIDemangling
     {
+        LOG4CXX_DECLARE_STATIC_LOGGER
         public:
 
             ABIDemangling();
@@ -38,7 +40,7 @@ namespace cfs::edac::callstack
 
             template < typename T >
             std::string gccDemangle ( T & e );
-            std::string demangle ( const char * name /*, std::string & retVal*/ );
+            std::string demangle ( const char * name);
             template < class T >
             std::string type ( const T & t );
             std::string demangle ( const std::type_info & type );

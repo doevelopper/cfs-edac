@@ -1,41 +1,49 @@
 
 
-#include <cppbdd101/lectures/gotw/Stack.hpp>
+#include <cfs/edac/internal/Stack.hpp>
+
+using namespace cfs::edac::internal;
 
 template <class T>
-log4cxx::LoggerPtr Stack<T>::logger = log4cxx::Logger::getLogger(std::string("cppbdd101.lectures.gotw.Stack"));
+log4cxx::LoggerPtr Stack<T>::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.Stack"));
 
 template <class T>
 Stack<T>::Stack()  noexcept
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
 }
 
 template <class T>
 Stack<T>::Stack(std::size_t capacity)
     :  StackException<T>(capacity)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
 }
 
 template <class T>
 Stack<T>::~Stack()  noexcept
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
 }
 
 template <class T>
 std::size_t Stack<T>::size() const noexcept
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     return m_size;
 }
 
 template <class T>
 std::size_t Stack<T>::capacity() const noexcept
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     return m_capacity;
 }
 
 template <class T>
 bool Stack<T>::empty() const noexcept
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     return size() == 0;
 }
 
@@ -44,6 +52,7 @@ Stack<T>::Stack(const Stack& other)
 noexcept(std::is_nothrow_copy_constructible<T>::value)
     : StackException<T>(other.m_capacity)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     for (std::size_t pos = 0; pos < other.m_size; ++pos)
     {
         constructAt(pos, other.m_data[pos]);
@@ -55,8 +64,8 @@ template <class T>
 Stack<T>& Stack<T>::operator=(Stack<T> s)
 noexcept(std::is_nothrow_copy_constructible<T>::value)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     swap(s);
-
     return *this;
 }
 
@@ -64,6 +73,7 @@ template <class T>
 Stack<T>& Stack<T>::operator=(Stack<T>&& s)
 noexcept(std::is_nothrow_move_constructible<T>::value)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     swap(s);
 
     return *this;
@@ -72,6 +82,7 @@ noexcept(std::is_nothrow_move_constructible<T>::value)
 template <class T>
 void Stack<T>::push(const T& t)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     if (m_size == m_capacity)
     {
         reserve((m_capacity + 1) * 2);
@@ -87,6 +98,7 @@ template <class T>
 template <class ... Args>
 void Stack<T>::emplace(Args&& ... args)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     if (m_size == m_capacity)
     {
         reserve((m_capacity + 1) * 2);
@@ -116,6 +128,7 @@ void Stack<T>::reserve(std::size_t new_capacity)
 template <class T>
 typename Stack<T>::reference Stack<T>::top()
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     if (empty())
     {
         throw std::runtime_error("empty container");
@@ -127,12 +140,14 @@ typename Stack<T>::reference Stack<T>::top()
 template <class T>
 typename Stack<T>::constReference Stack<T>::top() const
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     return const_cast<Stack<T>&>(*this).top();
 }
 
 template <class T>
 T Stack<T>::pop()
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     if (empty())
     {
         throw std::runtime_error("empty container");

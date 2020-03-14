@@ -3,11 +3,25 @@
 #ifndef CFS_EDACL_ERRORS_SYSTEMERROR_HPP
 #define CFS_EDACL_ERRORS_SYSTEMERROR_HPP
 
-
+#include <ios>
+#include <cstring>
 #include <system_error>
+#include <cerrno>
+#include <cfs/edar/LoggingService.hpp>
 
 namespace cfs::edacl::errors
 {
+    enum class cfssy_errc : std::uint32_t
+    {
+        ERROR_PARAMETER_OUT_OF_RANGE,
+        ERROR_OPERATING_SYSTEM,
+        ERROR_SOFT_FATAL,
+        ERROR_SOFT_RECOVERABLE,
+        ERROR_SERVICE_CLOSING,
+        ERROR_ILLEGAL_PARAMETER,
+        ERROR_WRITE_FAILED,
+        ERROR_READ_FAILED,
+    };
     /*!
      * @brief return std::system_category() for errors originating from the OS,
      *        or a reference to an implementation-defined error_category object
@@ -15,6 +29,7 @@ namespace cfs::edacl::errors
      */
     class SystemError : public std::error_category
     {
+        LOG4CXX_DECLARE_STATIC_LOGGER
         public:
 
             SystemError();
@@ -29,13 +44,19 @@ namespace cfs::edacl::errors
             SystemError(const int code, const std::error_category & category, const char * const what) noexcept;
             virtual ~SystemError();
 
-            const char* name() const noexcept override;
-            std::string message(int ev) const override;
-            bool equivalent(const std::error_code& code, int condition) const noexcept override;
-            std::error_condition default_error_condition(int ev) const noexcept override;
+            virtual const char* name() const noexcept override;
+            virtual std::string message(int ev) const override;
+            virtual bool equivalent(const std::error_code& code, std::uint32_t condition) const noexcept;
+            virtual std::error_condition default_error_condition(int ev) const noexcept override;
 
         private:
     };
+
+    std::error_category const& cfssys_category() noexcept
+    {
+        static SystemError cat;
+        return cat;
+    }
 }
 #endif
 

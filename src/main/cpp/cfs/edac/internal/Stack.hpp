@@ -1,10 +1,12 @@
 
 
-#ifndef CPPBDD101_LECTURES_GOTW_STACK_HPP
-#define CPPBDD101_LECTURES_GOTW_STACK_HPP
+#ifndef CFS_EDAC_INTERNAL_STACK_HPP
+#define CFS_EDAC_INTERNAL_STACK_HPP
 
-#include <cppbdd101/lectures/gotw/StackException.hpp>
+#include <cfs/edac/internal/StackException.hpp>
 
+namespace cfs::edac::internal
+{
 template <class T>
 class Stack : private StackException<T>
 {
@@ -49,5 +51,6 @@ class Stack : private StackException<T>
          */
         static log4cxx::LoggerPtr logger;
 };
+}
 #endif
 

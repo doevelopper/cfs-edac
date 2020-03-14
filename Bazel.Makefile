@@ -62,6 +62,23 @@ compile: ## Build projects main sources
 test: compile ## Build projects test sources and run unit test
 	@bazel test //... --test_output=all
 
+.PHONY: integration-test
+integration-test:
+	bazel test --config integration //src/it/...
+
+
+.PHONY: qrs
+qrs: ## Find all rules & files under //src/main/cpp
+	bazel query '//src/main/cpp/ ...:*'
+
+.PHONY: querryall
+querryall: ## Find all rules  under //src/main/cpp
+	bazel query '//src/main/cpp/ ...:all'
+
+.PHONY: querrydeps
+querrydeps: ## Find all dependencoes under //src/main/cpp and sub packages
+	bazel query 'deps(//src/main/cpp/ ...)'
+
 .PHONY: clean
 clean: ## Cleaned up the objects and intermediary files
 	@bazel clean

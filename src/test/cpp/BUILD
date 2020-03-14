@@ -12,8 +12,14 @@ cc_test(
         "cfs/edac/unitTest.cpp",
         "cfs/edac/Test.cpp",
         "cfs/edac/Test.hpp",
-        #"cfs/edac/internal/StackTest.cpp",
-        #"cfs/edac/internal/StackTest.hpp",
+		"cfs/edac/callstack/ABIDemanglingTest.cpp",
+		"cfs/edac/callstack/ABIDemanglingTest.hpp",
+        "cfs/edacl/errors/IOErrorTest.cpp",
+        "cfs/edacl/errors/IOErrorTest.hpp",
+        "cfs/edacl/errors/GenericErrorTest.cpp",
+        "cfs/edacl/errors/GenericErrorTest.hpp",
+        "cfs/edacl/errors/SystemErrorTest.cpp",
+        "cfs/edacl/errors/SystemErrorTest.hpp",
     ],
 
     includes = [

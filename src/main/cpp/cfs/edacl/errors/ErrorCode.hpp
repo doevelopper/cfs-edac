@@ -3,8 +3,7 @@
 #ifndef CFS_EDACL_ERRORS_ERRORCODE_HPP
 #define CFS_EDACL_ERRORS_ERRORCODE_HPP
 
-#include <cfs/edacl/errors/internal/ErrorCodePrivate.hpp>
-
+#include <cfs/edacl/internal/ErrorCodePrivate.hpp>
 /*!
  * @brief Holds a platform dependent error code
 

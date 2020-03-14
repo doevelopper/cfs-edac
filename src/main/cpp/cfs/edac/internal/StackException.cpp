@@ -1,10 +1,12 @@
 
 
-#include <cppbdd101/lectures/gotw/StackException.hpp>
+#include <cfs/edac/internal/StackException.hpp>
+
+using namespace cfs::edac::internal;
 
 template <class T>
-log4cxx::LoggerPtr StackException<T>::logger = log4cxx::Logger::getLogger(std::string(
-                                                                              "cppbdd101.lectures.gotw.StackException"));
+log4cxx::LoggerPtr StackException<T>::logger =
+    log4cxx::Logger::getLogger(std::string("cfs.edac.internal.StackException"));
 
 
 template <class T>
@@ -44,6 +46,7 @@ StackException<T>::~StackException() noexcept
 template <class T>
 void StackException<T>::swap(StackException<T>& other)
 {
+    LOG4CXX_TRACE(logger, __LOG4CXX_FUNC__);
     std::swap(m_data, other.m_data);
     std::swap(m_size, other.m_size);
     std::swap(m_capacity, other.m_capacity);
