@@ -4,16 +4,17 @@
 #define CFS_EDAC_EXCEPTIONTEST_HPP
 
 #include <gtest/gtest.h>
-
-//#include <cfs/edac/Exception.hpp>
+#include <cfs/edac/Exception.hpp>
 
 namespace cfs::edac::test
 {
 
     class ExceptionTest : public ::testing::Test
     {
-        public:
 
+        LOG4CXX_DECLARE_STATIC_TEST_LOGGER
+
+        public:
             ExceptionTest();
             ExceptionTest(const ExceptionTest&) = default;
             ExceptionTest(ExceptionTest&&) = default;
@@ -26,7 +27,7 @@ namespace cfs::edac::test
 
         protected:
 
-//            Exception * m_test_exception;
+            cfs::edac::Exception * testee;
     };
 
 }

@@ -6,11 +6,17 @@
 #include <cfs/edac/callstack/CallStackDataStructure.hpp>
 
 using namespace cfs::edac::callstack;
+log4cxx::LoggerPtr CallStackDataStructure::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.CallStackDataStructure"));
 
 CallStackDataStructure::CallStackDataStructure()
     : m_line( 0 )
     , m_address( nullptr )
 {
+}
+
+CallStackDataStructure::~CallStackDataStructure()
+{
+
 }
 
 std::string CallStackDataStructure::data () const

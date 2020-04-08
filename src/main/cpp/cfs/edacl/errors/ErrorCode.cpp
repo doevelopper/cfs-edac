@@ -32,34 +32,34 @@ const std::error_category & ErrorCode::future_category() noexcept
 {
     static const FutureError impl{};
 
-    return impl;
+    return (impl);
 }
 
 const std::error_category & ErrorCode::generic_category() noexcept
 {
     static const GenericError impl{};
 
-    return impl;
+    return (impl);
 }
 
 const std::error_category & ErrorCode::io_category() noexcept
 {
     static const IOError impl{};
 
-    return impl;
+    return (impl);
 }
 
 const std::error_category & ErrorCode::api_category() noexcept
 {
     static const LowLevelApiError impl{};
 
-    return impl;
+    return (impl);
 }
 
 const std::error_category & ErrorCode::sys_category() noexcept
 {
     static const SystemError impl{};
 
-    return impl;
+    return (impl);
 }
 

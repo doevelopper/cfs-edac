@@ -43,6 +43,11 @@ LoggingServicePrivate::~LoggingServicePrivate()
     log4cxx::LogManager::shutdown();
 }
 
+void LoggingServicePrivate::flush()
+{
+    LOG4CXX_TRACE(log4cxx::Logger::getRootLogger(), __LOG4CXX_FUNC__);
+}
+
 bool LoggingServicePrivate::loggerReset ()
 {
     LOG4CXX_TRACE(log4cxx::Logger::getRootLogger(), __LOG4CXX_FUNC__);

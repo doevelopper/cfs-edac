@@ -32,6 +32,11 @@ std::string ABIDemangling::gccDemangle ( T & e )
 const char* ABIDemangling::cxaDemangle(const std::type_info &typeInfo)
 {
     LOG4CXX_TRACE(logger , __LOG4CXX_FUNC__);
+    if (!typeInfo.name())
+    {
+        LOG4CXX_ERROR(logger , __LOG4CXX_FUNC__);
+        return("NULL");
+    }
     static std::map<std::type_index, std::unique_ptr<char, void (*)(void *)> > cache;
     auto typeIndex = std::type_index(typeInfo);
     auto iter = cache.find(typeIndex);

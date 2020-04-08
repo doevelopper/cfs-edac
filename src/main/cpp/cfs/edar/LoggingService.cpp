@@ -79,3 +79,10 @@ void LoggingService::fatal( const std::string & s )
     Q_D( LoggingService );
     d->fatal(s);
 }
+
+void LoggingService::flush()
+{
+    Q_D( LoggingService );
+    d->flush();
+}
+

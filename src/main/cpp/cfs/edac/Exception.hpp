@@ -7,122 +7,17 @@
 #include <string>
 #include <iostream>
 
-#include <cfs/edac/Export.hpp>
+#include <cfs/edar/LoggingService.hpp>
+#include <cfs/edac/Location.hpp>
+//#include <cfs/edac/Export.hpp>
 
 
 #define RAISE_ERROR( error )  throw Exceptions::prepare( error, __FILE__, __LINE__, __func__ std::strerror(error))
-#define LOG std::clog << __DATE__ << " " << __TIME__ << __FUNCTION__ << std::endl;
 #define ERROR_LOCATION std::string ( "(" ) + std::string( __FILE__ ) + std::string ( ":" ) + std::to_string( \
         __LINE__ ) + std::string ( ")" )
 
 namespace cfs::edac
 {
-    class CFS_EDAC_MAIN_EXPORT NotImplemented : public std::logic_error
-    {
-        public:
-
-            explicit NotImplemented(const std::string &message)
-                : std::logic_error(message)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT NumericalProblem : public std::runtime_error
-    {
-        public:
-
-            explicit NumericalProblem(const std::string &message)
-                : std::runtime_error(message)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT MaterialLawProblem : public NumericalProblem
-    {
-        public:
-
-            explicit MaterialLawProblem(const std::string &message)
-                : NumericalProblem(message)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT LinearSolverProblem : public NumericalProblem
-    {
-        public:
-
-            explicit LinearSolverProblem(const std::string &message)
-                : NumericalProblem(message)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT BadDependency : public ::std::logic_error
-    {
-        public:
-
-            BadDependency(const ::std::string &arg)
-                : std::logic_error(arg)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT InvalidResult : public ::std::runtime_error
-    {
-        public:
-
-            InvalidResult(const ::std::string &arg)
-                : std::runtime_error(arg)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT TooManyIterations : public NumericalProblem
-    {
-        public:
-
-            explicit TooManyIterations(const std::string &message)
-                : NumericalProblem(message)
-            {
-            }
-    };
-
-    class CFS_EDAC_MAIN_EXPORT notImplementedException : public std::exception
-    {
-        public:
-
-            notImplementedException(const char * message)
-                : m_message(message)
-            {
-            }
-
-            notImplementedException()
-                : m_message("not implemented")
-            {
-            }
-
-            virtual const char* what() const noexcept override
-            {
-                return m_message;
-            }
-
-            virtual ~notImplementedException()  noexcept
-            {
-            }
-
-        private:
-
-            const char * m_message;
-    };
-
-    class CFS_EDAC_MAIN_EXPORT IOError : public std::runtime_error
-    {
-        /// Error can be specified more precisely in constructor if desired
-        explicit IOError(const char *s = "I/O error")
-            : std::runtime_error(s)
-        {
-        }
-    };
 
     /*!
      * @brief Base class for every exception thrown in <>.
@@ -136,8 +31,11 @@ namespace cfs::edac
      *        N - Null pointer or memory problems
      */
 
-    class CFS_EDAC_MAIN_EXPORT Exception : public std::exception
-    {
+	class Exception : public std::exception
+	{
+
+		LOG4CXX_DECLARE_STATIC_LOGGER
+
         struct Mode
         {
             enum _v
@@ -147,7 +45,6 @@ namespace cfs::edac
                 Trace
             };
         };
-
         /*!
          *  @brief  Wrapper class to define a different terminate handler. The terminate
          *          handler is the function that will be called by the runtime system when
@@ -196,24 +93,21 @@ namespace cfs::edac
                 std::terminate_handler m_oldHandler;
         };
 
-        public:
+	 public:
+		Exception() = delete;
+		Exception(const Exception&) noexcept = default;
+		Exception(Exception&&) noexcept = default;
+		Exception& operator=(const Exception&) noexcept = default;
+		Exception& operator=(Exception&&) noexcept = default;
+		virtual ~Exception();
 
-            /*!
-             * @brief Construct a new Exception object
-             *
-             * @param code
-             */
-            Exception( int code = 0 );
-            Exception( const Exception & orig );
-            Exception & operator = ( const Exception & exc );
-            virtual ~Exception();
+		explicit Exception(std::int32_t code );
 
-            Exception(const std::string & who, const std::string & what = std::string());
-            /*!
-             * @brief Constructs an exeption with message and error code.
-             */
-            Exception( const std::string & msg, int code );
-
+		/*!
+		 * @brief Constructs an exeption with message and error code.
+		 */
+		explicit Exception( const std::string & msg, std::int32_t code );
+		// explicit Exception(const std::string & who, const std::string & what = std::string(""));
             /*!
              * @brief Constructor.
              * @param _method Mothodd s name raising the exception.
@@ -221,8 +115,7 @@ namespace cfs::edac
              * @param _code Error code.
              * @throw std::runtime_error When socket could not be created.
              */
-            Exception( const std::string & msg, const std::string & arg, int code = 0 );
-
+        explicit Exception( const std::string & msg, const std::string & what = std::string(""), std::int32_t code = 0 );
             /*!
              * @brief Constructor.
              * @param _method Mothodd s name raising the exception.
@@ -230,79 +123,74 @@ namespace cfs::edac
              * @param _code Error code.
              * @throw std::runtime_error When socket could not be created.
              */
-            Exception( const std::string & msg, const Exception & nested, int code = 0 );
 
-            /*!
-             * @brief methodName Method raising the exception.
-             */
-            const std::string & methodName ();
+        Exception( const std::string & msg, const Exception & nested, int code = 0 );
 
-            /*!
-             * @brief message Message explaining the reason of exception.
-             */
-            const std::string & errorDescription ();
+		/*!
+		 * @brief Return a description of the error
+		 * @return Pointer to a string containing the error message
+		 */
+		const char* what() const noexcept override;
+		/*!
+		 * @brief Return the error location (file + line + function)
+		 * @return String containing the error location
+		 */
+		virtual const char * where () const noexcept ;
+		const cfs::edac::Location& location() const noexcept;
+		const std::string& message() const noexcept ;
+		/*!
+		 * @brief Retrieve the stack trace trace of process
+		 *
+		 * @return String containing the procces
+		 */
+		virtual std::string stackTrace () const;
+		/*!
+		 * @brief message Message explaining the reason of exception.
+		 */
+		const std::string & errorDescription ();
+		/*!
+		 * @brief errorCode Error code corresponding to errno.h values.
+		 * @return
+		 */
+		[[nodiscard]] 
+		std::int32_t errorCode () const;
+		void errorCode (const std::int32_t & error);
+		//! Link exception with source location
+		template<class T>
+		friend T&& operator+(const Location & location, T&& instance)
+		{ instance.m_location = location; return std::forward<T>(instance); }
+		/*!
+		 * @brief methodName Method raising the exception.
+		 */
+		const std::string & methodName ();
+/*
+		std::string const& operator()() const {}
+		void operator()(std::string const& newName) {}
+*/
+	 protected:
+        explicit Exception(std::terminate_handler handler);
+	 private:
 
-            /*!
-             * @brief errorCode Error code corresponding to errno.h values.
-             * @return
-             */
-            int errorCode () const;
+		//std::shared_ptr< std::string > m_message; ///< Error message
+		const std::string      m_who;        ///< name of function throwing exception
+		const std::string      m_where;      ///< source:line info
+		const std::string      m_reason;     ///< optional, provides context-specific reason
+		std::terminate_handler m_oldHandler; ///< old terminate handler. We need it in the destructor.
+		std::string            m_stackTrace;
+		std::string            m_message;    ///< Error message.
+		cfs::edac::Location    m_location;   ///< Location of the error : file, line and procedure)
+		std::int32_t           m_code;       ///< Error code
 
-            /*!
-             * @brief Gets the nested exception which caused this exception.
-             * @return The nested exception, or <code>NULL</code> if there is none.
-             */
-            const Exception * cause () const throw ( );
-
-            /*!
-             * @brief Return a description of the error
-             * @return Pointer to a string containing the error message
-             */
-            const char * what () const throw ( );
-
-            /*!
-             * @brief Return the error location (file + line + function)
-             * @return String containing the error location
-             */
-            virtual const char * where () const throw ( );
-
-            /*!
-             * @brief Return the error summary description
-             * @return String containing the error location
-             */
-            virtual std::string summary () const;
-            /*!
-             * @brief
-             * @return String descrybint type of error or exceptin
-             */
-            virtual std::string name () const;
-            /*!
-             * @brief Retrieve the stack trace trace of process
-             *
-             * @return String containing the procces
-             */
-            virtual std::string stackTrace () const;
-
-        protected:
-
-            //explicit Exception(const std::string & message);
-            explicit Exception(std::terminate_handler handler);
-
-        private:
-
-            void create( std::size_t nSize);
-
-            //std::shared_ptr< std::string > m_message; ///< Error message
-            const std::string      m_who;        ///< name of function throwing exception
-            const std::string      m_where;      ///< source:line info
-            const std::string      m_reason;     ///< optional, provides context-specific reason
-            std::terminate_handler m_oldHandler; ///< old terminate handler. We need it in the destructor.
-            std::string            m_stackTrace;
-            std::string            m_message;    ///< Error message.
-            std::string            m_location;   ///< Location of the error : file, line and procedure)
-            std::int32_t           m_code;       ///< Error code
-    };
-
+	};
+    /*!
+     * @biref Signals an error condition in a program by throwing an
+     *        <code>Exception</code> with the specified message.
+     */
+    [[noreturn]] void reportError ( const std::string & msg )
+    {
+        throw cfs::edac::Exception( msg );
+    }
+	
     std::ostream & operator << ( std::ostream & out, const Exception & ex)
     {
         auto c = ex.errorCode();
@@ -318,16 +206,134 @@ namespace cfs::edac
          */
         return (out);
     }
-
-    /*!
-     * @biref Signals an error condition in a program by throwing an
-     *        <code>Exception</code> with the specified message.
-     */
-    [[noreturn]] void reportError ( const std::string & msg )
+	
+    class NotImplemented : public std::logic_error
     {
-        throw cfs::edac::Exception( msg );
-    }
+        public:
+
+            explicit NotImplemented(const std::string &message)
+                : std::logic_error(message)
+            {
+            }
+    };
+
+    class NumericalProblem : public std::runtime_error
+    {
+        public:
+
+            explicit NumericalProblem(const std::string &message)
+                : std::runtime_error(message)
+            {
+            }
+    };
+
+    class MaterialLawProblem : public NumericalProblem
+    {
+        public:
+
+            explicit MaterialLawProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
+    class LinearSolverProblem : public NumericalProblem
+    {
+        public:
+
+            explicit LinearSolverProblem(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
+    class BadDependency : public ::std::logic_error
+    {
+        public:
+
+            BadDependency(const ::std::string &arg)
+                : std::logic_error(arg)
+            {
+            }
+    };
+
+    class InvalidResult : public ::std::runtime_error
+    {
+        public:
+
+            InvalidResult(const ::std::string &arg)
+                : std::runtime_error(arg)
+            {
+            }
+    };
+
+    class TooManyIterations : public NumericalProblem
+    {
+        public:
+
+            explicit TooManyIterations(const std::string &message)
+                : NumericalProblem(message)
+            {
+            }
+    };
+
+    class IOError : public std::runtime_error
+    {
+        /// Error can be specified more precisely in constructor if desired
+        explicit IOError(const char *s = "I/O error")
+            : std::runtime_error(s)
+        {
+        }
+    };
+
+    class notImplementedException : public std::exception
+    {
+        public:
+
+            notImplementedException(const char * message)
+                : m_message(message)
+            {
+            }
+
+            notImplementedException()
+                : m_message("not implemented")
+            {
+            }
+
+            virtual const char* what() const noexcept override
+            {
+                return m_message;
+            }
+
+            virtual ~notImplementedException()  noexcept
+            {
+            }
+
+        private:
+
+            const char * m_message;
+    };
+
+	class ArgumentException : public Exception
+	{
+	public:
+		using Exception::Exception;
+	};
+
+	//! Runtime exception
+	class RuntimeException : public Exception
+	{
+	public:
+		using Exception::Exception;
+	};
+
+	//! Security exception
+	class SecurityException : public Exception
+	{
+	public:
+		using Exception::Exception;
+	};
+
 }
 
 #endif
-

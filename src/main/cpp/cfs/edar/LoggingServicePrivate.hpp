@@ -152,6 +152,7 @@ namespace cfs::edar
 			void warn ( const std::string & s );
 			void error ( const std::string & s );
 			void fatal ( const std::string & s );
+            void flush();
     };
 }
 #endif

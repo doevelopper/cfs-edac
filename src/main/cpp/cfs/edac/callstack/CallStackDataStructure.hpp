@@ -4,18 +4,44 @@
 #define CFS_EDAC_CALLSTACK_CALLSTACKDATASTRUCTURE_HPP
 
 #include <string>
-
+#include <cfs/edar/LoggingService.hpp>
 namespace cfs::edac::callstack
 {
     class CallStackDataStructure
     {
+        LOG4CXX_DECLARE_STATIC_LOGGER
+
+        //! Stack trace frame
+        struct Frame
+        {
+            void* address;          //!< Frame address
+            std::string module;     //!< Frame module
+            std::string function;   //!< Frame function
+            std::string filename;   //!< Frame file name
+            int line;               //!< Frame line number
+
+            //! Get string from the current stack trace frame
+            std::string surrentStackFrame() const
+            {
+                std::stringstream ss;
+                ss << *this;
+                return ss.str();
+            }
+
+            //! Output stack trace frame into the given output stream
+            friend std::ostream& operator<<(std::ostream& os, const Frame& frame);
+        };
+
         public:
 
             CallStackDataStructure();
-            virtual ~CallStackDataStructure() = default;
+            CallStackDataStructure(const CallStackDataStructure&) = default;
+            CallStackDataStructure(CallStackDataStructure&&) = default;
+            CallStackDataStructure& operator=(const CallStackDataStructure&) = default;
+            CallStackDataStructure& operator=(CallStackDataStructure&&) = default;
+            virtual ~CallStackDataStructure();
 
-            std::string
-            data () const;
+            std::string data () const;
 
         private:
 
