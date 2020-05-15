@@ -4,7 +4,8 @@
 using namespace cfs::edac::callstack;
 using namespace cfs::edac::callstack::test;
 
-log4cxx::LoggerPtr CallStackDataStructureTest::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.test.CallStackDataStructureTest"));
+log4cxx::LoggerPtr CallStackDataStructureTest::logger = 
+    log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.test.CallStackDataStructureTest"));
 
 CallStackDataStructureTest::CallStackDataStructureTest()
   : testee()

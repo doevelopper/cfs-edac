@@ -5,7 +5,8 @@
 using namespace cfs::edac::internal;
 
 template <class T>
-log4cxx::LoggerPtr Stack<T>::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.Stack"));
+log4cxx::LoggerPtr Stack<T>::logger =
+    log4cxx::Logger::getLogger(std::string("cfs.edac.Stack"));
 
 template <class T>
 Stack<T>::Stack()  noexcept

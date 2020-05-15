@@ -42,10 +42,10 @@ namespace log4cxx
             SCHROEDINBUG
 
         }
+        CFSLevels(int level, const LogString& name, int syslogEquivalent);
 
         static LevelPtr getTrace();
         static LevelPtr getLethal();
-        CFSLevels(int level, const LogString& name, int syslogEquivalent);
         static LevelPtr toLevelLS(const LogString& sArg);
         static LevelPtr toLevel(int val);
         static LevelPtr toLevel(int val, const LevelPtr& defaultLevel);

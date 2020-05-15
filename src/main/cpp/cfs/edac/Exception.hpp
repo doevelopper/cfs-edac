@@ -152,7 +152,7 @@ namespace cfs::edac
 		 * @brief errorCode Error code corresponding to errno.h values.
 		 * @return
 		 */
-		[[nodiscard]] 
+		[[nodiscard]]
 		std::int32_t errorCode () const;
 		void errorCode (const std::int32_t & error);
 		//! Link exception with source location
@@ -190,7 +190,7 @@ namespace cfs::edac
     {
         throw cfs::edac::Exception( msg );
     }
-	
+
     std::ostream & operator << ( std::ostream & out, const Exception & ex)
     {
         auto c = ex.errorCode();
@@ -206,7 +206,7 @@ namespace cfs::edac
          */
         return (out);
     }
-	
+
     class NotImplemented : public std::logic_error
     {
         public:

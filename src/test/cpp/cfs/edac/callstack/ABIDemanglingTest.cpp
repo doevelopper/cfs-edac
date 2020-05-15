@@ -5,7 +5,8 @@
 using namespace cfs::edac::callstack;
 using namespace cfs::edac::callstack::test;
 
-log4cxx::LoggerPtr ABIDemanglingTest::logger = log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.ABIDemanglingTes"));
+log4cxx::LoggerPtr ABIDemanglingTest::logger = 
+   log4cxx::Logger::getLogger(std::string("cfs.edac.callstack.ABIDemanglingTes"));
 
 ABIDemanglingTest::ABIDemanglingTest()
 : testee()

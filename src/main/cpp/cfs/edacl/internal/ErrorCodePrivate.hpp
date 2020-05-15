@@ -128,21 +128,18 @@ namespace cfs::edacl::internal
     HRESULT EDAC_ERROR = ( !EDAC_SUCCESS );
     HRESULT EDAC_INVALIDE_ERROR = (0XFFFFFFFF);
 
-    class EDAC_MAIN_EXPORT ErrorCodePrivate
-    {
-        public:
 			// https://stackoverflow.com/questions/18335861/why-is-enum-class-preferred-over-plain-enum
-			enum class CfsErrorSeverity : std::uint32_t
-			{
+		enum class CfsErrorSeverity : std::uint32_t
+		{
 				CFE_SEVERITY_BITMASK = ( 0xC0000000L ),
 				CFE_SEVERITY_SUCCESS = ( 0x00000000L ),
 				CFE_SEVERITY_INFO = ( 0x40000000L ),
 				CFE_SEVERITY_ERROR = ( 0x80000000L ),
 				CFE_SEVERITY_CRITICAL = ( 0xC0000000L )
-			};
+		};
 
-			enum class CfeServiceIdentifiers : std::uint32_t
-			{
+		enum class CfeServiceIdentifiers : std::uint32_t
+		{
 				CFE_SERVICE_BITMASK = ( 0x0C000000L ),
 				CFE_EVENTS_SERVICE = ( 0x02000000L ),
 				CFE_EXECUTIVE_SERVICE = ( 0x04000000L ),
@@ -151,8 +148,20 @@ namespace cfs::edacl::internal
 				CFE_SOFTWARE_BUS_SERVICE = ( 0x0A000000L ),
 				CFE_TABLE_SERVICE = ( 0x0C000000L ),
 				CFE_TIME_SERVICE = ( 0x0E000000L )
-			};
+		};
 
+		enum class edacErrorPage : std::uint32_t
+		{
+				CFS_ERRORS_PAGE_SIZE = 0x0000EA60,
+				CFS_START_ERROR = ( 0x00004E20 ),
+				CFS_START_USER_ERROR = ( 0x0001D4C0 ),
+				CFS_START_APPLICATION_ERROR = ( 0x0001D4C0 ),
+				CFS_START_SYSTEM_ERROR = ( 0x000AFC80 ),
+		};
+
+    class EDAC_MAIN_EXPORT ErrorCodePrivate
+    {
+        public:
 			/*
 			 * A container for the error details.
 			 */
@@ -174,23 +183,14 @@ namespace cfs::edacl::internal
 
 			};
 
-			enum class edacErrorPage : std::uint32_t
-			{
-				CFS_ERRORS_PAGE_SIZE = 0x0000EA60,
-				CFS_START_ERROR = ( 0x00004E20 ),
-				CFS_START_USER_ERROR = ( 0x0001D4C0 ),
-				CFS_START_APPLICATION_ERROR = ( 0x0001D4C0 ),
-				CFS_START_SYSTEM_ERROR = ( 0x000AFC80 ),
-			};
+			ErrorCodePrivate();
+			ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
+			ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
+			ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
+			ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
+			virtual ~ErrorCodePrivate();
 
-            ErrorCodePrivate();
-            ErrorCodePrivate(const ErrorCodePrivate & orig) = delete;
-            ErrorCodePrivate(ErrorCodePrivate && orig) = delete;
-            ErrorCodePrivate & operator=(const ErrorCodePrivate & orig) = delete;
-            ErrorCodePrivate & operator=(ErrorCodePrivate && orig) = delete;
-            virtual ~ErrorCodePrivate();
-
-        // const error_category & edac_category();
+      // const error_category & edac_category();
 
         private:
     };

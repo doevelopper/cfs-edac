@@ -9,7 +9,8 @@
 
 namespace cfs::utils
 {
-    template<class T> using has_value_impl = decltype( std::declval<T>().value );
+    template<class T>
+    using has_value_impl = decltype( std::declval<T>().value );
 
     template <class T>
     struct is_error_type_default

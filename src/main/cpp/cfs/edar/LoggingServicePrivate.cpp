@@ -125,7 +125,7 @@ bool LoggingServicePrivate::initLogger ()
         }
         catch( ... )
         {
-            std::cerr << "Mein Gott Vas den loss ??? " << std::endl;
+            std::cerr << "Mein Gott! was den loss ??? " << std::endl;
         }
     }
 

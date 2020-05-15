@@ -9,35 +9,35 @@
 
 namespace cfs::edar
 {
-class EventSystem
-{
+    class EventSystem
+    {
 
-    LOG4CXX_DECLARE_STATIC_LOGGER
+        LOG4CXX_DECLARE_STATIC_LOGGER
 
- public:
+    public:
 
-    using EventHandler = std::function<void()>;
+        using EventHandler = std::function<void()>;
 
-    EventSystem() = default;
-    EventSystem(const EventSystem&) = default;
-    EventSystem(EventSystem&&) = default;
-    EventSystem& operator=(const EventSystem&) = default;
-    EventSystem& operator=(EventSystem&&) = default;
-    virtual ~EventSystem() = default;
+        EventSystem() = default;
+        EventSystem(const EventSystem&) = default;
+        EventSystem(EventSystem&&) = default;
+        EventSystem& operator=(const EventSystem&) = default;
+        EventSystem& operator=(EventSystem&&) = default;
+        virtual ~EventSystem() = default;
 
-    static void registerEventHandler(std::string event_id, EventHandler * handler);
-    static void unregisterEventHandler(std::string event_id, EventHandler* handler);
-    static void reportEvent(std::string event_id);
-    template<typename... _args>
-    static void raiseEvent(std::string event_id, _args&&... args);
+        static void registerEventHandler(std::string event_id, EventHandler * handler);
+        static void unregisterEventHandler(std::string event_id, EventHandler* handler);
+        static void reportEvent(std::string event_id);
+        template<typename... _args>
+        static void raiseEvent(std::string event_id, _args&&... args);
 
-protected:
-private:
+    protected:
+    private:
 
-    static std::unordered_map<std::string, std::vector<EventHandler*>> s_handlers;
-    static std::mutex s_mutex;
+        static std::unordered_map<std::string, std::vector<EventHandler*>> s_handlers;
+        static std::mutex s_mutex;
 
-};
+    };
 
 }
 
